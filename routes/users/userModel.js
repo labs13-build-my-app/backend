@@ -5,5 +5,5 @@ module.exports = {
 };
 
 function findUsers() {
-  return db("users").select("id", "firstName", "lastName", "email");
+  return db("users").select("id", "firstName", "lastName", "email", "role");
 }

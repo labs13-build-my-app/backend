@@ -5,6 +5,6 @@ const getUsers = (req, res) => {
 };
 
 module.exports = server => {
-  server.use(getUsers);
+  // server.use(getUsers);
   server.use("/api/user", userRouter);
 };
