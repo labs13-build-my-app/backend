@@ -1,32 +1,27 @@
-🚫 Note: All lines that start with 🚫 are instructions and should be deleted before this is posted to your portfolio. This is intended to be a guideline. Feel free to add your own flare to it.
-
-🚫 The numbers 1️⃣ through 3️⃣ next to each item represent the week that part of the docs needs to be comepleted by.  Make sure to delete the numbers by the end of Labs.
-
-🚫 Each student has a required minimum number of meaningful PRs each week per the rubric.  Contributing to docs does NOT count as a PR to meet your weekly requirements.
-
 # API Documentation
 
-#### 1️⃣ Backend delpoyed at [🚫name service here](🚫add URL here) <br>
+#### Backend delpoyed at [build-my-app](https://build-my-app.herokuapp.com/) <br>
 
-## 1️⃣ Getting started
+## Getting started
 
 To get the server running locally:
 
-🚫 adjust these scripts to match your project
-
 - Clone this repo
 - **yarn install** to install all required dependencies
+- **yarn start** to start the node environment
 - **yarn server** to start the local server
 - **yarn test** to start server using testing environment
 
 ### Backend framework goes here
 
-🚫 Why did you choose this framework?
 
--    Point One
--    Point Two
--    Point Three
--    Point Four
+-    Oauth 2.0 takes care of authentication, user management, and security, all in one. It offers simplicity,
+and accessibility allowing users to use their already created accounts from other major services.
+-    Node and Express are widely used, rich frameworks that works with many services, keep data in native JSON,
+are well documented with a supported community. Provide a clean way for us to implement CRUD actions to our database.
+-    Postgres with Knex gives us data persistence, uses relational data modeling, while providing a SQL-esque API.
+-    Jest, SuperTest will be used to test our database, and to weed out edge cases. Morgan will provide logging 
+to make development easier in case bugs occur. Helmet for securing our headers.
 
 ## 2️⃣ Endpoints
 
@@ -168,5 +163,4 @@ These contribution guidelines have been adapted from [this good-Contributing.md-
 
 ## Documentation
 
-See [Frontend Documentation](🚫link to your frontend readme here) for details on the fronend of our project.
-🚫 Add DS iOS and/or Andriod links here if applicable.
+See [Frontend Documentation](https://github.com/labs13-build-my-app/frontend/blob/master/README.md) for details on the fronend of our project.
