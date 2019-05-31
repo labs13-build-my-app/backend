@@ -1,5 +1,5 @@
 const faker = require("faker");
-
+require("dotenv").config();
 const roles = ["Project Owner", "Developer"];
 
 exports.seed = function(knex, Promise) {
@@ -15,11 +15,10 @@ exports.seed = function(knex, Promise) {
         }
       ];
 
-      for (let i = 0; i < 499; i++) {
+      for (let i = 0; i < Number(process.env.USERS); i++) {
         const user = {};
         let role = Math.floor(Math.random() * 2);
         let userName = faker.internet.userName();
-
         user.firstName = faker.name.firstName();
         user.lastName = faker.name.lastName();
         user.email = faker.internet.email();
@@ -28,7 +27,6 @@ exports.seed = function(knex, Promise) {
         user.linkedIn = `https://www.linkedin.com/in/${userName}`;
         user.gitHub = `https://www.github.com/${userName}`;
         user.twitter = `https://www.twitter.com/${userName}`;
-
         userArr.push(user);
       }
       return knex("users").insert(userArr);
