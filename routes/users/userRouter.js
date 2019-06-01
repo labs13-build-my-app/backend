@@ -1,9 +1,6 @@
-const express = require("express");
 const data = require("./userModel");
 
-const router = express.Router();
-
-router.get("/", async (req, res) => {
+const allUsers = async (req, res) => {
   try {
     const users = await data.findUsers();
     if (users.length) {
@@ -24,6 +21,10 @@ router.get("/", async (req, res) => {
       message: `User request failed ${error.message}.`
     });
   }
-});
+};
 
-module.exports = router;
+module.exports = router => {
+  router.get("/allusers", allUsers);
+
+  return router;
+};

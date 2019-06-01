@@ -1,10 +1,10 @@
-const userRouter = require("../routes/users/userRouter");
+const { userRouter } = require("../routes");
 
-const getUsers = (req, res) => {
+const root = (req, res) => {
   res.send("sanity check");
 };
 
-module.exports = server => {
-  // server.use(getUsers);
-  server.use("/api/user", userRouter);
+module.exports = (server, express) => {
+  server.use("/api/user", userRouter(express.Router()));
+  server.get("/", root);
 };

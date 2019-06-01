@@ -1,10 +1,8 @@
 const express = require("express");
-const configureMiddleware = require("../config/middleware");
-const configureRoutes = require("../config/routes");
+const serverConfig = require("../config");
 const server = express();
 
-configureMiddleware(server);
-configureRoutes(server);
+serverConfig(server, express);
 
 module.exports = {
   server
