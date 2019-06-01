@@ -1,5 +1,11 @@
-const userRouter = require("./users/userRouter");
+const userRouter = require("./users");
+const accountRouter = require("./account");
+const generalRouter = require("./general");
+const projectsRouter = require("./projects");
 
 module.exports = {
-  userRouter
+  userRouter,
+  accountRouter,
+  generalRouter,
+  projectsRouter
 };
