@@ -3,22 +3,22 @@ const testProjectOwnerRoute = (req, res) => {
     res.send("I am a project owner, nice");
   },
   projectOwnerDashboard = (req, res) => {
-    res.send("endpoint for developers account dashboard");
+    res.send("endpoint for project owner account dashboard");
   },
   updateProjectOwner = (req, res) => {
-    res.send("endpoint to update developers account");
+    res.send("endpoint to update project owner account");
   },
   deleteProjectOwner = (req, res) => {
-    res.send("endpoint to delete developer account");
+    res.send("endpoint to delete project owner account");
   },
   createProposal = (req, res) => {
     res.send("endpoint to submit a plan to a project owners proposal");
   },
   updateProposal = (req, res) => {
-    res.send("endpoint to update developers plan to submitted proposal");
+    res.send("endpoint to update project owner proposal");
   },
   deleteProposal = (req, res) => {
-    res.send("endpoint to delete developers plan");
+    res.send("endpoint to delete project owners proposal");
   },
   submitPayment = (req, res) => {
     res.send("endpoint for project owner to submit paymet to project");
