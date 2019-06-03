@@ -1,6 +1,10 @@
 const data = require("./userModel");
 
-const allUsers = async (req, res) => {
+const testingUsers = (req, res) => {
+    console.log("here in users, looks like it works");
+    res.send("testing users route, looks like it works");
+  },
+  allUsers = async (req, res) => {
     try {
       const users = await data.findUsers();
       if (users.length) {
@@ -36,6 +40,7 @@ const allUsers = async (req, res) => {
   };
 
 module.exports = router => {
+  router.get("/test-users", testingUsers);
   router.get("/list-all-users", allUsers);
   router.post("/developers", listDevelopers); // post for filter or search // get for latest singup developer
   router.post("/project-owners", listProjectOwners); // post for filter or search // get for latest singup project owners

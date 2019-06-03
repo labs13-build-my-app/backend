@@ -1,5 +1,6 @@
 const testProjectOwnerRoute = (req, res) => {
-    res.send("I am a developer and I work, nice");
+    console.log("here in project owner, looks like it works");
+    res.send("I am a project owner, nice");
   },
   projectOwnerDashboard = (req, res) => {
     res.send("endpoint for developers account dashboard");
@@ -28,14 +29,14 @@ const testProjectOwnerRoute = (req, res) => {
 
 module.exports = router => {
   router.get("/test-project-owner", testProjectOwnerRoute);
-  router.get("/dashboard", projectOwnerDashboard);
-  router.put("/update-profile", updateProjectOwner);
-  router.delete("/delete-profile", deleteProjectOwner);
-  router.post("/create-proposal", createProposal);
-  router.put("/update-proposal", updateProposal);
-  router.delete("/delete-proposal", deleteProposal);
+  router.get("/dashboard-project-owner", projectOwnerDashboard);
+  router.put("/update-profile-project-owner", updateProjectOwner);
+  router.delete("/delete-profile-project-owner", deleteProjectOwner);
+  router.post("/create-proposal-project-owner", createProposal);
+  router.put("/update-proposal-project-owner", updateProposal);
+  router.delete("/delete-proposal-project-owner", deleteProposal);
   router.post("/submit-payment/:proposal-id", submitPayment);
-  router.post("/message", messageDeveloper);
+  router.post("/message-project-owner", messageDeveloper);
 
   return router;
 };

@@ -1,4 +1,5 @@
 const testingProjectsRouter = (req, res) => {
+    console.log("here in projects, looks like it works");
     res.send("testing projects route, looks like it works");
   },
   developersPlan = (req, res) => {

@@ -1,5 +1,6 @@
 const testAdminRoute = async (req, res) => {
-    res.send("I am a developer and I work, nice");
+    console.log("here in admin, looks like it works");
+    res.send("I am an admin, nice");
   },
   createAdmin = async (req, res) => {
     res.send("endpoint to create new admin role");
@@ -24,7 +25,7 @@ module.exports = router => {
   router.get("/test-admin", testAdminRoute);
   router.post("/create-admin", createAdmin);
   router.post("/sign-in", adminSignIn);
-  router.get("/dashboard", adminDashboard);
+  router.get("/dashboard-admin", adminDashboard);
   router.get("/project-view/:project-id", adminProjectView);
   router.put("/project-status-update/:project-id", adminProjectUpdate);
   router.post("/process-payment/:project-id", adminPaymentProcess);

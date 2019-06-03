@@ -1,4 +1,5 @@
 const testDeveloperRoute = (req, res) => {
+    console.log("here in developer, looks like it works");
     res.send("I am a developer and I work, nice");
   },
   developerDashboard = (req, res) => {
@@ -25,13 +26,13 @@ const testDeveloperRoute = (req, res) => {
 
 module.exports = router => {
   router.get("/test-developer", testDeveloperRoute);
-  router.get("/dashboard", developerDashboard);
-  router.put("/update-profile", updateDeveloper);
-  router.delete("/delete-profile", deleteDeveloper);
-  router.post("/submit-plan", submitPlan);
-  router.put("/update-plan", updatePlan);
-  router.delete("/delete-plan", deletePlan);
-  router.post("/message", messageProjectOwner);
+  router.get("/dashboard-developer", developerDashboard);
+  router.put("/update-profile-developer", updateDeveloper);
+  router.delete("/delete-profile-developer", deleteDeveloper);
+  router.post("/submit-plan-developer", submitPlan);
+  router.put("/update-plan-developer", updatePlan);
+  router.delete("/delete-plan-developer", deletePlan);
+  router.post("/message-developer", messageProjectOwner);
 
   return router;
 };
