@@ -1,4 +1,4 @@
-const { verify } = require("./validate.js.js");
+const { verify } = require("./validate");
 
 module.exports = {
   verify
