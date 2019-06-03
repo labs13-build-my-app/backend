@@ -1,11 +1,9 @@
 const userRouter = require("./users");
-const accountRouter = require("./account");
-const generalRouter = require("./general");
 const projectsRouter = require("./projects");
+const accountRouter = require("./account");
 
 module.exports = {
   userRouter,
-  accountRouter,
-  generalRouter,
-  projectsRouter
+  projectsRouter,
+  accountRouter
 };
