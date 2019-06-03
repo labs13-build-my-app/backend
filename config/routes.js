@@ -1,4 +1,4 @@
-const { verify } = require("../customMiddleware");
+const { verify, userExist } = require("../customMiddleware");
 
 const { userRouter, accountRouter, projectsRouter } = require("../routes");
 
