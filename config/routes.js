@@ -1,10 +1,14 @@
-const userRouter = require("../routes/users/userRouter");
+const { userExist } = require("../customMiddleware");
 
-const getUsers = (req, res) => {
+const { userRouter, accountRouter, projectsRouter } = require("../routes");
+
+const root = (req, res) => {
   res.send("sanity check");
 };
 
-module.exports = server => {
-  // server.use(getUsers);
-  server.use("/api/user", userRouter);
+module.exports = (server, router) => {
+  server.use("/api/users", userRouter(router));
+  server.use("/api/projects", projectsRouter(router));
+  server.use("/api/account", accountRouter(router));
+  server.get("/", root);
 };
