@@ -3,7 +3,11 @@ const testDeveloperRoute = (req, res) => {
     res.send("I am a developer and I work, nice");
   },
   developerDashboard = (req, res) => {
-    res.send("endpoint for developers account dashboard");
+    res.status(200).json({
+      id: 55,
+      name: "joe mario",
+      profilePicutreURL: "https://i.ytimg.com/vi/hAGEs75ZdyE/maxresdefault.jpg"
+    });
   },
   updateDeveloper = (req, res) => {
     res.send("endpoint to update developers account");
