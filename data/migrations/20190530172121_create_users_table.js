@@ -9,6 +9,7 @@ exports.up = function(knex, Promise) {
       .unique();
     tbl.string("role", 15).notNullable();
     tbl.text("skills");
+    tbl.text("devType");
     tbl.string("linkedIn").unique();
     tbl.string("gitHub").unique();
     tbl.string("twitter").unique();
