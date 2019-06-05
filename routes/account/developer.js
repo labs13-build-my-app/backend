@@ -1,13 +1,25 @@
+const data = require("../users/userModel");
+
 const testDeveloperRoute = (req, res) => {
     console.log("here in developer, looks like it works");
     res.send("I am a developer and I work, nice");
   },
   developerDashboard = (req, res) => {
-    res.status(200).json({
-      id: 55,
-      name: "joe mario",
-      profilePicutreURL: "https://i.ytimg.com/vi/hAGEs75ZdyE/maxresdefault.jpg"
-    });
+    const id = req.params.id;
+    data
+      .findAuthorizedUser()
+      .then(user => {
+        res.status(200).json({
+          user,
+          error: false,
+          message: "The user were found in the database"
+        });
+      })
+      .catch(err => {
+        res.status(500).json({
+          message: `User request failed ${error.message}.`
+        });
+      });
   },
   updateDeveloper = (req, res) => {
     res.send("endpoint to update developers account");
@@ -30,7 +42,7 @@ const testDeveloperRoute = (req, res) => {
 
 module.exports = router => {
   router.get("/test-developer", testDeveloperRoute);
-  router.get("/dashboard-developer", developerDashboard);
+  router.get("/dashboard-developer/:id", developerDashboard);
   router.put("/update-profile-developer", updateDeveloper);
   router.delete("/delete-profile-developer", deleteDeveloper);
   router.post("/submit-plan-developer", submitPlan);
