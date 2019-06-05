@@ -1,13 +1,15 @@
 const db = require("../../data/dbConfig.js");
 
-const getPlanByID = async id => {};
-const addPlan = async plan => {};
-const updatePlan = async plan => {};
-const deletePlan = async id => {};
+const getPlans = () => {
+  db("plans").then(plans => {
+    console.log(plans);
+  });
+};
 
 module.exports = {
-  getPlanByID,
-  addPlan,
-  updatePlan,
-  deletePlan
+  getPlans
+  //   getPlanbyID,
+  //   addPlan,
+  //   updatePlan,
+  //   deletePlan
 };
