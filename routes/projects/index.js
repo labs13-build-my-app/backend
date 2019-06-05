@@ -22,7 +22,7 @@ module.exports = router => {
   router.get("/plan-list", listDevelopersPlans);
   router.get("/submitted-plan/:plan-id", developersPlan);
   router.get("/proposal-list", listProjectOwnersProposals);
-  router.get("/proposal/:proposal-id", projectOwnersProposal);
+  router.get("/proposal", projectOwnersProposal);
 
   return router;
 };

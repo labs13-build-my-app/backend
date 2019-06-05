@@ -8,9 +8,7 @@ const testOnboardingRoute = (req, res) => {
   },
   checkIfLoggedIn = async (req, res) => {
     console.log(jwt_decode(req.headers.authorization));
-    res.send(
-      "endpoint to see if user is logged in if no roleType on client, if logged in return role, if not route to signup"
-    );
+    res.status(200).json({ role: "Admin", id: 1 });
   };
 
 module.exports = router => {
