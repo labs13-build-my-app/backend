@@ -4,7 +4,10 @@ const testOnboardingRoute = (req, res) => {
     res.send("I am a new user signing up");
   },
   userSignUp = async (req, res) => {
-    res.send("endpoint to sign up new user");
+    const token = jwt_decode(req.headers.authorization);
+    const userObj = { ...req.body, sub: token.sub };
+    console.log(userObj);
+    res.status(200).json({ role: userObj.role });
   },
   checkIfLoggedIn = async (req, res) => {
     console.log(jwt_decode(req.headers.authorization));
