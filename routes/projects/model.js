@@ -1,24 +1,28 @@
-const db = require('../../data/dbConfig.js');
+const db = require("../../data/dbConfig.js");
 
-const getAll = () => (
-  db('projects')
-);
+const getAll = () => db("projects");
 
-const findByProjectOwner = id => (
-  db('projects')
-    .where({user_id: id})
-)
+const findByProjectOwner = id => db("projects").where({ user_id: id });
 
-const addProject = async project => {
-  const project_id = await db('projects')
-    .insert(project, 'id')
-  
-  return db('projects')
-    .where({id: project_id})
+async function addProject(newProject) {
+  const [id] = await db("projects").insert(newProject, "id");
+  if (id) {
+    const project = await findById(id, newProject.user_id);
+    return project;
+  }
+}
+
+async function findById(id, userID) {
+  const project = await db("projects")
+    .where({ "projects.id": id })
+    .andWhere({ "projects.user_id": userID })
+    .first();
+  return project;
 }
 
 module.exports = {
   getAll,
   findByProjectOwner,
-  addProject
-}
+  addProject,
+  findById
+};
