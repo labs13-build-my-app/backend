@@ -1,3 +1,5 @@
+const data = require("../users/userModel");
+
 const testAdminRoute = async (req, res) => {
     console.log("here in admin, looks like it works");
     res.send("I am an admin, nice");
@@ -22,15 +24,21 @@ const testAdminRoute = async (req, res) => {
     res.send("endpoint for admin to sign in");
   },
   adminDashboard = async (req, res) => {
-    // dashboard sends req on first render
-    // req suggested data schema
-    // token on header
-
-    // res suggested data schema
-    // projects: [] -- starting from que, first in first out
-    // messages: [] -- starting from stack, first in last out
-
-    res.send("endpoint to send related data to admins dashboard");
+    const id = req.params.id;
+    data
+      .findAuthorizedUser()
+      .then(user => {
+        res.status(200).json({
+          user,
+          error: false,
+          message: "The user were found in the database"
+        });
+      })
+      .catch(err => {
+        res.status(500).json({
+          message: `User request failed ${error.message}.`
+        });
+      });
   },
   adminProjectView = async (req, res) => {
     // sends req on client route to project id
@@ -57,9 +65,9 @@ module.exports = router => {
   router.post("/create-admin", createAdmin);
   router.post("/sign-in", adminSignIn);
   router.get("/dashboard-admin", adminDashboard);
-  router.get("/project-view/:project-id", adminProjectView);
-  router.put("/project-status-update/:project-id", adminProjectUpdate);
-  router.post("/process-payment/:project-id", adminPaymentProcess);
+  router.get("/project-view/:id", adminProjectView);
+  router.put("/project-status-update/:id", adminProjectUpdate);
+  router.post("/process-payment/:id", adminPaymentProcess);
 
   return router;
 };
