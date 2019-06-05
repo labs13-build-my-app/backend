@@ -1,3 +1,7 @@
+const Projects = require("../projects/model");
+
+// /api/projects
+
 const testingProjectsRouter = (req, res) => {
     console.log("here in projects, looks like it works");
     res.send("testing projects route, looks like it works");
@@ -7,22 +11,37 @@ const testingProjectsRouter = (req, res) => {
   },
   developersPlan = (req, res) => {
     res.send(
-      "endpoint to retrieve developers plan to a project owners proopsal"
+      "endpoint to retrieve developers plan to a project owners project"
     );
   },
-  listProjectOwnersProposals = (req, res) => {
-    res.send("endpoint to retrieve list of project owner proposals");
+  listProjectOwnersProjects = (req, res) => {
+    res.send("endpoint to retrieve list of project owner projects");
   },
-  projectOwnersProposal = (req, res) => {
-    res.send("endpoint to retrieve a project owners proposal");
+  projectOwnersProject = async (req, res) => {
+    const userID = 96; // Need to be chaned; take userID from decoded token
+    const { id } = req.params;
+    try {
+      const project = await Projects.findById(id, userID);
+      if (project) {
+        res.status(200).json(project);
+      } else {
+        res
+          .status(404)
+          .json({ message: "Project with specified ID does not exist." });
+      }
+    } catch (error) {
+      res
+        .status(500)
+        .json({ message: `Project request failed ${error.message}.` });
+    }
   };
 
 module.exports = router => {
   router.get("/test-projects", testingProjectsRouter);
   router.get("/plan-list", listDevelopersPlans);
-  router.get("/submitted-plan/:plan-id", developersPlan);
-  router.get("/proposal-list", listProjectOwnersProposals);
-  router.get("/proposal/:proposal-id", projectOwnersProposal);
+  router.get("/submitted-plan/:id", developersPlan);
+  router.get("/project-list", listProjectOwnersProjects);
+  router.get("/project/:id", projectOwnersProject);
 
   return router;
 };
