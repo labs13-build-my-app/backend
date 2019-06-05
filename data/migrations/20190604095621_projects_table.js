@@ -8,7 +8,7 @@ exports.up = function(knex, Promise) {
     tbl.text("dueDate").notNullable();
     tbl.string("projectStatus", 30).notNullable();
     tbl.string("paymentStatus", 30).notNullable();
-    tbl.string("feedback", 600).notNullable();
+    tbl.string("feedback", 600);
     tbl
       .integer("user_id")
       .unsigned()
