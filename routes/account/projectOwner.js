@@ -1,9 +1,25 @@
+const data = require("../users/userModel");
+
 const testProjectOwnerRoute = (req, res) => {
     console.log("here in project owner, looks like it works");
     res.send("I am a project owner, nice");
   },
   projectOwnerDashboard = (req, res) => {
-    res.send("endpoint for project owner account dashboard");
+    const id = req.params.id;
+    data
+      .findAuthorizedUser()
+      .then(user => {
+        res.status(200).json({
+          user,
+          error: false,
+          message: "The user were found in the database"
+        });
+      })
+      .catch(err => {
+        res.status(500).json({
+          message: `User request failed ${error.message}.`
+        });
+      });
   },
   updateProjectOwner = (req, res) => {
     res.send("endpoint to update project owner account");
