@@ -48,5 +48,17 @@ module.exports = router => {
         res.status(500).json(err);
       });
   });
+
+  router.delete("/deleteplan/:id", (req, res) => {
+    const id = req.params.id;
+    data
+      .deletePlan(id)
+      .then(plan => {
+        res.status(200).json(plan);
+      })
+      .catch(err => {
+        res.status(500).json(err);
+      });
+  });
   return router;
 };
