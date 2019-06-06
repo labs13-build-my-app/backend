@@ -10,7 +10,7 @@ function findUsers() {
   return db("users").select("id", "firstName", "lastName", "email", "role");
 }
 
-function findAuthorizedUser(userid) {
+function findAuthorizedUser(userID) {
   const id = Number(userID.id);
   console.log(id, userID);
   return db("users")
