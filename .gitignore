@@ -90,4 +90,4 @@ typings/
 .dynamodb/
 
 # Database
-./data/buildmyapp.db3
+*.db3
