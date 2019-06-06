@@ -25,8 +25,9 @@ const testAdminRoute = async (req, res) => {
   },
   adminDashboard = async (req, res) => {
     const id = req.params.id;
+    console.log(id);
     data
-      .findAuthorizedUser()
+      .findAuthorizedUser(id)
       .then(user => {
         res.status(200).json({
           user,
@@ -64,7 +65,7 @@ module.exports = router => {
   router.get("/test-admin", testAdminRoute);
   router.post("/create-admin", createAdmin);
   router.post("/sign-in", adminSignIn);
-  router.get("/dashboard-admin", adminDashboard);
+  router.get("/dashboard-admin/:id", adminDashboard);
   router.get("/project-view/:id", adminProjectView);
   router.put("/project-status-update/:id", adminProjectUpdate);
   router.post("/process-payment/:id", adminPaymentProcess);

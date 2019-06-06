@@ -9,7 +9,7 @@ function findUsers() {
   return db("users").select("id", "firstName", "lastName", "email", "role");
 }
 
-function findAuthorizedUser() {
+function findAuthorizedUser(id) {
   return db("users")
     .where({ id })
     .select("id", "firstName", "lastName", "email", "role")
