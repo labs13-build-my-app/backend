@@ -11,7 +11,9 @@ const testOnboardingRoute = (req, res) => {
   },
   checkIfLoggedIn = async (req, res) => {
     console.log(jwt_decode(req.headers.authorization));
-    res.status(200).json({ role: "Admin", id: 1 });
+    console.log("this better work... fuck");
+    // res.status(200).json({ role: "Admin", id: 1 });
+    res.status(500).json();
   };
 
 module.exports = router => {

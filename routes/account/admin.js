@@ -24,7 +24,7 @@ const testAdminRoute = async (req, res) => {
     res.send("endpoint for admin to sign in");
   },
   adminDashboard = async (req, res) => {
-    const id = req.params.id;
+    const id = 1;
     console.log(id);
     data
       .findAuthorizedUser({ id })
