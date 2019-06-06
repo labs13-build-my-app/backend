@@ -88,3 +88,6 @@ typings/
 
 # DynamoDB Local files
 .dynamodb/
+
+# Database
+./data/buildmyapp.db3

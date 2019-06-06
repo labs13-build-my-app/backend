@@ -8,9 +8,15 @@ const getPlans = () => {
   return db("plans");
 };
 
+const getPlanById = id => {
+  return db("plans")
+    .where({ id })
+    .first();
+};
+
 module.exports = {
   getPlans,
-  //   getPlanbyID,
+  getPlanById,
   addPlan
   //   updatePlan,
   //   deletePlan

@@ -14,11 +14,21 @@ module.exports = router => {
   });
 
   router.get("/test-getplans", (req, res) => {
-    console.log("Test");
     data
       .getPlans()
       .then(plans => {
         res.status(200).json(plans);
+      })
+      .catch(err => {
+        res.status(500).json(err);
+      });
+  });
+
+  router.get("/getplan/:id", (req, res) => {
+    data
+      .getPlanById()
+      .then(plan => {
+        res.status(200).json(plan);
       })
       .catch(err => {
         res.status(500).json(err);
