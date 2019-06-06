@@ -2,7 +2,8 @@ const db = require("../../data/dbConfig.js");
 
 module.exports = {
   findUsers,
-  findAuthorizedUser
+  findAuthorizedUser,
+  createNewUser
 };
 
 function findUsers() {
@@ -16,4 +17,9 @@ function findAuthorizedUser(userid) {
     .where({ id })
     .select("id", "firstName", "lastName", "email", "role")
     .first();
+}
+
+function createNewUser(user) {
+  console.log(user);
+  return db("users").insert(user, "id");
 }
