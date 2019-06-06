@@ -47,7 +47,7 @@ const testingProjectsRouter = (req, res) => {
       });
   },
   projectOwnersProject = async (req, res) => {
-    const userID = 96; // Need to be chaned; take userID from decoded token
+    const userID = 34; // Need to be chaned; take userID from decoded token
     const { id } = req.params;
     try {
       const project = await Projects.findById(id, userID);

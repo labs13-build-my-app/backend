@@ -2,7 +2,7 @@ exports.up = function(knex, Promise) {
   return knex.schema.createTable("projects", tbl => {
     tbl.increments();
     tbl.string("name", 255).notNullable();
-    tbl.string("description", 255).notNullable();
+    tbl.text("description").notNullable();
     tbl.string("image_url", 255);
     tbl.integer("budget").notNullable();
     tbl.text("dueDate").notNullable();
