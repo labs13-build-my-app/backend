@@ -20,10 +20,16 @@ const updatePlan = (id, changes) => {
     .update(changes);
 };
 
+const deletePlan = id => {
+  return db("plans")
+    .where({ id })
+    .del(id);
+};
+
 module.exports = {
   getPlans,
   getPlanById,
   addPlan,
-  updatePlan
-  //   deletePlan
+  updatePlan,
+  deletePlan
 };

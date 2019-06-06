@@ -1,4 +1,4 @@
-const { createNewUser } = require("../users/userModel");
+const { createNewUser, findAuthorizedUser } = require("../users/userModel");
 
 const testOnboardingRoute = (req, res) => {
     console.log("here in onboarding, looks like it works");
@@ -6,10 +6,12 @@ const testOnboardingRoute = (req, res) => {
   },
   userSignUp = async (req, res) => {
     const { user_id: sub } = req;
+    console.log("here asdfa;ldkfj");
     const {
       role,
       firstName,
       lastName,
+      email,
       skills,
       devType,
       linkedIn,
@@ -22,24 +24,44 @@ const testOnboardingRoute = (req, res) => {
       role,
       firstName,
       lastName,
+      email,
       skills,
       devType,
       linkedIn,
       gitHub,
       twitter
     })
-      .then(user => {
-        res.status(201).json(user);
+      .then(userid => {
+        const id = userid[0];
+        res.status(201).json({
+          id,
+          role,
+          firstName,
+          lastName,
+          email,
+          skills,
+          devType,
+          linkedIn,
+          gitHub,
+          twitter
+        });
       })
       .catch(err => {
         res.status(500).json({ message: err });
       });
   },
   checkIfLoggedIn = async (req, res) => {
-    console.log(req.user_id);
-
-    // res.status(200).json({ role: "Admin", id: 1 });
-    res.status(500).json();
+    const { user_id: sub } = req;
+    console.log(sub, "checking login");
+    findAuthorizedUser(sub)
+      .then(user => {
+        console.log(user);
+        res.status(200).json(user.role);
+      })
+      .catch(err => {
+        console.log("err here", err);
+        res.status(500).json({ message: err });
+      });
   };
 
 module.exports = router => {
