@@ -1,7 +1,7 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
-const Projects = require('./model');
+const Projects = require("./model");
 
 // /api/projects
 
@@ -9,6 +9,7 @@ const testingProjectsRouter = (req, res) => {
     console.log("here in projects, looks like it works");
     res.send("testing projects route, looks like it works");
   },
+  // GET for all projects
   getAllProjects = async (req, res) => {
     try {
       const projects = await data.getAllProjects();
@@ -33,7 +34,6 @@ const testingProjectsRouter = (req, res) => {
       "endpoint to retrieve developers plan to a project owners project"
     );
   },
-
   listProjectOwnersProjects = (req, res) => {
     const projectOwner_id = req.user_id;
 
@@ -41,18 +41,14 @@ const testingProjectsRouter = (req, res) => {
     //Delete this line and line below and uncomment line above when login is finished
     Projects.findByProjectOwner(51)
       .then(projects => {
-        res
-          .status(200)
-          .json(projects);
+        res.status(200).json(projects);
       })
       .catch(error => {
-        res
-          .status(500)
-          .json(error);
+        res.status(500).json(error);
       });
   },
-  
-      projectOwnersProject = async (req, res) => {
+  // GET project by ID
+  getProject = async (req, res) => {
     const userID = 96; // Need to be chaned; take userID from decoded token
     const { id } = req.params;
     try {
@@ -77,7 +73,7 @@ module.exports = router => {
   router.get("/plan-list", listDevelopersPlans);
   router.get("/project-owner", listProjectOwnersProposals);
   router.get("/submitted-plan/:id", developersPlan);
-  router.get("/project/:id", projectOwnersProject);
+  router.get("/project/:id", getProject);
 
   return router;
 };
