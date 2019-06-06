@@ -11,8 +11,8 @@ function findUsers() {
 }
 
 function findAuthorizedUser(userid) {
-  const id = Number(userid.id);
-  console.log(id, userid);
+  const id = Number(userID.id);
+  console.log(id, userID);
   return db("users")
     .where({ id })
     .select("id", "firstName", "lastName", "email", "role")
