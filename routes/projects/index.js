@@ -21,7 +21,7 @@ const testingProjectsRouter = (req, res) => {
         });
       }
     } catch (error) {
-      res.status(500).josn({
+      res.status(500).json({
         message: `Project request failed ${error.message}.`
       });
     }
@@ -69,11 +69,11 @@ const testingProjectsRouter = (req, res) => {
 
 module.exports = router => {
   router.get("/test-projects", testingProjectsRouter);
-  router.get("/list-all-projects", getAllProjects);
-  router.get("/plan-list", listDevelopersPlans);
-  router.get("/project-owner", listProjectOwnersProposals);
-  router.get("/submitted-plan/:id", developersPlan);
+  router.get("/projects", getAllProjects);
   router.get("/project/:id", getProject);
+  router.get("/plan-list", listDevelopersPlans);
+  // router.get("/project-owner", listProjectOwnersProposals);
+  router.get("/submitted-plan/:id", developersPlan);
 
   return router;
 };
