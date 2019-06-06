@@ -28,10 +28,10 @@ const testDeveloperRoute = (req, res) => {
     res.send("endpoint to delete developer account");
   },
   submitPlan = (req, res) => {
-    res.send("endpoint to submit a plan to a project owners proposal");
+    res.send("endpoint to submit a plan to a project owners project");
   },
   updatePlan = (req, res) => {
-    res.send("endpoint to update developers plan to submitted proposal");
+    res.send("endpoint to update developers plan to submitted project");
   },
   deletePlan = (req, res) => {
     res.send("endpoint to delete developers plan");
