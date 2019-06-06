@@ -24,10 +24,12 @@ const testAdminRoute = async (req, res) => {
     res.send("endpoint for admin to sign in");
   },
   adminDashboard = async (req, res) => {
-    const id = req.params.id;
+    const id = 1;
+    console.log(id);
     data
-      .findAuthorizedUser()
+      .findAuthorizedUser({ id })
       .then(user => {
+        console.log(user);
         res.status(200).json({
           user,
           error: false,
