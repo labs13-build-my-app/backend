@@ -1,0 +1,23 @@
+const db = require("../../data/dbConfig");
+
+const addPlan = plan => {
+  return db("plans").insert(plan);
+};
+
+const getPlans = () => {
+  return db("plans");
+};
+
+const getPlanById = id => {
+  return db("plans")
+    .where({ id })
+    .first();
+};
+
+module.exports = {
+  getPlans,
+  getPlanById,
+  addPlan
+  //   updatePlan,
+  //   deletePlan
+};
