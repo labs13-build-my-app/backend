@@ -11,15 +11,15 @@ function findUsers() {
 }
 
 function findAuthorizedUser(userID) {
-  const id = Number(userID.id);
-  console.log(id, userID);
+  const sub = userID;
+  console.log(sub, userID);
   return db("users")
-    .where({ id })
+    .where({ sub })
     .select("id", "firstName", "lastName", "email", "role")
     .first();
 }
 
 function createNewUser(user) {
-  console.log(user);
+  console.log(user, "in user model");
   return db("users").insert(user, "id");
 }
