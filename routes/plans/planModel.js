@@ -14,10 +14,16 @@ const getPlanById = id => {
     .first();
 };
 
+const updatePlan = (id, changes) => {
+  return db("plans")
+    .where({ id })
+    .update(changes);
+};
+
 module.exports = {
   getPlans,
   getPlanById,
-  addPlan
-  //   updatePlan,
+  addPlan,
+  updatePlan
   //   deletePlan
 };
