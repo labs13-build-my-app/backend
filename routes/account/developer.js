@@ -12,7 +12,7 @@ const testDeveloperRoute = (req, res) => {
         res.status(200).json({
           user,
           error: false,
-          message: "The user were found in the database"
+          message: "The user was found in the database"
         });
       })
       .catch(err => {

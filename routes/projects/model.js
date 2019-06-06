@@ -1,6 +1,6 @@
 const db = require("../../data/dbConfig.js");
 
-const getAll = () => db("projects");
+const getAllProjects = () => db("projects");
 
 const findByProjectOwner = id => db("projects").where({ user_id: id });
 
@@ -21,7 +21,7 @@ async function findById(id, userID) {
 }
 
 module.exports = {
-  getAll,
+  getAllProjects,
   findByProjectOwner,
   addProject,
   findById
