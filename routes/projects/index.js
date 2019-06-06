@@ -47,8 +47,10 @@ const testingProjectsRouter = (req, res) => {
         res.status(500).json(error);
       });
   },
+
   // GET project by ID
   getProject = async (req, res) => {
+
     const userID = 96; // Need to be chaned; take userID from decoded token
     const { id } = req.params;
     try {
