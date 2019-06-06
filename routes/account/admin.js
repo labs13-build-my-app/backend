@@ -66,7 +66,7 @@ module.exports = router => {
   router.get("/test-admin", testAdminRoute);
   router.post("/create-admin", createAdmin);
   router.post("/sign-in", adminSignIn);
-  router.get("/dashboard-admin", adminDashboard);
+  router.get("/dashboard-admin/:id", adminDashboard);
   router.get("/project-view/:id", adminProjectView);
   router.put("/project-status-update/:id", adminProjectUpdate);
   router.post("/process-payment/:id", adminPaymentProcess);

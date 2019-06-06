@@ -1,6 +1,10 @@
 exports.up = function(knex, Promise) {
   return knex.schema.createTable("users", tbl => {
     tbl.increments();
+    tbl
+      .string("sub")
+      .unique()
+      .notNullable();
     tbl.string("firstName", 255).notNullable();
     tbl.string("lastName", 255).notNullable();
     tbl
@@ -13,6 +17,7 @@ exports.up = function(knex, Promise) {
     tbl.string("linkedIn").unique();
     tbl.string("gitHub").unique();
     tbl.string("twitter").unique();
+    tbl.timestamps(true, true);
   });
 };
 

@@ -8,7 +8,8 @@ exports.seed = function(knex, Promise) {
       let projectsArr = [];
       let projectStatusArr = ["proposal", "in progress", "completed"];
       let paymentStatusArr = ["paid", "unpaid"];
-      for (let i = 0; i < Number(process.env.PROJECTS); i++) {
+      const projectNum = Number(process.env.PROJECTS) || 100;
+      for (let i = 0; i < projectNum; i++) {
         const project = {};
         const statusProject = Math.floor(Math.random() * 3);
         const paymentStatus = Math.floor(Math.random() * 2);
@@ -18,12 +19,18 @@ exports.seed = function(knex, Promise) {
         project.budget = Math.round(faker.finance.amount() * 100);
         project.dueDate = faker.date.future();
         project.projectStatus = projectStatusArr[statusProject];
-        project.paymentStatus = paymentStatusArr[paymentStatus];
+        project.projectStatus === "in progress" ||
+        project.projectStatus === "completed"
+          ? (project.paymentStatus = paymentStatusArr[paymentStatus])
+          : (project.paymentStatus = "unpaid");
         project.projectStatus === "completed"
           ? (project.feedback = faker.lorem.paragraph())
           : null;
+        const userNum = process.env.USERS || 50;
+
         project.user_id =
-          Math.floor(Math.random() * (process.env.PROJECTS - 52)) + 51;
+          Math.floor(Math.random() * (userNum - Math.ceil(userNum / 2) + 1)) +
+          Math.ceil(userNum / 2);
         projectsArr.push(project);
       }
 
