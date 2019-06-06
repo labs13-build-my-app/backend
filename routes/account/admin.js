@@ -24,10 +24,12 @@ const testAdminRoute = async (req, res) => {
     res.send("endpoint for admin to sign in");
   },
   adminDashboard = async (req, res) => {
-    const id = req.params.id;
+    const id = 1;
+    console.log(id);
     data
-      .findAuthorizedUser()
+      .findAuthorizedUser({ id })
       .then(user => {
+        console.log(user);
         res.status(200).json({
           user,
           error: false,
@@ -64,7 +66,7 @@ module.exports = router => {
   router.get("/test-admin", testAdminRoute);
   router.post("/create-admin", createAdmin);
   router.post("/sign-in", adminSignIn);
-  router.get("/dashboard-admin", adminDashboard);
+  router.get("/dashboard-admin/:id", adminDashboard);
   router.get("/project-view/:id", adminProjectView);
   router.put("/project-status-update/:id", adminProjectUpdate);
   router.post("/process-payment/:id", adminPaymentProcess);

@@ -1,8 +1,7 @@
 const faker = require("faker");
 require("dotenv").config();
-const roles = ["Project Owner", "Developer"];
 const devTypes = ["web", "android", "iOS"];
-//99
+
 exports.seed = function(knex, Promise) {
   return knex("users")
     .del()
@@ -12,14 +11,17 @@ exports.seed = function(knex, Promise) {
           firstName: faker.name.firstName(),
           lastName: faker.name.lastName(),
           email: faker.internet.email(),
-          role: "Admin"
+          role: "Admin",
+          sub: "admin"
         }
       ];
-
-      for (let i = 0; i < Math.floor(Number(process.env.USERS) / 2); i++) {
+      const devNum = Math.floor(Number(process.env.USERS) / 2) || 24;
+      const projectOwnerNum = Math.ceil(Number(process.env.USERS) / 2) || 25;
+      for (let i = 0; i < devNum; i++) {
         const user = {};
         let devType = Math.floor(Math.random() * 3);
         let userName = faker.internet.userName();
+        user.sub = (i + 1).toString();
         user.firstName = faker.name.firstName();
         user.lastName = faker.name.lastName();
         user.email = faker.internet.email();
@@ -32,9 +34,10 @@ exports.seed = function(knex, Promise) {
         userArr.push(user);
       }
 
-      for (let i = 0; i < Math.ceil(Number(process.env.USERS) / 2); i++) {
+      for (let i = 0; i < projectOwnerNum; i++) {
         const user = {};
         let userName = faker.internet.userName();
+        user.sub = (i + 26).toString();
         user.firstName = faker.name.firstName();
         user.lastName = faker.name.lastName();
         user.email = faker.internet.email();
