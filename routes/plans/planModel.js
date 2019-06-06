@@ -1,15 +1,17 @@
-const db = require("../../data/dbConfig.js");
+const db = require("../../data/dbConfig");
+
+const addPlan = plan => {
+  return db("plans").insert(plan);
+};
 
 const getPlans = () => {
-  db("plans").then(plans => {
-    console.log(plans);
-  });
+  return db("plans");
 };
 
 module.exports = {
-  getPlans
+  getPlans,
   //   getPlanbyID,
-  //   addPlan,
+  addPlan
   //   updatePlan,
   //   deletePlan
 };
