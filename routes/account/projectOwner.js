@@ -18,7 +18,7 @@ const testProjectOwnerRoute = (req, res) => {
           message: "The user were found in the database"
         });
       })
-      .catch(err => {
+      .catch(error => {
         res.status(500).json({
           message: `User request failed ${error.message}.`
         });
