@@ -12,7 +12,14 @@ async function addProject(newProject) {
   }
 }
 
-async function findById(id, userID) {
+async function findById(id) {
+  const project = await db("projects")
+    .where({ "projects.id": id })
+    .first();
+  return project;
+}
+
+async function findUserProjectById(id, userID) {
   const project = await db("projects")
     .where({ "projects.id": id })
     .andWhere({ "projects.user_id": userID })
@@ -24,5 +31,6 @@ module.exports = {
   getAllProjects,
   findByProjectOwner,
   addProject,
-  findById
+  findById,
+  findUserProjectById
 };
