@@ -52,7 +52,7 @@ const testingProjectsRouter = (req, res) => {
     // const userID = 26; // Need to be chaned; take userID from decoded token
     const { id } = req.params;
     try {
-      const project = await Projects.findById(id, userID);
+      const project = await Projects.findById(id);
       if (project) {
         res.status(200).json(project);
       } else {
