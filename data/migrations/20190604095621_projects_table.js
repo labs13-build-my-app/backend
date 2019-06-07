@@ -2,13 +2,13 @@ exports.up = function(knex, Promise) {
   return knex.schema.createTable("projects", tbl => {
     tbl.increments();
     tbl.string("name", 255).notNullable();
-    tbl.string("description", 255).notNullable();
-    tbl.string("image_url", 255);
+    tbl.text("description").notNullable();
+    tbl.string("image_url");
     tbl.integer("budget").notNullable();
     tbl.text("dueDate").notNullable();
     tbl.string("projectStatus", 30).notNullable();
     tbl.string("paymentStatus", 30).notNullable();
-    tbl.string("feedback", 600);
+    tbl.text("feedback");
     tbl
       .integer("user_id")
       .unsigned()
