@@ -55,8 +55,9 @@ const testOnboardingRoute = (req, res) => {
     console.log(sub, "checking login");
     findAuthorizedUser(sub)
       .then(user => {
+        const userRole = user.role;
         console.log(user);
-        res.status(200).json(user.role);
+        res.status(200).json({ role: userRole });
       })
       .catch(err => {
         console.log("err here", err);
