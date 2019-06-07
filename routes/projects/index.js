@@ -12,7 +12,7 @@ const testingProjectsRouter = (req, res) => {
   // GET for all projects
   getAllProjects = async (req, res) => {
     try {
-      const projects = await data.getAllProjects();
+      const projects = await Projects.getAllProjects();
       if (projects) {
         res.status(200).json(projects);
       } else {
@@ -47,11 +47,9 @@ const testingProjectsRouter = (req, res) => {
         res.status(500).json(error);
       });
   },
-
   // GET project by ID
   getProject = async (req, res) => {
-
-    const userID = 96; // Need to be chaned; take userID from decoded token
+    const userID = 26; // Need to be chaned; take userID from decoded token
     const { id } = req.params;
     try {
       const project = await Projects.findById(id, userID);
@@ -71,7 +69,7 @@ const testingProjectsRouter = (req, res) => {
 
 module.exports = router => {
   router.get("/test-projects", testingProjectsRouter);
-  router.get("/projects", getAllProjects);
+  router.get("/", getAllProjects);
   router.get("/project/:id", getProject);
   router.get("/plan-list", listDevelopersPlans);
   // router.get("/project-owner", listProjectOwnersProposals);
