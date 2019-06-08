@@ -5,9 +5,9 @@ const testDeveloperRoute = (req, res) => {
     res.send("I am a developer and I work, nice");
   },
   developerDashboard = (req, res) => {
-    const id = req.params.id;
+    const id = req.user_id;
     data
-      .findAuthorizedUser()
+      .findAuthorizedUser(id)
       .then(user => {
         res.status(200).json({
           user,
@@ -42,7 +42,7 @@ const testDeveloperRoute = (req, res) => {
 
 module.exports = router => {
   router.get("/test-developer", testDeveloperRoute);
-  router.get("/dashboard-developer/:id", developerDashboard);
+  router.get("/dashboard-developer", developerDashboard);
   router.put("/update-profile-developer", updateDeveloper);
   router.delete("/delete-profile-developer", deleteDeveloper);
   router.post("/submit-plan-developer", submitPlan);
