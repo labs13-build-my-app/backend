@@ -6,7 +6,6 @@ const testOnboardingRoute = (req, res) => {
   },
   userSignUp = async (req, res) => {
     const { user_id: sub } = req;
-    console.log("here asdfa;ldkfj");
     const {
       role,
       firstName,
@@ -18,6 +17,12 @@ const testOnboardingRoute = (req, res) => {
       gitHub,
       twitter
     } = req.body;
+
+    if (role !== "Developer" || role !== "Project Owner") {
+      res
+        .status(500)
+        .json({ message: "invalid user type, please submit valid user type" });
+    }
 
     createNewUser({
       sub,
@@ -47,7 +52,12 @@ const testOnboardingRoute = (req, res) => {
         });
       })
       .catch(err => {
-        res.status(500).json({ message: err });
+        res
+          .status(500)
+          .json({
+            message: "unable to create user, please try again",
+            error: err
+          });
       });
   },
   userLogin = async (req, res) => {
