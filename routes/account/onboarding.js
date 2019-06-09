@@ -50,17 +50,13 @@ const testOnboardingRoute = (req, res) => {
         res.status(500).json({ message: err });
       });
   },
-  checkIfLoggedIn = async (req, res) => {
+  userLogin = async (req, res) => {
     const { user_id: sub } = req;
-    console.log(sub, "checking login");
     findAuthorizedUser(sub)
       .then(user => {
-        const userRole = user.role;
-        console.log(user);
-        res.status(200).json({ role: userRole });
+        res.status(200).json(user);
       })
       .catch(err => {
-        console.log("err here", err);
         res.status(500).json({ message: err });
       });
   };
@@ -68,7 +64,7 @@ const testOnboardingRoute = (req, res) => {
 module.exports = router => {
   router.get("/test-onboarding", testOnboardingRoute);
   router.post("/signup", userSignUp);
-  router.get("/login", checkIfLoggedIn);
+  router.get("/login", userLogin);
 
   return router;
 };
