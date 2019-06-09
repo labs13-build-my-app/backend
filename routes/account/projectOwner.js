@@ -8,9 +8,9 @@ const testProjectOwnerRoute = (req, res) => {
     res.send("I am a project owner, nice");
   },
   projectOwnerDashboard = (req, res) => {
-    const id = req.params.id;
+    const id = req.user_id;
     data
-      .findAuthorizedUser()
+      .findAuthorizedUser(id)
       .then(user => {
         res.status(200).json({
           user,
