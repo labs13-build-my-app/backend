@@ -1,14 +1,14 @@
 const data = require("../users/userModel");
 const Projects = require("../projects/model");
 
-// /api/projects
-
 const testProjectOwnerRoute = (req, res) => {
     console.log("here in project owner, looks like it works");
     res.send("I am a project owner, nice");
   },
   projectOwnerDashboard = (req, res) => {
     const id = req.user_id;
+    // currently is sending basic user information
+    // incomplete need to be sending user specific information to dashboard
     data
       .findAuthorizedUser(id)
       .then(user => {
@@ -71,21 +71,21 @@ const testProjectOwnerRoute = (req, res) => {
         });
       }
     }
+  },
+  updateProject = (req, res) => {
+    res.send("endpoint to update project owner project");
+  },
+  deleteProject = (req, res) => {
+    res.send("endpoint to delete project owners project");
+  },
+  submitPayment = (req, res) => {
+    res.send("endpoint for project owner to submit paymet to project");
+  },
+  messageDeveloper = (req, res) => {
+    res.send("endpoint to message a project owner or maybe admin");
   };
 
-(updateProject = (req, res) => {
-  res.send("endpoint to update project owner project");
-}),
-  (deleteProject = (req, res) => {
-    res.send("endpoint to delete project owners project");
-  }),
-  (submitPayment = (req, res) => {
-    res.send("endpoint for project owner to submit paymet to project");
-  }),
-  (messageDeveloper = (req, res) => {
-    res.send("endpoint to message a project owner or maybe admin");
-  });
-
+// /api/projects
 module.exports = router => {
   router.get("/test-project-owner", testProjectOwnerRoute);
   router.get("/dashboard-project-owner", projectOwnerDashboard);
