@@ -1,6 +1,13 @@
 const data = require("./planModel");
 
+// endpoints may need to be updated
+// test endpoints
+// move endoints to different files
+// implement auth to endpoints that need auth
+
 module.exports = router => {
+  // requires developer auth
+  // income data needs to be sanitize
   router.post("/createplan", (req, res) => {
     const request = req.body;
     data
@@ -12,7 +19,7 @@ module.exports = router => {
         res.status(500).json(err);
       });
   });
-
+  // this can be moved into projects endpoint in listdeveloperplans fucntion
   router.get("/getplans", (req, res) => {
     data
       .getPlans()
@@ -23,7 +30,7 @@ module.exports = router => {
         res.status(500).json(err);
       });
   });
-
+  // this can be moved into projects endpoint in developerplan function
   router.get("/getplan/:id", (req, res) => {
     const id = req.params.id;
     data
@@ -35,7 +42,9 @@ module.exports = router => {
         res.status(500).json(err);
       });
   });
-
+  // this can moved into account for developers
+  // requires auth
+  // need to sanitize incoming data
   router.put("/updateplan/:id", (req, res) => {
     const changes = req.body;
     const id = req.params.id;
@@ -48,7 +57,9 @@ module.exports = router => {
         res.status(500).json(err);
       });
   });
-
+  // this can moved into account for developers
+  // requires auth
+  // need add rules
   router.delete("/deleteplan/:id", (req, res) => {
     const id = req.params.id;
     data

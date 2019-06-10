@@ -1,12 +1,14 @@
 const Projects = require("./model");
 
 // /api/projects
+// 4
 
 const testingProjectsRouter = (req, res) => {
     console.log("here in projects, looks like it works");
     res.send("testing projects route, looks like it works");
   },
   // GET for all projects
+  // implement pagination
   getAllProjects = async (req, res) => {
     try {
       const projects = await Projects.getAllProjects();
@@ -23,14 +25,17 @@ const testingProjectsRouter = (req, res) => {
       });
     }
   },
+  // endpoint for developer dashboard
   listDevelopersPlans = (req, res) => {
     res.send("endpoint to retrieve list of developer plans");
   },
+  // plan page view
   developersPlan = (req, res) => {
     res.send(
       "endpoint to retrieve developers plan to a project owners project"
     );
   },
+  // route needs to be update with getting id from auth
   listProjectOwnersProjects = (req, res) => {
     const projectOwner_id = req.user_id;
 
@@ -44,7 +49,8 @@ const testingProjectsRouter = (req, res) => {
         res.status(500).json(error);
       });
   },
-  // GET project by ID
+  // GET project by project ID
+  // endpoint needs to be updated getting id from req.user_id
   getProject = async (req, res) => {
     const userID = 26; // Need to be chaned; take userID from decoded token
     const { id } = req.params;
@@ -69,7 +75,7 @@ module.exports = router => {
   router.get("/", getAllProjects);
   router.get("/project/:id", getProject);
   router.get("/plan-list", listDevelopersPlans);
-  // router.get("/project-owner", listProjectOwnersProposals);
+  router.get("/project-owner", listProjectOwnersProjects);
   router.get("/submitted-plan/:id", developersPlan);
 
   return router;

@@ -1,9 +1,12 @@
 const data = require("../users/userModel");
 
+// 3
+
 const testAdminRoute = async (req, res) => {
     console.log("here in admin, looks like it works");
     res.send("I am an admin, nice");
   },
+  // not sure of this route, might hard code admin
   createAdmin = async (req, res) => {
     // req suggested data schema
     // username
@@ -13,6 +16,7 @@ const testAdminRoute = async (req, res) => {
     // client redirects to dashboard component
     res.send("endpoint to create new admin role");
   },
+  // route for admin to sign in and retrive amdin profile
   adminSignIn = async (req, res) => {
     // req suggested data schema
     // username
@@ -23,6 +27,7 @@ const testAdminRoute = async (req, res) => {
 
     res.send("endpoint for admin to sign in");
   },
+  // upload admin dashboard with dashboard info
   adminDashboard = async (req, res) => {
     const { user_id: sub } = req;
     console.log("sub from admin", sub);
@@ -42,6 +47,7 @@ const testAdminRoute = async (req, res) => {
         });
       });
   },
+  // view project page for admin
   adminProjectView = async (req, res) => {
     // sends req on client route to project id
     // read parameter from url to get project id
@@ -49,6 +55,7 @@ const testAdminRoute = async (req, res) => {
     // full proposal from proposal table
     res.send("endpoint for admin to view specific project");
   },
+  // not sure of this route
   adminProjectUpdate = async (req, res) => {
     // sends req on client route to project id
     // read parameter from url to get project id
@@ -57,6 +64,7 @@ const testAdminRoute = async (req, res) => {
 
     res.send("endpoint for admin to update status of project");
   },
+  // priortize last
   adminPaymentProcess = async (req, res) => {
     // this maybe a stretch endpoint
     res.send("endpoint for admin to process payment for project");

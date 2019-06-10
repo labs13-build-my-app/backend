@@ -1,6 +1,7 @@
 const data = require("../users/userModel");
 const Projects = require("../projects/model");
 
+// 1
 const testProjectOwnerRoute = (req, res) => {
     console.log("here in project owner, looks like it works");
     res.send("I am a project owner, nice");
@@ -24,12 +25,16 @@ const testProjectOwnerRoute = (req, res) => {
         });
       });
   },
+  // prioritize last
   updateProjectOwner = (req, res) => {
     res.send("endpoint to update project owner account");
   },
+  // prioritize last
   deleteProjectOwner = (req, res) => {
     res.send("endpoint to delete project owner account");
   },
+  // page view to create a project
+  // needs to be update with auth to get user id
   createProject = async (req, res) => {
     const userID = 96; // Need to be chaned; take userID from decoded token
     const {
@@ -72,15 +77,19 @@ const testProjectOwnerRoute = (req, res) => {
       }
     }
   },
+  // prioritize last
   updateProject = (req, res) => {
     res.send("endpoint to update project owner project");
   },
+  // prioritize last
   deleteProject = (req, res) => {
     res.send("endpoint to delete project owners project");
   },
+  // prioritize last
   submitPayment = (req, res) => {
     res.send("endpoint for project owner to submit paymet to project");
   },
+  // prioritize last
   messageDeveloper = (req, res) => {
     res.send("endpoint to message a project owner or maybe admin");
   };
