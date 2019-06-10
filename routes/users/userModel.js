@@ -27,6 +27,7 @@ function findDevUsers() {
   return db("users")
     .where({ role: "Developer" })
     .select(
+      "id",
       "firstName",
       "lastName",
       "email",
