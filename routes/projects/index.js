@@ -52,10 +52,10 @@ const testingProjectsRouter = (req, res) => {
   // GET project by project ID
   // endpoint needs to be updated getting id from req.user_id
   getProject = async (req, res) => {
-    const userID = 26; // Need to be chaned; take userID from decoded token
+    // const userID = 26; // Need to be chaned; take userID from decoded token
     const { id } = req.params;
     try {
-      const project = await Projects.findById(id, userID);
+      const project = await Projects.findById(id);
       if (project) {
         res.status(200).json(project);
       } else {
@@ -70,10 +70,31 @@ const testingProjectsRouter = (req, res) => {
     }
   };
 
+// GET user project by ID
+getUserProject = async (req, res) => {
+  const userID = 26; // Need to be chaned; take userID from decoded token
+  const { id } = req.params;
+  try {
+    const project = await Projects.findById(id, userID);
+    if (project) {
+      res.status(200).json(project);
+    } else {
+      res
+        .status(404)
+        .json({ message: "Project with specified ID does not exist." });
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: `Project request failed ${error.message}.` });
+  }
+};
+
 module.exports = router => {
   router.get("/test-projects", testingProjectsRouter);
   router.get("/", getAllProjects);
   router.get("/project/:id", getProject);
+  router.get("/user/project/:id", getUserProject);
   router.get("/plan-list", listDevelopersPlans);
   router.get("/project-owner", listProjectOwnersProjects);
   router.get("/submitted-plan/:id", developersPlan);
