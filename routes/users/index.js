@@ -31,7 +31,13 @@ const testingUsers = (req, res) => {
   // searching for developers
   // implement pagination
   listDevelopers = async (req, res) => {
-    res.send("endpoint to retrieve developer users");
+    try {
+      data.findDevUsers().then(users => {
+        res.status(200).json(users);
+      });
+    } catch (err) {
+      res.status(500).json({ message: err });
+    }
   },
   // prioritize last
   listProjectOwners = async (req, res) => {
@@ -49,7 +55,7 @@ const testingUsers = (req, res) => {
 module.exports = router => {
   router.get("/test-users", testingUsers);
   router.get("/list-all-users", allUsers);
-  router.post("/developers", listDevelopers);
+  router.get("/developers", listDevelopers);
   // router.post("/project-owners", listProjectOwners);
   router.get("/developer/:developer-id", viewDeveloper);
   router.get("/project-owner/:project-owner-id", viewProjectOwner);

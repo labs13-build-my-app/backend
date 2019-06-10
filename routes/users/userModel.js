@@ -3,7 +3,8 @@ const db = require("../../data/dbConfig.js");
 module.exports = {
   findUsers,
   findAuthorizedUser,
-  createNewUser
+  createNewUser,
+  findDevUsers
 };
 
 function findUsers() {
@@ -21,4 +22,19 @@ function findAuthorizedUser(userID) {
 function createNewUser(user) {
   console.log(user, "in user model");
   return db("users").insert(user, "id");
+}
+function findDevUsers() {
+  return db("users")
+    .where({ role: "Developer" })
+    .select(
+      "firstName",
+      "lastName",
+      "email",
+      "skills",
+      "role",
+      "devType",
+      "twitter",
+      "gitHub",
+      "linkedIn"
+    );
 }
