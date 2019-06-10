@@ -31,23 +31,9 @@ const testProjectOwnerRoute = (req, res) => {
     res.send("endpoint to delete project owner account");
   },
   createProject = async (req, res) => {
-    const userID = 96; // Need to be chaned; take userID from decoded token
-    const {
-      name,
-      description,
-      budget,
-      dueDate,
-      projectStatus,
-      paymentStatus
-    } = req.body;
-    if (
-      !name ||
-      !description ||
-      !budget ||
-      !dueDate ||
-      !projectStatus ||
-      !paymentStatus
-    ) {
+    const userID = 34; // Need to be chaned; take userID from decoded token >>> req.user_id = sub;
+    const { name, description, image_url, budget, dueDate } = req.body;
+    if (!name || !description || !budget || !dueDate) {
       res.status(401).json({
         message:
           "Please do not leave name, description, budget, dueDate, project status or payment status of the project fields blank."
@@ -59,8 +45,9 @@ const testProjectOwnerRoute = (req, res) => {
           description,
           budget,
           dueDate,
-          projectStatus,
-          paymentStatus,
+          projectStatus: "proposal",
+          paymentStatus: "unpaid",
+          image_url,
           user_id: userID
         };
         let newProject = await Projects.addProject(newProjectInfo);
