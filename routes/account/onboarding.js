@@ -6,7 +6,6 @@ const testOnboardingRoute = (req, res) => {
   },
   userSignUp = async (req, res) => {
     const { user_id: sub } = req;
-    console.log("here asdfa;ldkfj");
     const {
       role,
       firstName,
@@ -19,47 +18,56 @@ const testOnboardingRoute = (req, res) => {
       twitter
     } = req.body;
 
-    createNewUser({
-      sub,
-      role,
-      firstName,
-      lastName,
-      email,
-      skills,
-      devType,
-      linkedIn,
-      gitHub,
-      twitter
-    })
-      .then(userid => {
-        const id = userid[0];
-        res.status(201).json({
-          id,
-          role,
-          firstName,
-          lastName,
-          email,
-          skills,
-          devType,
-          linkedIn,
-          gitHub,
-          twitter
-        });
+    if (role === "Developer" || role === "Project Owner") {
+      createNewUser({
+        sub,
+        role,
+        firstName,
+        lastName,
+        email,
+        skills,
+        devType,
+        linkedIn,
+        gitHub,
+        twitter
       })
-      .catch(err => {
-        res.status(500).json({ message: err });
-      });
+        .then(userid => {
+          const id = userid[0];
+          res.status(201).json({
+            id,
+            role,
+            firstName,
+            lastName,
+            email,
+            skills,
+            devType,
+            linkedIn,
+            gitHub,
+            twitter
+          });
+        })
+        .catch(err => {
+          res.status(500).json({
+            message: "unable to create user, please try again",
+            error: err
+          });
+        });
+    } else {
+      res
+        .status(200)
+        .json({ message: "invalid user type, please submit valid user type" });
+    }
   },
-  checkIfLoggedIn = async (req, res) => {
+  userLogin = async (req, res) => {
     const { user_id: sub } = req;
-    console.log(sub, "checking login");
     findAuthorizedUser(sub)
       .then(user => {
-        console.log(user);
-        res.status(200).json(user.role);
+        if (!user) {
+          res.status(200).json({ message: "please signup" });
+        }
+        res.status(200).json(user);
       })
       .catch(err => {
-        console.log("err here", err);
         res.status(500).json({ message: err });
       });
   };
@@ -67,7 +75,7 @@ const testOnboardingRoute = (req, res) => {
 module.exports = router => {
   router.get("/test-onboarding", testOnboardingRoute);
   router.post("/signup", userSignUp);
-  router.get("/login", checkIfLoggedIn);
+  router.get("/login", userLogin);
 
   return router;
 };

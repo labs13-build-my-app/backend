@@ -3,12 +3,12 @@ exports.up = function(knex, Promise) {
     tbl.increments();
     tbl.string("name", 255).notNullable();
     tbl.text("description").notNullable();
-    tbl.string("image_url", 255);
+    tbl.string("image_url");
     tbl.integer("budget").notNullable();
     tbl.text("dueDate").notNullable();
     tbl.string("projectStatus", 30).notNullable();
     tbl.string("paymentStatus", 30).notNullable();
-    tbl.string("feedback", 600);
+    tbl.text("feedback");
     tbl
       .integer("user_id")
       .unsigned()

@@ -1,16 +1,17 @@
 const data = require("../users/userModel");
 const Projects = require("../projects/model");
 
-// /api/projects
-
+// 1
 const testProjectOwnerRoute = (req, res) => {
     console.log("here in project owner, looks like it works");
     res.send("I am a project owner, nice");
   },
   projectOwnerDashboard = (req, res) => {
-    const id = req.params.id;
+    const id = req.user_id;
+    // currently is sending basic user information
+    // incomplete need to be sending user specific information to dashboard
     data
-      .findAuthorizedUser()
+      .findAuthorizedUser(id)
       .then(user => {
         res.status(200).json({
           user,
@@ -18,18 +19,22 @@ const testProjectOwnerRoute = (req, res) => {
           message: "The user were found in the database"
         });
       })
-      .catch(err => {
+      .catch(error => {
         res.status(500).json({
           message: `User request failed ${error.message}.`
         });
       });
   },
+  // prioritize last
   updateProjectOwner = (req, res) => {
     res.send("endpoint to update project owner account");
   },
+  // prioritize last
   deleteProjectOwner = (req, res) => {
     res.send("endpoint to delete project owner account");
   },
+  // page view to create a project
+  // needs to be update with auth to get user id
   createProject = async (req, res) => {
     const userID = 34; // Need to be chaned; take userID from decoded token >>> req.user_id = sub;
     const { name, description, image_url, budget, dueDate } = req.body;
@@ -58,21 +63,25 @@ const testProjectOwnerRoute = (req, res) => {
         });
       }
     }
+  },
+  // prioritize last
+  updateProject = (req, res) => {
+    res.send("endpoint to update project owner project");
+  },
+  // prioritize last
+  deleteProject = (req, res) => {
+    res.send("endpoint to delete project owners project");
+  },
+  // prioritize last
+  submitPayment = (req, res) => {
+    res.send("endpoint for project owner to submit paymet to project");
+  },
+  // prioritize last
+  messageDeveloper = (req, res) => {
+    res.send("endpoint to message a project owner or maybe admin");
   };
 
-(updateProject = (req, res) => {
-  res.send("endpoint to update project owner project");
-}),
-  (deleteProject = (req, res) => {
-    res.send("endpoint to delete project owners project");
-  }),
-  (submitPayment = (req, res) => {
-    res.send("endpoint for project owner to submit paymet to project");
-  }),
-  (messageDeveloper = (req, res) => {
-    res.send("endpoint to message a project owner or maybe admin");
-  });
-
+// /api/projects
 module.exports = router => {
   router.get("/test-project-owner", testProjectOwnerRoute);
   router.get("/dashboard-project-owner", projectOwnerDashboard);
