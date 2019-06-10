@@ -15,7 +15,6 @@ function findAuthorizedUser(userID) {
   console.log(sub, userID);
   return db("users")
     .where({ sub })
-    .select("id", "firstName", "lastName", "email", "role")
     .first();
 }
 
