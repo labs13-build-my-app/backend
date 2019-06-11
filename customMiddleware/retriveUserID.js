@@ -1,7 +1,8 @@
 const data = require("../routes/users/userModel");
 
 const retriveUserID = async (req, res, next) => {
-  const userSub = req.user_id;
+  const userSub = req.sub;
+  console.log(userSub, "userSub CUSTOM MW");
   try {
     const user = await data.findAuthorizedUser(userSub);
     const userID = user.id;
@@ -11,6 +12,7 @@ const retriveUserID = async (req, res, next) => {
     req.userID = userID;
     next();
   } catch (err) {
+    console.log("ERROR MW", err);
     next();
   }
 };
