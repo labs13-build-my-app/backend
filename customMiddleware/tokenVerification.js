@@ -5,7 +5,7 @@ const tokenVerification = async (req, res, next) => {
 
   const { sub } = token;
   console.log(sub);
-  req.user_id = sub;
+  req.sub = sub;
   next();
 };
 

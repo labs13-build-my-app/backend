@@ -1,4 +1,5 @@
-const data = require("../users/userModel");
+const users = require("../users/userModel");
+const projects = require("../plans/planModel");
 // 1
 
 const testDeveloperRoute = (req, res) => {
@@ -6,9 +7,9 @@ const testDeveloperRoute = (req, res) => {
     res.send("I am a developer and I work, nice");
   },
   developerDashboard = (req, res) => {
-    const id = req.user_id;
+    const sub = req.sub;
     data
-      .findAuthorizedUser(id)
+      .findAuthorizedUser(sub)
       .then(user => {
         res.status(200).json({
           user,
@@ -31,8 +32,47 @@ const testDeveloperRoute = (req, res) => {
     res.send("endpoint to delete developer account");
   },
   // page view to submit a plan
-  submitPlan = (req, res) => {
-    res.send("endpoint to submit a plan to a project owners project");
+  // bug, should only be able to create a plan to a project once
+  // but alows you to created unlimted plans to a project
+  createPlan = (req, res) => {
+    const sub = req.sub;
+    const { project_id } = req.params;
+    const planStatus = "proposal";
+    const { name, description, technologiesToUse, dueDate, budget } = req.body;
+    const plan = {};
+
+    users
+      .findAuthorizedUser(sub)
+      .then(user => {
+        const { id: user_id } = user;
+        plan.user_id = user_id;
+        console.log(user);
+        return db("plan")
+          .where({ "projects.id": project_id })
+          .andWhere({ "users.user_id": user_id })
+          .first();
+      })
+      .then(user => {
+        console.log(user, "here");
+        if (user === undefined) {
+          plan.name = name;
+          plan.description = description;
+          plan.technologiesToUse = technologiesToUse;
+          plan.budget = budget;
+          plan.dueDate = dueDate;
+          plan.planStatus = planStatus;
+          plan.project_id = Number(project_id);
+          return projects.addPlan(plan);
+        }
+      })
+      .then(id => {
+        // returns only id, can change to return full plan created
+        id = id[0];
+        res.status(201).json({ id, ...plan });
+      })
+      .catch(err => {
+        res.status(500).json(err);
+      });
   },
   // prioritize last
   updatePlan = (req, res) => {
@@ -52,7 +92,7 @@ module.exports = router => {
   router.get("/dashboard-developer", developerDashboard);
   router.put("/update-profile-developer", updateDeveloper);
   router.delete("/delete-profile-developer", deleteDeveloper);
-  router.post("/submit-plan-developer", submitPlan);
+  router.post("/submit-plan-developer/:project_id", createPlan);
   router.put("/update-plan-developer", updatePlan);
   router.delete("/delete-plan-developer", deletePlan);
   router.post("/message-developer", messageProjectOwner);

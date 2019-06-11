@@ -174,7 +174,7 @@
 - `api/account/developer/delete-profile-developer`
   - no schema for this
   - send token to headers
-- `api/account/developer/submit-plan-developer`
+- `api/account/developer/submit-plan-developer/:project_id`
   - all fields required
   - post request
   - ```json
