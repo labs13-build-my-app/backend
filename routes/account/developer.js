@@ -31,7 +31,16 @@ const testDeveloperRoute = (req, res) => {
   },
   // prioritize last
   deleteDeveloper = (req, res) => {
-    res.send("endpoint to delete developer account");
+    const { sub } = req;
+    users
+      .findAuthorizedUser(sub)
+      .del()
+      .then(del => {
+        res.status(200).json(del);
+      })
+      .catch(err => {
+        res.status(500).json(err);
+      });
   },
   // endpoint for developer dashboard
   listDevelopersPlans = (req, res) => {
