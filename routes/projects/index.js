@@ -28,9 +28,18 @@ const testingProjectsRouter = (req, res) => {
   },
   // plan page view
   developersPlan = (req, res) => {
-    res.send(
-      "endpoint to retrieve developers plan to a project owners project"
-    );
+    const id = req.params.plan_id;
+    plans
+      .getPlanById(id)
+      .then(plan => {
+        if (plan === undefined) {
+          throw new Error("no plan found by this id");
+        }
+        res.status(200).json(plan);
+      })
+      .catch(err => {
+        res.status(500).json(err);
+      });
   },
   // route needs to be update with getting id from auth
   listProjectOwnersProjects = (req, res) => {
@@ -93,7 +102,7 @@ module.exports = router => {
   router.get("/project/:id", getProject);
   router.get("/user/project/:id", getUserProject);
   router.get("/project-owner", listProjectOwnersProjects);
-  router.get("/submitted-plan/:id", developersPlan);
+  router.get("/plan-view/:plan_id", developersPlan);
 
   return router;
 };
