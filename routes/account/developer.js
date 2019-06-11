@@ -29,7 +29,7 @@ const testDeveloperRoute = (req, res) => {
   updateDeveloper = (req, res) => {
     res.send("endpoint to update developers account");
   },
-  // prioritize last
+  // delete developer account with sub
   deleteDeveloper = (req, res) => {
     const { sub } = req;
     users

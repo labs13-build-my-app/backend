@@ -27,10 +27,21 @@ async function findUserProjectById(id, userID) {
   return project;
 }
 
+async function updateProject(project, id) {
+  const editedProject = await db("projects")
+    .where({ id })
+    .update(project);
+  if (editedProject) {
+    const updatedProject = await findUserProjectById(id, project.user_id);
+    return updatedProject;
+  }
+}
+
 module.exports = {
   getAllProjects,
   findByProjectOwner,
   addProject,
   findById,
-  findUserProjectById
+  findUserProjectById,
+  updateProject
 };
