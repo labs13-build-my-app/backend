@@ -1,6 +1,5 @@
-const data = require("../users/userModel");
+const Users = require("../users/userModel");
 const Projects = require("../projects/model");
-
 // /api/projects
 
 const testProjectOwnerRoute = (req, res) => {
@@ -9,7 +8,7 @@ const testProjectOwnerRoute = (req, res) => {
   },
   projectOwnerDashboard = (req, res) => {
     const id = req.params.id;
-    data
+    Users 
       .findAuthorizedUser()
       .then(user => {
         res.status(200).json({
@@ -24,12 +23,28 @@ const testProjectOwnerRoute = (req, res) => {
         });
       });
   },
+
   updateProjectOwner = (req, res) => {
     res.send("endpoint to update project owner account");
   },
+
   deleteProjectOwner = (req, res) => {
-    res.send("endpoint to delete project owner account");
+    const { sub } = req;
+    Users
+      .findAuthorizedUser(sub)
+      .del()
+      .then(del => {
+        res
+          .status(200)
+          .json(del);
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json(err);
+      });
   },
+  
   createProject = async (req, res) => {
     const userID = 96; // Need to be chaned; take userID from decoded token
     const {
@@ -73,12 +88,13 @@ const testProjectOwnerRoute = (req, res) => {
     }
   };
 
-(updateProject = (req, res) => {
+  (updateProject = (req, res) => {
   res.send("endpoint to update project owner project");
-}),
-  (deleteProject = (req, res) => {
-    res.send("endpoint to delete project owners project");
   }),
+  
+  (deleteProject = (req, res) => {
+  }),
+
   (submitPayment = (req, res) => {
     res.send("endpoint for project owner to submit paymet to project");
   }),
