@@ -1,5 +1,6 @@
 const users = require("../users/userModel");
 const projects = require("../plans/planModel");
+const db = require("../../data/dbConfig");
 // 1
 
 const testDeveloperRoute = (req, res) => {
@@ -32,8 +33,7 @@ const testDeveloperRoute = (req, res) => {
     res.send("endpoint to delete developer account");
   },
   // page view to submit a plan
-  // bug, should only be able to create a plan to a project once
-  // but alows you to created unlimted plans to a project
+  // saves plan if plan doesn't exist already by developer
   createPlan = (req, res) => {
     const sub = req.sub;
     const { project_id } = req.params;
@@ -46,15 +46,13 @@ const testDeveloperRoute = (req, res) => {
       .then(user => {
         const { id: user_id } = user;
         plan.user_id = user_id;
-        console.log(user);
-        return db("plan")
-          .where({ "projects.id": project_id })
-          .andWhere({ "users.user_id": user_id })
+        return db("plans")
+          .where({ project_id: Number(project_id) })
+          .andWhere({ user_id: user_id })
           .first();
       })
-      .then(user => {
-        console.log(user, "here");
-        if (user === undefined) {
+      .then(plans => {
+        if (plans === undefined) {
           plan.name = name;
           plan.description = description;
           plan.technologiesToUse = technologiesToUse;
@@ -63,10 +61,11 @@ const testDeveloperRoute = (req, res) => {
           plan.planStatus = planStatus;
           plan.project_id = Number(project_id);
           return projects.addPlan(plan);
+        } else {
+          throw new Error("plan already exist for developer");
         }
       })
       .then(id => {
-        // returns only id, can change to return full plan created
         id = id[0];
         res.status(201).json({ id, ...plan });
       })
