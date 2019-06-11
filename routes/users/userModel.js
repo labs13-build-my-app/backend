@@ -4,7 +4,8 @@ module.exports = {
   findUsers,
   findAuthorizedUser,
   createNewUser,
-  findDevUsers
+  findDevUsers,
+  findDevUserByID
 };
 
 function findUsers() {
@@ -40,6 +41,23 @@ function findDevUsers() {
       "gitHub",
       "linkedIn"
     );
+}
+function findDevUserByID(id) {
+  return db("users")
+    .where({ id })
+    .select(
+      "id",
+      "firstName",
+      "lastName",
+      "email",
+      "skills",
+      "role",
+      "devType",
+      "twitter",
+      "gitHub",
+      "linkedIn"
+    )
+    .first();
 }
 
 // add function to find not logged in user
