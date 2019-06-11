@@ -47,6 +47,7 @@ const testOnboardingRoute = (req, res) => {
           });
         })
         .catch(err => {
+          console.log(err);
           res.status(500).json({
             message: "unable to create user, please try again",
             error: err
