@@ -10,7 +10,7 @@ const retriveUserID = async (req, res, next) => {
     }
     req.userID = userID;
     next();
-  } catch {
+  } catch (err) {
     next();
   }
 };
