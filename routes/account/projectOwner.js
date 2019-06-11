@@ -9,7 +9,7 @@ const testProjectOwnerRoute = (req, res) => {
     res.send("I am a project owner, nice");
   },
   projectOwnerDashboard = (req, res) => {
-    const id = req.user_id;
+    const id = req.user_id; // Take userId from >>> req.userID
     // currently is sending basic user information
     // incomplete need to be sending user specific information to dashboard
     data
@@ -75,9 +75,7 @@ const testProjectOwnerRoute = (req, res) => {
         message:
           "Please do not leave name, description, budget, dueDate, project status or payment status of the project fields blank."
       });
-      console.log("1");
     } else {
-      console.log("2");
       try {
         let newProjectInfo = {
           name,
