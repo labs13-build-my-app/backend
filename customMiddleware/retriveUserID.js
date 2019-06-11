@@ -12,7 +12,7 @@ const retriveUserID = async (req, res, next) => {
     req.userID = userID;
     next();
   } catch (err) {
-    console.log("ERROR MW", err);
+
     next();
   }
 };
