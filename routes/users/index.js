@@ -1,9 +1,11 @@
 const data = require("./userModel");
+// 3
 
 const testingUsers = (req, res) => {
     console.log("here in users, looks like it works");
     res.send("testing users route, looks like it works");
   },
+  // for testing
   allUsers = async (req, res) => {
     try {
       const users = await data.findUsers();
@@ -26,15 +28,34 @@ const testingUsers = (req, res) => {
       });
     }
   },
+  // searching for developers
+  // implement pagination
   listDevelopers = async (req, res) => {
-    res.send("endpoint to retrieve developer users");
+    try {
+      data.findDevUsers().then(users => {
+        res.status(200).json(users);
+      });
+    } catch (err) {
+      res.status(500).json({ message: err });
+    }
   },
+  // prioritize last
   listProjectOwners = async (req, res) => {
     res.send("endpoint to to retrieve project owners");
   },
+  // developer page view
   viewDeveloper = async (req, res) => {
-    res.send("endpoint to view a developers page");
+    const id = Number(req.params.id);
+    try {
+      data.findDevUserByID(id).then(dev => {
+        const initials = dev.firstName.charAt(0) + dev.lastName.charAt(0);
+        res.status(200).json({ ...dev, initials });
+      });
+    } catch (err) {
+      res.status(500).json(err);
+    }
   },
+  // project owner page view
   viewProjectOwner = async (req, res) => {
     res.send("endpoint to view a project owners page");
   };
@@ -42,10 +63,10 @@ const testingUsers = (req, res) => {
 module.exports = router => {
   router.get("/test-users", testingUsers);
   router.get("/list-all-users", allUsers);
-  router.post("/developers", listDevelopers); // post for filter or search // get for latest singup developer
-  router.post("/project-owners", listProjectOwners); // post for filter or search // get for latest singup project owners
-  router.get("/developer/:developer-id", viewDeveloper);
-  router.get("/project-owner/:project-owner-id", viewProjectOwner);
+  router.get("/developers", listDevelopers);
+  // router.post("/project-owners", listProjectOwners);
+  router.get("/developer/:id", viewDeveloper);
+  router.get("/project-owner/:id", viewProjectOwner);
 
   return router;
 };

@@ -92,3 +92,5 @@ typings/
 # Database
 *.db3
 
+# doc
+endpointDoc.md

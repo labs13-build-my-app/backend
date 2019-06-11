@@ -1,7 +1,7 @@
 const db = require("../../data/dbConfig");
 
 const addPlan = plan => {
-  return db("plans").insert(plan);
+  return db("plans").insert(plan, "id");
 };
 
 const getPlans = () => {
@@ -14,11 +14,15 @@ const getPlanById = id => {
     .first();
 };
 
-const updatePlan = (id, changes) => {
-  return db("plans")
+async function updatePlan(id, changes) {
+  const editedPlan = await db("plans")
     .where({ id })
     .update(changes);
-};
+  if (editedPlan) {
+    const updatedPlan = await getPlanById(id);
+    return updatedPlan;
+  }
+}
 
 const deletePlan = id => {
   return db("plans")

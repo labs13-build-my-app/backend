@@ -12,7 +12,14 @@ async function addProject(newProject) {
   }
 }
 
-async function findById(id, userID) {
+async function findById(id) {
+  const project = await db("projects")
+    .where({ "projects.id": id })
+    .first();
+  return project;
+}
+
+async function findUserProjectById(id, userID) {
   const project = await db("projects")
     .where({ "projects.id": id })
     .andWhere({ "projects.user_id": userID })
@@ -20,9 +27,21 @@ async function findById(id, userID) {
   return project;
 }
 
+async function updateProject(project, id) {
+  const editedProject = await db("projects")
+    .where({ id })
+    .update(project);
+  if (editedProject) {
+    const updatedProject = await findUserProjectById(id, project.user_id);
+    return updatedProject;
+  }
+}
+
 module.exports = {
   getAllProjects,
   findByProjectOwner,
   addProject,
-  findById
+  findById,
+  findUserProjectById,
+  updateProject
 };
