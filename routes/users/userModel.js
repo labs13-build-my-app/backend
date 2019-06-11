@@ -23,6 +23,7 @@ function createNewUser(user) {
   console.log(user, "in user model");
   return db("users").insert(user, "id");
 }
+
 function findDevUsers() {
   return db("users")
     .where({ role: "Developer" })
@@ -39,3 +40,5 @@ function findDevUsers() {
       "linkedIn"
     );
 }
+
+// add function to find not logged in user
