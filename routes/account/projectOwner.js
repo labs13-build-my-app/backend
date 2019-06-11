@@ -9,7 +9,7 @@ const testProjectOwnerRoute = (req, res) => {
     res.send("I am a project owner, nice");
   },
   projectOwnerDashboard = (req, res) => {
-    const id = req.user_id; // Take userId from >>> req.userID
+    const id = req.user_id;
     // currently is sending basic user information
     // incomplete need to be sending user specific information to dashboard
     data
@@ -36,7 +36,7 @@ const testProjectOwnerRoute = (req, res) => {
     res.send("endpoint to delete project owner account");
   },
   listProjectOwnersProjects = (req, res) => {
-    const projectOwner_id = req.user_id;
+    const projectOwner_id = req.user_id; // Take userId from >>> req.userID
     //Projects.findByProjectOwner(projectOwner_id)
     //Delete this line and line below and uncomment line above when login is finished
     Projects.findByProjectOwner(51)
