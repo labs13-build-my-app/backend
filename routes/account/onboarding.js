@@ -5,8 +5,7 @@ const testOnboardingRoute = (req, res) => {
     res.send("I am a new user signing up");
   },
   userSignUp = async (req, res) => {
-    const { user_id: sub } = req;
-    console.log(sub);
+    const { sub } = req;
     const {
       role,
       firstName,
@@ -60,17 +59,19 @@ const testOnboardingRoute = (req, res) => {
     }
   },
   userLogin = async (req, res) => {
-    const { user_id: sub } = req;
-    findAuthorizedUser(sub)
-      .then(user => {
-        if (!user) {
-          res.status(200).json({ message: "please signup" });
-        }
+    const { user_id } = req;
+    console.log("USER ID IS", user_id);
+    try {
+      const user = await findAuthorizedUser(user_id);
+      if (!user) {
+        res.status(200).json({ message: "please signup" });
+      }
+      if (user) {
         res.status(200).json(user);
-      })
-      .catch(err => {
-        res.status(500).json({ message: err });
-      });
+      }
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
   };
 
 module.exports = router => {
