@@ -48,7 +48,8 @@ const testingUsers = (req, res) => {
     const id = Number(req.params.id);
     try {
       data.findDevUserByID(id).then(dev => {
-        res.status(200).json(dev);
+        const initials = dev.firstName.charAt(0) + dev.lastName.charAt(0);
+        res.status(200).json({ ...dev, initials });
       });
     } catch (err) {
       res.status(500).json(err);
