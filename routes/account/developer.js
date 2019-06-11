@@ -135,7 +135,15 @@ const testDeveloperRoute = (req, res) => {
   // delete a plan if only status of proposal
   // current bug deletes plan regardless of status
   deletePlan = (req, res) => {
-    res.send("endpoint to delete developers plan");
+    const { plan_id: id } = req.params;
+    plans
+      .deletePlan(id)
+      .then(plan => {
+        res.status(200).json(plan);
+      })
+      .catch(err => {
+        res.status(500).json(err);
+      });
   },
   // prioritize last
   messageProjectOwner = (req, res) => {
@@ -150,7 +158,7 @@ module.exports = router => {
   router.get("/plan-list", listDevelopersPlans);
   router.post("/submit-plan-developer/:project_id", createPlan);
   router.put("/update-plan/:plan_id", updatePlan);
-  router.delete("/delete-plan-developer", deletePlan);
+  router.delete("/delete-plan/:plan_id", deletePlan);
   router.post("/message-developer", messageProjectOwner);
 
   return router;
