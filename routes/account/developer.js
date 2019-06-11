@@ -1,5 +1,6 @@
 const users = require("../users/userModel");
 const projects = require("../plans/planModel");
+const plans = require("../plans/planModel");
 const db = require("../../data/dbConfig");
 // 1
 
@@ -34,7 +35,7 @@ const testDeveloperRoute = (req, res) => {
   },
   // endpoint for developer dashboard
   listDevelopersPlans = (req, res) => {
-    const userID = req.userID;
+    const userID = 51; //req.userID;
     plans
       .getPlans()
       .where({ user_id: userID })
@@ -42,6 +43,7 @@ const testDeveloperRoute = (req, res) => {
         res.status(200).json(plans);
       })
       .catch(err => {
+        console.log(err);
         res.status(500).json(err);
       });
   },
@@ -86,11 +88,52 @@ const testDeveloperRoute = (req, res) => {
         res.status(500).json(err);
       });
   },
-  // prioritize last
-  updatePlan = (req, res) => {
-    res.send("endpoint to update developers plan to submitted project");
+  // update a plan if only in status of proposal
+  // current bug updates plan regardless of status
+  updatePlan = async (req, res) => {
+    // const userID = req.userID;
+    console.log("in update plan");
+    const { plan_id } = req.params;
+    const { name, description, budget, dueDate, planStatus } = req.body;
+    try {
+      const Plan = await db("plans")
+        .where({ id: plan_id })
+        .andWhere({ user_id: 51 })
+        .first();
+      if (Plan) {
+        const PlanUpdate = { user_id: 51 };
+        if (name) {
+          PlanUpdate.name = name;
+        }
+        if (description) {
+          PlanUpdate.description = description;
+        }
+        if (budget) {
+          PlanUpdate.budget = budget;
+        }
+        if (dueDate) {
+          PlanUpdate.dueDate = dueDate;
+        }
+        if (planStatus) {
+          PlanUpdate.PlanStatus = PlanStatus;
+        }
+        const editedPlan = await plans.updatePlan({ id: plan_id }, PlanUpdate);
+        console.log(editedPlan, PlanUpdate, Plan);
+        res.status(200).json(editedPlan);
+      } else {
+        res.status(404).json({
+          message: `The project with the specified ID does not exist.`
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        message: `Project updated failed ${error.message}.`
+      });
+    }
   },
-  // prioritize last
+  // delete a plan if only status of proposal
+  // current bug deletes plan regardless of status
   deletePlan = (req, res) => {
     res.send("endpoint to delete developers plan");
   },
@@ -106,7 +149,7 @@ module.exports = router => {
   router.delete("/delete-profile-developer", deleteDeveloper);
   router.get("/plan-list", listDevelopersPlans);
   router.post("/submit-plan-developer/:project_id", createPlan);
-  router.put("/update-plan-developer", updatePlan);
+  router.put("/update-plan/:plan_id", updatePlan);
   router.delete("/delete-plan-developer", deletePlan);
   router.post("/message-developer", messageProjectOwner);
 

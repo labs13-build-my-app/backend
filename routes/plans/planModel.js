@@ -15,6 +15,7 @@ const getPlanById = id => {
 };
 
 const updatePlan = (id, changes) => {
+  console.log(id, changes);
   return db("plans")
     .where({ id })
     .update(changes);

@@ -31,32 +31,32 @@ module.exports = router => {
   //     });
   // });
   // this can be moved into projects endpoint in developerplan function
-  router.get("/getplan/:id", (req, res) => {
-    const id = req.params.id;
-    data
-      .getPlanById(id)
-      .then(plan => {
-        res.status(200).json(plan);
-      })
-      .catch(err => {
-        res.status(500).json(err);
-      });
-  });
+  // router.get("/getplan/:id", (req, res) => {
+  //   const id = req.params.id;
+  //   data
+  //     .getPlanById(id)
+  //     .then(plan => {
+  //       res.status(200).json(plan);
+  //     })
+  //     .catch(err => {
+  //       res.status(500).json(err);
+  //     });
+  // });
   // this can moved into account for developers
   // requires auth
   // need to sanitize incoming data
-  router.put("/updateplan/:id", (req, res) => {
-    const changes = req.body;
-    const id = req.params.id;
-    data
-      .updatePlan(id, changes)
-      .then(plan => {
-        res.status(200).json(plan);
-      })
-      .catch(err => {
-        res.status(500).json(err);
-      });
-  });
+  // router.put("/updateplan/:id", (req, res) => {
+  //   const changes = req.body;
+  //   const id = req.params.id;
+  //   data
+  //     .updatePlan(id, changes)
+  //     .then(plan => {
+  //       res.status(200).json(plan);
+  //     })
+  //     .catch(err => {
+  //       res.status(500).json(err);
+  //     });
+  // });
   // this can moved into account for developers
   // requires auth
   // need add rules
