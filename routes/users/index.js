@@ -45,7 +45,14 @@ const testingUsers = (req, res) => {
   },
   // developer page view
   viewDeveloper = async (req, res) => {
-    res.send("endpoint to view a developers page");
+    const id = Number(req.params.id);
+    try {
+      data.findDevUserByID(id).then(dev => {
+        res.status(200).json(dev);
+      });
+    } catch (err) {
+      res.status(500).json(err);
+    }
   },
   // project owner page view
   viewProjectOwner = async (req, res) => {
@@ -57,8 +64,8 @@ module.exports = router => {
   router.get("/list-all-users", allUsers);
   router.get("/developers", listDevelopers);
   // router.post("/project-owners", listProjectOwners);
-  router.get("/developer/:developer-id", viewDeveloper);
-  router.get("/project-owner/:project-owner-id", viewProjectOwner);
+  router.get("/developer/:id", viewDeveloper);
+  router.get("/project-owner/:id", viewProjectOwner);
 
   return router;
 };
