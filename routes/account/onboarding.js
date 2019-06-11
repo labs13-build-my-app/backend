@@ -6,6 +6,7 @@ const testOnboardingRoute = (req, res) => {
   },
   userSignUp = async (req, res) => {
     const { user_id: sub } = req;
+    console.log(sub);
     const {
       role,
       firstName,

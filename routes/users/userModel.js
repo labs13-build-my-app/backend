@@ -22,3 +22,4 @@ function createNewUser(user) {
   console.log(user, "in user model");
   return db("users").insert(user, "id");
 }
+// add function to find not logged in user
