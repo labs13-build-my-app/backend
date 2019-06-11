@@ -10,7 +10,7 @@ const testDeveloperRoute = (req, res) => {
   },
   developerDashboard = (req, res) => {
     const sub = req.sub;
-    data
+    users
       .findAuthorizedUser(sub)
       .then(user => {
         res.status(200).json({
@@ -32,6 +32,7 @@ const testDeveloperRoute = (req, res) => {
   // delete developer account with sub
   deleteDeveloper = (req, res) => {
     const { sub } = req;
+    console.log("sub", sub);
     users
       .findAuthorizedUser(sub)
       .del()
@@ -44,17 +45,18 @@ const testDeveloperRoute = (req, res) => {
   },
   // endpoint for developer dashboard
   listDevelopersPlans = (req, res) => {
-    const userID = 51; //req.userID;
-    plans
-      .getPlans()
-      .where({ user_id: userID })
-      .then(plans => {
-        res.status(200).json(plans);
-      })
-      .catch(err => {
-        console.log(err);
-        res.status(500).json(err);
-      });
+    const userID = req.userID;
+    console.log(userID, "this should console log before hitting the db");
+    // plans
+    //   .getPlans()
+    //   .where({ user_id: userID })
+    //   .then(plans => {
+    //     res.status(200).json(plans);
+    //   })
+    //   .catch(err => {
+    //     console.log("is this error coming from here???", err);
+    //     res.status(500).json(err);
+    //   });
   },
   // page view to submit a plan
   // saves plan if plan doesn't exist already by developer

@@ -5,12 +5,7 @@ const testOnboardingRoute = (req, res) => {
     res.send("I am a new user signing up");
   },
   userSignUp = async (req, res) => {
-<<<<<<< HEAD
     const { sub } = req;
-=======
-    const { user_id: sub } = req;
-    console.log(sub);
->>>>>>> 0cfa180caaf042f8252b2964b97c927b6255d740
     const {
       role,
       firstName,
@@ -64,7 +59,7 @@ const testOnboardingRoute = (req, res) => {
     }
   },
   userLogin = async (req, res) => {
-    const { user_id: sub } = req;
+    const { sub } = req;
     findAuthorizedUser(sub)
       .then(user => {
         if (!user) {

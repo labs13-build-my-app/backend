@@ -78,12 +78,6 @@ const testingProjectsRouter = (req, res) => {
   // endpoint for developer dashboard
   listDevelopersPlans = (req, res) => {
     res.send("endpoint to retrieve list of developer plans");
-  },
-  // plan page view
-  developersPlan = (req, res) => {
-    res.send(
-      "endpoint to retrieve developers plan to a project owners project"
-    );
   };
 
 module.exports = router => {
