@@ -32,6 +32,19 @@ const testDeveloperRoute = (req, res) => {
   deleteDeveloper = (req, res) => {
     res.send("endpoint to delete developer account");
   },
+  // endpoint for developer dashboard
+  listDevelopersPlans = (req, res) => {
+    const userID = req.userID;
+    plans
+      .getPlans()
+      .where({ user_id: userID })
+      .then(plans => {
+        res.status(200).json(plans);
+      })
+      .catch(err => {
+        res.status(500).json(err);
+      });
+  },
   // page view to submit a plan
   // saves plan if plan doesn't exist already by developer
   createPlan = (req, res) => {
@@ -91,6 +104,7 @@ module.exports = router => {
   router.get("/dashboard-developer", developerDashboard);
   router.put("/update-profile-developer", updateDeveloper);
   router.delete("/delete-profile-developer", deleteDeveloper);
+  router.get("/plan-list", listDevelopersPlans);
   router.post("/submit-plan-developer/:project_id", createPlan);
   router.put("/update-plan-developer", updatePlan);
   router.delete("/delete-plan-developer", deletePlan);

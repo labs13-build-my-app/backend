@@ -8,28 +8,28 @@ const data = require("./planModel");
 module.exports = router => {
   // requires developer auth
   // income data needs to be sanitize
-  router.post("/createplan", (req, res) => {
-    const request = req.body;
-    data
-      .addPlan(request)
-      .then(project => {
-        res.status(200).json(project);
-      })
-      .catch(err => {
-        res.status(500).json(err);
-      });
-  });
+  // router.post("/createplan", (req, res) => {
+  //   const request = req.body;
+  //   data
+  //     .addPlan(request)
+  //     .then(project => {
+  //       res.status(200).json(project);
+  //     })
+  //     .catch(err => {
+  //       res.status(500).json(err);
+  //     });
+  // });
   // this can be moved into projects endpoint in listdeveloperplans fucntion
-  router.get("/getplans", (req, res) => {
-    data
-      .getPlans()
-      .then(plans => {
-        res.status(200).json(plans);
-      })
-      .catch(err => {
-        res.status(500).json(err);
-      });
-  });
+  // router.get("/getplans", (req, res) => {
+  //   data
+  //     .getPlans()
+  //     .then(plans => {
+  //       res.status(200).json(plans);
+  //     })
+  //     .catch(err => {
+  //       res.status(500).json(err);
+  //     });
+  // });
   // this can be moved into projects endpoint in developerplan function
   router.get("/getplan/:id", (req, res) => {
     const id = req.params.id;

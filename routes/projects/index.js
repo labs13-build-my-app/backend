@@ -1,4 +1,5 @@
 const Projects = require("./model");
+const plans = require("../plans/planModel");
 
 // /api/projects
 // 4
@@ -24,10 +25,6 @@ const testingProjectsRouter = (req, res) => {
         message: `Project request failed ${error.message}.`
       });
     }
-  },
-  // endpoint for developer dashboard
-  listDevelopersPlans = (req, res) => {
-    res.send("endpoint to retrieve list of developer plans");
   },
   // plan page view
   developersPlan = (req, res) => {
@@ -95,7 +92,6 @@ module.exports = router => {
   router.get("/", getAllProjects);
   router.get("/project/:id", getProject);
   router.get("/user/project/:id", getUserProject);
-  router.get("/plan-list", listDevelopersPlans);
   router.get("/project-owner", listProjectOwnersProjects);
   router.get("/submitted-plan/:id", developersPlan);
 
