@@ -44,6 +44,7 @@ const testProjectOwnerRoute = (req, res) => {
   },
   listProjectOwnersProjects = (req, res) => {
     const projectOwner_id = req.userID;
+
     Projects.findByProjectOwner(projectOwner_id)
       .then(projects => {
         projects.length === 0
