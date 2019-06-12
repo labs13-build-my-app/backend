@@ -53,8 +53,8 @@ const testProjectOwnerRoute = (req, res) => {
   listProjectOwnersProjects = (req, res) => {
 
     const projectOwner_id = req.userID;
-
-      .then(projects => {
+      Projects.findByProjectOwner(projectOwner_id)
+        .then(projects => {
         projects.length === 0
           ? res.status(200).json({message: 'No Projects'})
           : res.status(200).json(projects)
