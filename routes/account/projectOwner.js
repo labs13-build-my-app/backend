@@ -42,7 +42,24 @@ const testProjectOwnerRoute = (req, res) => {
         res.status(500).json(err);
       });
   },
+
+  listProjectOwnersProjects = (req, res) => {
+    const projectOwner_id = req.userID;
+
+    Projects.findByProjectOwner(projectOwner_id)
+      .then(projects => {
+        projects.length === 0
+          ? res.status(200).json({ message: "No Projects" })
+          : res.status(200).json(projects);
+      })
+      .catch(error => {
+        res.status(500).json(error);
+      });
+  },
+  // GET project owner's project by ID page view
+
   // GET project owner's project (Single) by ID page view <<< Marina
+
   getProjectOwnersProject = async (req, res) => {
     const userID = req.userID;
     const { id } = req.params;
