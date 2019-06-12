@@ -14,9 +14,9 @@ exports.up = function(knex, Promise) {
     tbl.string("role", 15).notNullable();
     tbl.text("skills");
     tbl.text("devType");
-    tbl.string("linkedIn").unique();
-    tbl.string("gitHub").unique();
-    tbl.string("twitter").unique();
+    tbl.string("linkedIn");
+    tbl.string("gitHub");
+    tbl.string("twitter");
     tbl.timestamps(true, true);
   });
 };

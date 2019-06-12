@@ -6,13 +6,14 @@ const retriveUserID = async (req, res, next) => {
   try {
     const user = await data.findAuthorizedUser(userSub);
     const userID = user.id;
+    const userRole = user.role;
     if (!user) {
       next();
     }
     req.userID = userID;
+    req.userRole = userRole;
     next();
   } catch (err) {
-
     next();
   }
 };
