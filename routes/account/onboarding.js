@@ -5,6 +5,7 @@ const testOnboardingRoute = (req, res) => {
     res.send("I am a new user signing up");
   },
   userSignUp = async (req, res) => {
+    console.log("start sighn up");
     const { sub } = req;
     const {
       role,
