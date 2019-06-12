@@ -42,6 +42,7 @@ const testProjectOwnerRoute = (req, res) => {
         res.status(500).json(err);
       });
   },
+
   listProjectOwnersProjects = (req, res) => {
     const projectOwner_id = req.userID;
 
@@ -56,6 +57,9 @@ const testProjectOwnerRoute = (req, res) => {
       });
   },
   // GET project owner's project by ID page view
+
+  // GET project owner's project (Single) by ID page view <<< Marina
+
   getProjectOwnersProject = async (req, res) => {
     const userID = req.userID;
     const { id } = req.params;
@@ -190,7 +194,7 @@ module.exports = router => {
   router.get("/test-project-owner", testProjectOwnerRoute);
   router.get("/dashboard-project-owner", projectOwnerDashboard);
   router.get("/user/project/:id", getProjectOwnersProject);
-  router.get("/project-list", listProjectOwnersProjects);
+
   router.put("/update-profile-project-owner", updateProjectOwner);
   router.delete("/delete-profile-project-owner", deleteProjectOwner);
   router.post("/create-project-project-owner", createProject);

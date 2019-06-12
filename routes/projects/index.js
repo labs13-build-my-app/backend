@@ -41,20 +41,19 @@ const testingProjectsRouter = (req, res) => {
         res.status(500).json(err);
       });
   },
-  // route needs to be update with getting id from auth
-  /* listProjectOwnersProjects = (req, res) => {
-    const projectOwner_id = req.user_id;
-
-    //Projects.findByProjectOwner(projectOwner_id)
-    //Delete this line and line below and uncomment line above when login is finished
-    Projects.findByProjectOwner(51)
+  // Get project owner's All projects <<< Joe :)
+  listProjectOwnersProjects = (req, res) => {
+    const projectOwner_id = req.params.project_owner_id;
+    Projects.findByProjectOwner(projectOwner_id)
       .then(projects => {
-        res.status(200).json(projects);
+        projects.length === 0
+          ? res.status(200).json({ message: "No Projects" })
+          : res.status(200).json(projects);
       })
       .catch(error => {
         res.status(500).json(error);
       });
-  },*/
+  },
   // GET project by project ID
   // endpoint needs to be updated getting id from req.user_id
   // GET project by project ID page
@@ -86,6 +85,11 @@ module.exports = router => {
   router.get("/project/:id", getProject);
   router.get("/plan-view/:plan_id", developersPlan);
   // router.get("/user/project/:id", getUserProject);
+
+  router.get("/project-list/:project_owner_id", listProjectOwnersProjects);
+  //router.get("/project-owner", listProjectOwnersProjects);
+
+
   // router.get("/project-owner", listProjectOwnersProjects);
 
   return router;
