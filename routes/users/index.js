@@ -40,9 +40,9 @@ const testingUsers = (req, res) => {
     }
   },
   // prioritize last
-  listProjectOwners = async (req, res) => {
-    res.send("endpoint to to retrieve project owners");
-  },
+  // listProjectOwners = async (req, res) => {
+  //   res.send("endpoint to to retrieve project owners");
+  // },
   // developer page view
   viewDeveloper = async (req, res) => {
     const id = Number(req.params.id);
@@ -66,7 +66,7 @@ module.exports = router => {
   router.get("/developers", listDevelopers);
   // router.post("/project-owners", listProjectOwners);
   router.get("/developer/:id", viewDeveloper);
-  router.get("/project-owner/:id", viewProjectOwner);
+  //  router.get("/project-owner/:id", viewProjectOwner);
 
   return router;
 };

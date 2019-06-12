@@ -5,6 +5,7 @@ const testOnboardingRoute = (req, res) => {
     res.send("I am a new user signing up");
   },
   userSignUp = async (req, res) => {
+    console.log("start sighn up");
     const { sub } = req;
     const {
       role,
@@ -47,6 +48,7 @@ const testOnboardingRoute = (req, res) => {
           });
         })
         .catch(err => {
+          console.log(err);
           res.status(500).json({
             message: "unable to create user, please try again",
             error: err
@@ -59,10 +61,10 @@ const testOnboardingRoute = (req, res) => {
     }
   },
   userLogin = async (req, res) => {
-    const { user_id } = req;
-    console.log("USER ID IS", user_id);
+    const { sub } = req;
+    console.log("USER ID IS", sub);
     try {
-      const user = await findAuthorizedUser(user_id);
+      const user = await findAuthorizedUser(sub);
       if (!user) {
         res.status(200).json({ message: "please signup" });
       }

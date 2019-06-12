@@ -42,7 +42,7 @@ const testingProjectsRouter = (req, res) => {
       });
   },
   // route needs to be update with getting id from auth
-  listProjectOwnersProjects = (req, res) => {
+  /* listProjectOwnersProjects = (req, res) => {
     const projectOwner_id = req.user_id;
 
     //Projects.findByProjectOwner(projectOwner_id)
@@ -54,7 +54,7 @@ const testingProjectsRouter = (req, res) => {
       .catch(error => {
         res.status(500).json(error);
       });
-  },
+  },*/
   // GET project by project ID
   // endpoint needs to be updated getting id from req.user_id
   // GET project by project ID page
@@ -74,18 +74,22 @@ const testingProjectsRouter = (req, res) => {
         .status(500)
         .json({ message: `Project request failed ${error.message}.` });
     }
-  },
-  // endpoint for developer dashboard
-  listDevelopersPlans = (req, res) => {
-    res.send("endpoint to retrieve list of developer plans");
   };
+// endpoint for developer dashboard
+// listDevelopersPlans = (req, res) => {
+//   res.send("endpoint to retrieve list of developer plans");
+// };
 
 module.exports = router => {
   router.get("/test-projects", testingProjectsRouter);
   router.get("/", getAllProjects);
   router.get("/project/:id", getProject);
   // router.get("/user/project/:id", getUserProject);
-  router.get("/project-owner", listProjectOwnersProjects);
+
+  //router.get("/project-owner", listProjectOwnersProjects);
+
+  // router.get("/project-owner", listProjectOwnersProjects);
+
   router.get("/plan-view/:plan_id", developersPlan);
 
   return router;
