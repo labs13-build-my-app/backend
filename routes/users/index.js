@@ -58,9 +58,27 @@ const testingUsers = (req, res) => {
   // project owner page view
   viewProjectOwner = async (req, res) => {
     res.send("endpoint to view a project owners page");
+  },
+
+  userById = async (req, res) => {
+    const { user_id } = req.parmas
+    data
+      .where({ id: user_id }, 'id')
+      .first()
+      .then(user => {
+        res
+          .status(200)
+          .json(user)
+      })
+      .catch(error => {
+        res
+          .status(404)
+          .json(error)
+      })
   };
 
 module.exports = router => {
+  router.get('/:id', userByID);
   router.get("/test-users", testingUsers);
   router.get("/list-all-users", allUsers);
   router.get("/developers", listDevelopers);
