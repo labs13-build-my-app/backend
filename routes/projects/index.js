@@ -74,18 +74,22 @@ const testingProjectsRouter = (req, res) => {
         .status(500)
         .json({ message: `Project request failed ${error.message}.` });
     }
-  },
-  // endpoint for developer dashboard
-  listDevelopersPlans = (req, res) => {
-    res.send("endpoint to retrieve list of developer plans");
   };
+// endpoint for developer dashboard
+// listDevelopersPlans = (req, res) => {
+//   res.send("endpoint to retrieve list of developer plans");
+// };
 
 module.exports = router => {
   router.get("/test-projects", testingProjectsRouter);
   router.get("/", getAllProjects);
   router.get("/project/:id", getProject);
   // router.get("/user/project/:id", getUserProject);
+
   //router.get("/project-owner", listProjectOwnersProjects);
+
+  // router.get("/project-owner", listProjectOwnersProjects);
+
   router.get("/plan-view/:plan_id", developersPlan);
 
   return router;

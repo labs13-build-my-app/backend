@@ -40,9 +40,9 @@ const testingUsers = (req, res) => {
     }
   },
   // prioritize last
-  listProjectOwners = async (req, res) => {
-    res.send("endpoint to to retrieve project owners");
-  },
+  // listProjectOwners = async (req, res) => {
+  //   res.send("endpoint to to retrieve project owners");
+  // },
   // developer page view
   viewDeveloper = async (req, res) => {
     const id = Number(req.params.id);
