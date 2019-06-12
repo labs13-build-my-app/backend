@@ -11,8 +11,7 @@ const testProjectOwnerRoute = (req, res) => {
     const id = req.user_id;
     // currently is sending basic user information
     // incomplete need to be sending user specific information to dashboard
-    Users
-      .findAuthorizedUser(id)
+    Users.findAuthorizedUser(id)
       .then(user => {
         res.status(200).json({
           user,
@@ -26,7 +25,6 @@ const testProjectOwnerRoute = (req, res) => {
         });
       });
   },
-
   // prioritize last
   updateProjectOwner = (req, res) => {
     res.send("endpoint to update project owner account");
@@ -35,35 +33,29 @@ const testProjectOwnerRoute = (req, res) => {
 
   deleteProjectOwner = (req, res) => {
     const { sub } = req;
-    Users
-      .findAuthorizedUser(sub)
+    Users.findAuthorizedUser(sub)
       .del()
       .then(del => {
-        res
-          .status(200)
-          .json(del);
+        res.status(200).json(del);
       })
       .catch(err => {
-        res
-          .status(500)
-          .json(err);
+        res.status(500).json(err);
       });
   },
-  
+  // Get project owner's All projects <<< Joe :)
   listProjectOwnersProjects = (req, res) => {
-
     const projectOwner_id = req.userID;
-      Projects.findByProjectOwner(projectOwner_id)
-        .then(projects => {
+    Projects.findByProjectOwner(projectOwner_id)
+      .then(projects => {
         projects.length === 0
-          ? res.status(200).json({message: 'No Projects'})
-          : res.status(200).json(projects)
+          ? res.status(200).json({ message: "No Projects" })
+          : res.status(200).json(projects);
       })
       .catch(error => {
         res.status(500).json(error);
       });
   },
-  // GET project owner's project by ID page view
+  // GET project owner's project (Single) by ID page view <<< Marina
   getProjectOwnersProject = async (req, res) => {
     const userID = req.userID;
     const { id } = req.params;
