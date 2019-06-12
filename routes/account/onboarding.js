@@ -82,7 +82,7 @@ const testOnboardingRoute = (req, res) => {
 module.exports = router => {
   router.get("/test-onboarding", testOnboardingRoute);
   router.post("/signup", userSignUp);
-  // router.get("/login", userLogin);
+  router.get("/login", userLogin);
 
   return router;
 };
