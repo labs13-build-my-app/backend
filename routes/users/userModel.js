@@ -5,8 +5,27 @@ module.exports = {
   findAuthorizedUser,
   createNewUser,
   findDevUsers,
-  findDevUserByID
+  findDevUserByID,
+  findUserById
 };
+
+function findUserById(user_id) {
+  return db('users')
+    .where({ id: user_id })
+    .select(
+      "id",
+      "firstName",
+      "lastName",
+      "email",
+      "skills",
+      "role",
+      "devType",
+      "twitter",
+      "gitHub",
+      "linkedIn"
+    )
+    .first();
+}
 
 function findUsers() {
   return db("users").select("id", "firstName", "lastName", "email", "role");
@@ -43,7 +62,7 @@ function findDevUsers() {
 }
 function findDevUserByID(id) {
   return db("users")
-    .where({ id })
+    .where({ role: 'Developer', id})
     .select(
       "id",
       "firstName",

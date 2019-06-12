@@ -61,10 +61,9 @@ const testingUsers = (req, res) => {
   },
 
   userById = async (req, res) => {
-    const { user_id } = req.parmas
+    const { user_id } = req.params
     data
-      .where({ id: user_id }, 'id')
-      .first()
+      .findUserById(user_id)
       .then(user => {
         res
           .status(200)
@@ -78,7 +77,7 @@ const testingUsers = (req, res) => {
   };
 
 module.exports = router => {
-  router.get('/:id', userByID);
+  router.get('/:user_id', userById);
   router.get("/test-users", testingUsers);
   router.get("/list-all-users", allUsers);
   router.get("/developers", listDevelopers);
