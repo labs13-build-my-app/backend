@@ -66,7 +66,7 @@ module.exports = router => {
   router.get("/developers", listDevelopers);
   // router.post("/project-owners", listProjectOwners);
   router.get("/developer/:id", viewDeveloper);
-  router.get("/project-owner/:id", viewProjectOwner);
+  //  router.get("/project-owner/:id", viewProjectOwner);
 
   return router;
 };

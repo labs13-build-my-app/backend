@@ -51,12 +51,12 @@ const testProjectOwnerRoute = (req, res) => {
   },
   
   listProjectOwnersProjects = (req, res) => {
-    const projectOwner_id = req.user_id; // Take userId from >>> req.userID
-    //Projects.findByProjectOwner(projectOwner_id)
-    //Delete this line and line below and uncomment line above when login is finished
-    Projects.findByProjectOwner(51)
+    const projectOwner_id = req.userID;
+    Projects.findByProjectOwner(projectOwner_id)
       .then(projects => {
-        res.status(200).json(projects);
+        projects.length === 0
+          ? res.status(200).json({message: 'No Projects'})
+          : res.status(200).json(projects)
       })
       .catch(error => {
         res.status(500).json(error);
@@ -180,12 +180,12 @@ const testProjectOwnerRoute = (req, res) => {
     res.send("endpoint to message a project owner or maybe admin");
   };
 
-// /api/projects
+// /api/account/project-owner
 module.exports = router => {
   router.get("/test-project-owner", testProjectOwnerRoute);
   router.get("/dashboard-project-owner", projectOwnerDashboard);
   router.get("/user/project/:id", getProjectOwnersProject);
-  router.get("/project-owner", listProjectOwnersProjects);
+  router.get("/project-list", listProjectOwnersProjects);
   router.put("/update-profile-project-owner", updateProjectOwner);
   router.delete("/delete-profile-project-owner", deleteProjectOwner);
   router.post("/create-project-project-owner", createProject);
