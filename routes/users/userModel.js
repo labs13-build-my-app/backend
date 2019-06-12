@@ -37,7 +37,7 @@ function findAuthorizedUser(userID) {
   const result = db("users")
     .where({ sub })
     .first();
-  return result;
+  return result
 }
 
 function createNewUser(user) {

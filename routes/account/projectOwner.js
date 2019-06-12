@@ -11,8 +11,7 @@ const testProjectOwnerRoute = (req, res) => {
     const id = req.user_id;
     // currently is sending basic user information
     // incomplete need to be sending user specific information to dashboard
-    Users
-      .findAuthorizedUser(id)
+    Users.findAuthorizedUser(id)
       .then(user => {
         res.status(200).json({
           user,
@@ -26,7 +25,6 @@ const testProjectOwnerRoute = (req, res) => {
         });
       });
   },
-
   // prioritize last
   updateProjectOwner = (req, res) => {
     res.send("endpoint to update project owner account");
@@ -35,35 +33,16 @@ const testProjectOwnerRoute = (req, res) => {
 
   deleteProjectOwner = (req, res) => {
     const { sub } = req;
-    Users
-      .findAuthorizedUser(sub)
+    Users.findAuthorizedUser(sub)
       .del()
       .then(del => {
-        res
-          .status(200)
-          .json(del);
+        res.status(200).json(del);
       })
       .catch(err => {
-        res
-          .status(500)
-          .json(err);
+        res.status(500).json(err);
       });
   },
-  
-  listProjectOwnersProjects = (req, res) => {
-
-    const projectOwner_id = req.userID;
-      Projects.findByProjectOwner(projectOwner_id)
-        .then(projects => {
-        projects.length === 0
-          ? res.status(200).json({message: 'No Projects'})
-          : res.status(200).json(projects)
-      })
-      .catch(error => {
-        res.status(500).json(error);
-      });
-  },
-  // GET project owner's project by ID page view
+  // GET project owner's project (Single) by ID page view <<< Marina
   getProjectOwnersProject = async (req, res) => {
     const userID = req.userID;
     const { id } = req.params;
@@ -198,7 +177,7 @@ module.exports = router => {
   router.get("/test-project-owner", testProjectOwnerRoute);
   router.get("/dashboard-project-owner", projectOwnerDashboard);
   router.get("/user/project/:id", getProjectOwnersProject);
-  router.get("/project-list", listProjectOwnersProjects);
+
   router.put("/update-profile-project-owner", updateProjectOwner);
   router.delete("/delete-profile-project-owner", deleteProjectOwner);
   router.post("/create-project-project-owner", createProject);
