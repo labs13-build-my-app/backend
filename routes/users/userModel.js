@@ -10,7 +10,7 @@ module.exports = {
 };
 
 function findUserById(user_id) {
-  return db('users')
+  return db("users")
     .where({ id: user_id })
     .select(
       "id",
@@ -33,7 +33,7 @@ function findUsers() {
 
 function findAuthorizedUser(userID) {
   const sub = userID;
-  // console.log(sub, userID);
+  console.log(sub, userID);
   const result = db("users")
     .where({ sub })
     .first();
@@ -63,7 +63,7 @@ function findDevUsers() {
 }
 function findDevUserByID(id) {
   return db("users")
-    .where({ role: 'Developer', id})
+    .where({ role: "Developer", id })
     .select(
       "id",
       "firstName",

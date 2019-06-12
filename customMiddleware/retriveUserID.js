@@ -5,16 +5,21 @@ const retriveUserID = async (req, res, next) => {
   console.log(userSub, "userSub CUSTOM MW");
   try {
     const user = await data.findAuthorizedUser(userSub);
-    const userID = user.id;
-    const userRole = user.role;
+
     if (!user) {
+      console.log("1 next");
+      next();
+    } else {
+      const userID = user.id;
+      const userRole = user.role;
+      req.userID = userID;
+      req.userRole = userRole;
+      console.log("2 next", userID);
       next();
     }
-    req.userID = userID;
-    req.userRole = userRole;
-    next();
   } catch (err) {
-    next();
+    // console.log("3 next", err);
+    // next();
   }
 };
 
