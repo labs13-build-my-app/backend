@@ -61,10 +61,10 @@ const testOnboardingRoute = (req, res) => {
     }
   },
   userLogin = async (req, res) => {
-    const { user_id } = req;
-    console.log("USER ID IS", user_id);
+    const { sub } = req;
+    console.log("USER ID IS", sub);
     try {
-      const user = await findAuthorizedUser(user_id);
+      const user = await findAuthorizedUser(sub);
       if (!user) {
         res.status(200).json({ message: "please signup" });
       }
