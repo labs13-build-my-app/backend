@@ -16,8 +16,8 @@ module.exports = (server, router) => {
   server.use("/api/projects", projectsRouter(router));
   server.use(
     "/api/account",
-    tokenVerification,
-    retriveUserID,
+    // tokenVerification,
+    // retriveUserID,
     accountRouter(router)
   );
   server.use("/api/plans", planRouter(router));
