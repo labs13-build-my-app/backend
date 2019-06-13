@@ -1,12 +1,11 @@
 const Projects = require("./model");
 const plans = require("../plans/planModel");
+const db = require("../../data/dbConfig");
 
 // /api/projects
-// 4
-
+// test endpoint not part of production
 const testingProjectsRouter = (req, res) => {
-    console.log("here in projects, looks like it works");
-    res.send("testing projects route, looks like it works");
+    res.send("testing projects route");
   },
   // GET for all projects list
   // implement pagination
@@ -71,17 +70,40 @@ const testingProjectsRouter = (req, res) => {
         .status(500)
         .json({ message: `Project request failed ${error.message}.` });
     }
+  },
+  // plan list for developer id
+  developerPlanList = (req, res) => {
+    const { developer_id: user_id } = req.params;
+    plans
+      .getDeveloperPlans(user_id)
+      .then(plans => {
+        res.status(200).json(plans);
+      })
+      .catch(err => {
+        res.status(404).json(err);
+      });
+  },
+  // plan list for project id
+  projectPlanList = (req, res) => {
+    const { project_id } = req.params;
+    plans
+      .getProjectPlans(project_id)
+      .then(plans => {
+        res.status(200).json(plans);
+      })
+      .catch(err => {
+        res.status(404).json(err);
+      });
   };
-// endpoint for developer dashboard
-// listDevelopersPlans = (req, res) => {
-//   res.send("endpoint to retrieve list of developer plans");
-// };
 
 module.exports = router => {
-  router.get("/test-projects", testingProjectsRouter);
-  router.get("/", getAllProjects);
-  router.get("/project/:id", getProject);
-  router.get("/plan-view/:plan_id", developersPlan);
-  router.get("/project-list/:project_owner_id", listProjectOwnersProjects);
+  // router.get("/test-projects", testingProjectsRouter); // <<< test endpoint
+  router.get("/", getAllProjects); // <<< list all projects in proposal status
+  router.get("/plan-list-project/:project_id", projectPlanList); // <<< plan list for project
+  router.get("/plan-list-developer/:developer_id", developerPlanList); // <<< plan list for developer
+  router.get("/project/:id", getProject); // <<< project page view
+  router.get("/plan-view/:plan_id", developersPlan); //  <<< plan page view
+  router.get("/project-list/:project_owner_id", listProjectOwnersProjects); // <<< project list view of project owner id
+
   return router;
 };
