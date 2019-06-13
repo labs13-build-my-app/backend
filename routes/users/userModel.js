@@ -6,7 +6,8 @@ module.exports = {
   createNewUser,
   findDevUsers,
   findDevUserByID,
-  findUserById
+  findUserById,
+  updateUser
 };
 
 function findUserById(user_id) {
@@ -37,7 +38,7 @@ function findAuthorizedUser(userID) {
   const result = db("users")
     .where({ sub })
     .first();
-  return result
+  return result;
 }
 
 function createNewUser(user) {
@@ -77,6 +78,16 @@ function findDevUserByID(id) {
       "linkedIn"
     )
     .first();
+}
+
+async function updateUser(user, id) {
+  const editedUser = await db("users")
+    .where({ id })
+    .update(user);
+  if (editedUser) {
+    const updatedUser = await findUserById(id);
+    return updatedUser;
+  }
 }
 
 // add function to find not logged in user
