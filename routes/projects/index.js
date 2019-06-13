@@ -106,7 +106,6 @@ module.exports = router => {
   router.get("/project/:id", getProject); // <<< project page view
   router.get("/plan-view/:plan_id", developersPlan); //  <<< plan page view
   router.get("/project-list/:project_owner_id", listProjectOwnersProjects); // <<< project list view of project owner id
-  // router.get("/user/project/:id", getUserProject);  // <<< no idea what this is for
 
   return router;
 };

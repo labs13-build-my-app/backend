@@ -44,7 +44,6 @@ const testDeveloperRoute = (req, res) => {
       } = req.body;
       try {
         const user = await users.findUserById(id);
-        console.log(user);
         if (user) {
           const userUpdate = { id };
           if (firstName) {
@@ -119,10 +118,12 @@ const testDeveloperRoute = (req, res) => {
   // saves plan if plan doesn't exist already by developer
   createPlan = (req, res) => {
     const sub = req.sub;
+    const id = req.userID;
     const { project_id } = req.params;
     const planStatus = "proposal";
     const { name, description, technologiesToUse, dueDate, budget } = req.body;
     const plan = {};
+    console.log(project_id, id, sub);
 
     users
       .findAuthorizedUser(sub)
@@ -134,8 +135,8 @@ const testDeveloperRoute = (req, res) => {
           .andWhere({ user_id: user_id })
           .first();
       })
-      .then(plans => {
-        if (plans === undefined) {
+      .then(existPlan => {
+        if (existPlan === undefined) {
           plan.name = name;
           plan.description = description;
           plan.technologiesToUse = technologiesToUse;
@@ -143,6 +144,8 @@ const testDeveloperRoute = (req, res) => {
           plan.dueDate = dueDate;
           plan.planStatus = planStatus;
           plan.project_id = Number(project_id);
+
+          console.log(plan);
           return plans.addPlan(plan);
         } else {
           throw new Error("plan already exist for developer");
@@ -153,7 +156,7 @@ const testDeveloperRoute = (req, res) => {
         res.status(201).json({ id, ...plan });
       })
       .catch(error => {
-        console.log(error);
+        console.log("checking this error", error);
         res.status(500).json({
           message: `plan already exist for developer ${error.message}.`
         });

@@ -1,6 +1,7 @@
 const db = require("../../data/dbConfig");
 
 const addPlan = plan => {
+  console.log("checking what this plan is", plan);
   return db("plans").insert(plan, "id");
 };
 

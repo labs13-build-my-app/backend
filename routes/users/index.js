@@ -1,5 +1,5 @@
 const data = require("./userModel");
-// 3
+// /api/users
 
 const testingUsers = (req, res) => {
     console.log("here in users, looks like it works");
@@ -77,7 +77,7 @@ module.exports = router => {
   router.get("/test-users", testingUsers); // <<< test endpoint
   router.get("/list-users", allUsers); // <<< list all users
   router.get("/list-developers", listDevelopers); // <<< listing developers
-  router.post("/list-project-owners", listProjectOwners); // <<< listing project owners
+  // router.post("/list-project-owners", listProjectOwners); // <<< listing project owners
   router.get("/user-developer/:id", viewDeveloper); // <<< might not need this, we have profile endpoing now
   router.get("/user-project-owner/:id", viewProjectOwner); // <<< might not need this, we have profile endpoing now
 
