@@ -75,9 +75,9 @@ module.exports = router => {
   router.post("/create-admin", createAdmin);
   router.get("/sign-in", adminSignIn);
   router.get("/dashboard-admin", adminDashboard);
-  router.get("/project-view/:id", adminProjectView);
-  router.put("/project-status-update/:id", adminProjectUpdate);
-  router.post("/process-payment/:id", adminPaymentProcess);
+  // router.get("/project-view/:id", adminProjectView);
+  // router.put("/project-status-update/:id", adminProjectUpdate);
+  // router.post("/process-payment/:id", adminPaymentProcess);
 
   return router;
 };

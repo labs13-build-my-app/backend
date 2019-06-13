@@ -1,38 +1,95 @@
 const users = require("../users/userModel");
-
 const plans = require("../plans/planModel");
 const db = require("../../data/dbConfig");
-// 1
+
+// /api/account/developer
 
 const testDeveloperRoute = (req, res) => {
     console.log("here in developer, looks like it works");
     res.send("I am a developer and I work, nice");
   },
+  // this endpoint my no longer be valid
   developerDashboard = (req, res) => {
     const sub = req.sub;
-    users
-      .findAuthorizedUser(sub)
-      .then(user => {
-        res.status(200).json({
-          user,
-          error: false,
-          message: "The user was found in the database"
-        });
-      })
-      .catch(err => {
-        res.status(500).json({
-          message: `User request failed ${error.message}.`
-        });
-      });
+    res.send("I am a developer and I work, nice");
+    // users
+    //   .findAuthorizedUser(sub)
+    //   .then(user => {
+    //     res.status(200).json({
+    //       user,
+    //       error: false,
+    //       message: "The user was found in the database"
+    //     });
+    //   })
+    //   .catch(err => {
+    //     res.status(500).json({
+    //       message: `User request failed ${error.message}.`
+    //     });
+    //   });
   },
-  // prioritize last
-  updateDeveloper = (req, res) => {
-    res.send("endpoint to update developers account");
+  // update developer user profile
+  updateDeveloper = async (req, res) => {
+    const { id } = req.params;
+    const userRole = req.userRole;
+    if (userRole === "Developer") {
+      const {
+        firstName,
+        lastName,
+        image_url,
+        email,
+        skills,
+        linkedIn,
+        gitHub,
+        twitter
+      } = req.body;
+      try {
+        const user = await users.findUserById(id);
+        console.log(user);
+        if (user) {
+          const userUpdate = { id };
+          if (firstName) {
+            userUpdate.firstName = firstName;
+          }
+          if (lastName) {
+            userUpdate.lastName = lastName;
+          }
+          if (image_url) {
+            userUpdate.image_url = image_url;
+          }
+          if (email) {
+            userUpdate.email = email;
+          }
+          if (skills) {
+            userUpdate.skills = skills;
+          }
+          if (linkedIn) {
+            userUpdate.linkedIn = linkedIn;
+          }
+          if (gitHub) {
+            userUpdate.gitHub = gitHub;
+          }
+          if (twitter) {
+            userUpdate.twitter = twitter;
+          }
+          const editedUser = await users.updateUser(userUpdate, id);
+          res.status(200).json(editedUser);
+        } else {
+          res.status(404).json({
+            message: `The User with the specified ID does not exist.`
+          });
+        }
+      } catch (error) {
+        res.status(500).json({
+          message: `User failed to update: ${error.message}.`
+        });
+      }
+    } else {
+      res.status(403).json({ message: "You should be a Developer to do this" });
+    }
   },
   // delete developer account with sub
   deleteDeveloper = (req, res) => {
     const { sub } = req;
-    console.log("sub", sub);
     users
       .findAuthorizedUser(sub)
       .del()
@@ -167,7 +224,7 @@ const testDeveloperRoute = (req, res) => {
 module.exports = router => {
   router.get("/test-developer", testDeveloperRoute);
   router.get("/dashboard-developer", developerDashboard);
-  router.put("/update-profile-developer", updateDeveloper);
+  router.put("/update-profile-developer/:id", updateDeveloper);
   router.delete("/delete-profile-developer", deleteDeveloper);
   router.get("/plan-list", listDevelopersPlans);
   router.post("/submit-plan-developer/:project_id", createPlan); // provide project id as id
