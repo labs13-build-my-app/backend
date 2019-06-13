@@ -41,7 +41,7 @@ const testingProjectsRouter = (req, res) => {
         res.status(500).json(err);
       });
   },
-  // Get project owner's All projects <<< Joe :)
+  // Get project owner's All projects <<< Joe
   listProjectOwnersProjects = (req, res) => {
     const projectOwner_id = req.params.project_owner_id;
     Projects.findByProjectOwner(projectOwner_id)
@@ -54,8 +54,6 @@ const testingProjectsRouter = (req, res) => {
         res.status(500).json(error);
       });
   },
-  // GET project by project ID
-  // endpoint needs to be updated getting id from req.user_id
   // GET project by project ID page
   getProject = async (req, res) => {
     const { id } = req.params;
@@ -84,13 +82,6 @@ module.exports = router => {
   router.get("/", getAllProjects);
   router.get("/project/:id", getProject);
   router.get("/plan-view/:plan_id", developersPlan);
-  // router.get("/user/project/:id", getUserProject);
-
   router.get("/project-list/:project_owner_id", listProjectOwnersProjects);
-  //router.get("/project-owner", listProjectOwnersProjects);
-
-
-  // router.get("/project-owner", listProjectOwnersProjects);
-
   return router;
 };
