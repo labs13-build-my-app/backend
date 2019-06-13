@@ -76,7 +76,6 @@ const testingProjectsRouter = (req, res) => {
   // plan list for developer id
   developerPlanList = (req, res) => {
     const { developer_id: user_id } = req.params;
-    console.log(user_id);
     db("plans")
       .where({ user_id })
       .then(plans => {
@@ -88,7 +87,15 @@ const testingProjectsRouter = (req, res) => {
   },
   // plan list for project id
   projectPlanList = (req, res) => {
-    res.send("endpoint to retrieve list of developer plans");
+    const { project_id } = req.params;
+    db("plans")
+      .where({ project_id })
+      .then(plans => {
+        res.status(200).json(plans);
+      })
+      .catch(err => {
+        res.status(404).json(err);
+      });
   };
 
 module.exports = router => {
