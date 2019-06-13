@@ -45,6 +45,7 @@ const testingUsers = (req, res) => {
   // },
   // developer page view
   viewDeveloper = async (req, res) => {
+    console.log("please don't tell me that this is being reached");
     const id = Number(req.params.id);
     try {
       data.findDevUserByID(id).then(dev => {
@@ -72,13 +73,13 @@ const testingUsers = (req, res) => {
   };
 
 module.exports = router => {
-  router.get("/profile/:user_id", userById);
-  router.get("/test-users", testingUsers);
-  router.get("/list-all-users", allUsers);
-  router.get("/developers", listDevelopers);
-  // router.post("/project-owners", listProjectOwners);
-  router.get("/developer/:id", viewDeveloper);
-  //  router.get("/project-owner/:id", viewProjectOwner);
+  router.get("/profile/:user_id", userById); // <<< user profile page
+  router.get("/test-users", testingUsers); // <<< test endpoint
+  router.get("/list-users", allUsers); // <<< list all users
+  router.get("/list-developers", listDevelopers); // <<< listing developers
+  router.post("/list-project-owners", listProjectOwners); // <<< listing project owners
+  router.get("/user-developer/:id", viewDeveloper); // <<< might not need this, we have profile endpoing now
+  router.get("/user-project-owner/:id", viewProjectOwner); // <<< might not need this, we have profile endpoing now
 
   return router;
 };
