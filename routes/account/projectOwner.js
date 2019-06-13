@@ -77,7 +77,7 @@ const testProjectOwnerRoute = (req, res) => {
             name,
             description,
             budget,
-            dueDate,
+            dueDate: new Date(dueDate),
             projectStatus: "proposal",
             paymentStatus: "unpaid",
             image_url,
