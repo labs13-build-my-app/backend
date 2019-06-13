@@ -4,8 +4,19 @@ const addPlan = plan => {
   return db("plans").insert(plan, "id");
 };
 
+// list of all plans
 const getPlans = () => {
   return db("plans");
+};
+
+// list of project plans
+const getProjectPlans = project_id => {
+  return db("plans").where({ project_id });
+};
+
+// list of developer plans
+const getDeveloperPlans = user_id => {
+  return db("plans").where({ user_id });
 };
 
 const getPlanById = id => {
@@ -32,6 +43,8 @@ const deletePlan = id => {
 
 module.exports = {
   getPlans,
+  getDeveloperPlans,
+  getProjectPlans,
   getPlanById,
   addPlan,
   updatePlan,

@@ -76,8 +76,8 @@ const testingProjectsRouter = (req, res) => {
   // plan list for developer id
   developerPlanList = (req, res) => {
     const { developer_id: user_id } = req.params;
-    db("plans")
-      .where({ user_id })
+    plans
+      .getDeveloperPlans(user_id)
       .then(plans => {
         res.status(200).json(plans);
       })
@@ -88,8 +88,8 @@ const testingProjectsRouter = (req, res) => {
   // plan list for project id
   projectPlanList = (req, res) => {
     const { project_id } = req.params;
-    db("plans")
-      .where({ project_id })
+    plans
+      .getProjectPlans(project_id)
       .then(plans => {
         res.status(200).json(plans);
       })
