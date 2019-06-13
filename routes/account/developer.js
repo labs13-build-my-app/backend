@@ -8,7 +8,7 @@ const testDeveloperRoute = (req, res) => {
     console.log("here in developer, looks like it works");
     res.send("I am a developer and I work, nice");
   },
-  // this endpoint my no longer be valid
+  // this endpoint may no longer be valid
   developerDashboard = (req, res) => {
     const sub = req.sub;
     res.send("I am a developer and I work, nice");
@@ -99,6 +99,7 @@ const testDeveloperRoute = (req, res) => {
         res.status(500).json(err);
       });
   },
+  // this endpoint no longer needed I think
   // endpoint for developer dashboard
   listDevelopersPlans = (req, res) => {
     const userID = req.userID;
@@ -226,13 +227,13 @@ const testDeveloperRoute = (req, res) => {
 
 module.exports = router => {
   router.get("/test-developer", testDeveloperRoute);
-  router.get("/dashboard-developer", developerDashboard);
-  router.put("/update-profile-developer/:id", updateDeveloper);
-  router.delete("/delete-profile-developer", deleteDeveloper);
-  router.get("/plan-list", listDevelopersPlans);
+  // router.get("/dashboard-developer", developerDashboard);  // <<< may no longer need
+  router.put("/update-profile-developer/:id", updateDeveloper); // <<< update developer by id on params
+  router.delete("/delete-profile-developer", deleteDeveloper); // <<< delete developer
+  // router.get("/plan-list", listDevelopersPlans); // <<< may no longer need
   router.post("/submit-plan-developer/:project_id", createPlan); // provide project id as id
   router.put("/update-plan/:id", updatePlan); // provide plan id as id
-  router.delete("/delete-plan/:plan_id", deletePlan);
+  router.delete("/delete-plan/:plan_id", deletePlan); // <<< delete by plan id
   router.post("/message-developer", messageProjectOwner);
 
   return router;
