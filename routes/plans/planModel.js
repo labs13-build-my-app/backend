@@ -42,6 +42,19 @@ const deletePlan = id => {
     .del(id);
 };
 
+const getDeveloperCompletedPlans = user_id => {
+  return db("plans")
+    .select({
+      planID: "plans.id",
+      planName: "plans.name",
+      feedback: "projects.feedback",
+      projectID: "projects.id"
+    })
+    .innerJoin("projects", "projects.id", "plans.project_id")
+    .where({ "plans.user_id": user_id })
+    .andWhere({ "plans.planStatus": "completed" });
+};
+
 module.exports = {
   getPlans,
   getDeveloperPlans,
@@ -49,5 +62,6 @@ module.exports = {
   getPlanById,
   addPlan,
   updatePlan,
-  deletePlan
+  deletePlan,
+  getDeveloperCompletedPlans
 };

@@ -94,6 +94,21 @@ const testingProjectsRouter = (req, res) => {
       .catch(err => {
         res.status(404).json(err);
       });
+  },
+  getDeveloperFeedback = async (req, res) => {
+    const { developer_id: user_id } = req.params;
+    try {
+      const plansWithFeedback = await plans.getDeveloperCompletedPlans(user_id);
+      if (plansWithFeedback) {
+        res.status(200).json(plansWithFeedback);
+      } else {
+        res.status(404).json({ message: "Plans with feedback do not exist." });
+      }
+    } catch (error) {
+      res
+        .status(500)
+        .json({ message: `Feedback request failed ${error.message}.` });
+    }
   };
 
 module.exports = router => {
@@ -104,6 +119,6 @@ module.exports = router => {
   router.get("/project/:id", getProject); // <<< project page view
   router.get("/plan-view/:plan_id", developersPlan); //  <<< plan page view
   router.get("/project-list/:project_owner_id", listProjectOwnersProjects); // <<< project list view of project owner id
-
+  router.get("/developer-feedback/:developer_id", getDeveloperFeedback); // get feeback for completed projects
   return router;
 };
