@@ -1,5 +1,7 @@
 const Users = require("../users/userModel");
 const Projects = require("../projects/model");
+const Plans = require("../plans/planModel");
+const db = require("../../data/dbConfig");
 
 // 1
 const testProjectOwnerRoute = (req, res) => {
@@ -212,6 +214,36 @@ const testProjectOwnerRoute = (req, res) => {
         .json({ message: "You should be a Project Owner to do this" });
     }
   },
+  acceptPlan = async (req, res) => {
+    const userID = req.userID;
+    console.log("in accept plan");
+    const { project_id } = req.params;
+    const { planStatus, id } = req.body;
+    try {
+      const Plan = await db("plans")
+        .where({ id })
+        .andWhere({ project_id: project_id })
+        .first();
+      if (Plan) {
+        const PlanUpdate = { user_id: Plan.user_id };
+        if (planStatus) {
+          PlanUpdate.planStatus = planStatus;
+        }
+        const editedPlan = await Plans.updatePlan(id, PlanUpdate);
+        console.log(editedPlan, PlanUpdate, Plan);
+        res.status(200).json(editedPlan);
+      } else {
+        res.status(404).json({
+          message: `The plan with the specified ID does not exist.`
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        message: `Plan updated failed ${error.message}.`
+      });
+    }
+  },
   // prioritize last
   deleteProject = (req, res) => {
     res.send("endpoint to delete project owners project");
@@ -237,6 +269,7 @@ module.exports = router => {
   router.delete("/delete-project-project-owner", deleteProject);
   router.post("/submit-payment/:id", submitPayment);
   router.post("/message-project-owner", messageDeveloper);
+  router.put("/accept-plan/:project_id", acceptPlan);
 
   return router;
 };
