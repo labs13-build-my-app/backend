@@ -1,6 +1,5 @@
 const Users = require("../users/userModel");
 const Projects = require("../projects/model");
-// /api/projects
 
 // 1
 const testProjectOwnerRoute = (req, res) => {
@@ -26,8 +25,62 @@ const testProjectOwnerRoute = (req, res) => {
       });
   },
   // prioritize last
-  updateProjectOwner = (req, res) => {
-    res.send("endpoint to update project owner account");
+  // update developer user profile
+  updateProjectOwner = async (req, res) => {
+    const { id } = req.params;
+    const userRole = req.userRole;
+    if (userRole === "Project Owner") {
+      const {
+        firstName,
+        lastName,
+        image_url,
+        email,
+        linkedIn,
+        gitHub,
+        twitter
+      } = req.body;
+      try {
+        const user = await users.findUserById(id);
+        if (user) {
+          const userUpdate = { id };
+          if (firstName) {
+            userUpdate.firstName = firstName;
+          }
+          if (lastName) {
+            userUpdate.lastName = lastName;
+          }
+          if (image_url) {
+            userUpdate.image_url = image_url;
+          }
+          if (email) {
+            userUpdate.email = email;
+          }
+          if (linkedIn) {
+            userUpdate.linkedIn = linkedIn;
+          }
+          if (gitHub) {
+            userUpdate.gitHub = gitHub;
+          }
+          if (twitter) {
+            userUpdate.twitter = twitter;
+          }
+          const editedUser = await users.updateUser(userUpdate, id);
+          res.status(200).json(editedUser);
+        } else {
+          res.status(404).json({
+            message: `The User with the specified ID does not exist.`
+          });
+        }
+      } catch (error) {
+        res.status(500).json({
+          message: `User failed to update: ${error.message}.`
+        });
+      }
+    } else {
+      res
+        .status(403)
+        .json({ message: "You should be a ProjectOwner to do this" });
+    }
   },
   // prioritize last
 
@@ -58,7 +111,6 @@ const testProjectOwnerRoute = (req, res) => {
   // GET project owner's project by ID page view
 
   // GET project owner's project (Single) by ID page view <<< Marina
-
   getProjectOwnersProject = async (req, res) => {
     const userID = req.userID;
     const { id } = req.params;
@@ -77,7 +129,7 @@ const testProjectOwnerRoute = (req, res) => {
         .json({ message: `Project request failed ${error.message}.` });
     }
   },
-  // page view to create a project
+  // page view to create a project as Project Owner
   createProject = async (req, res) => {
     const userID = req.userID;
     const userRole = req.userRole;
@@ -94,7 +146,7 @@ const testProjectOwnerRoute = (req, res) => {
             name,
             description,
             budget,
-            dueDate,
+            dueDate: new Date(dueDate),
             projectStatus: "proposal",
             paymentStatus: "unpaid",
             image_url,
@@ -193,7 +245,6 @@ module.exports = router => {
   router.get("/test-project-owner", testProjectOwnerRoute);
   router.get("/dashboard-project-owner", projectOwnerDashboard);
   router.get("/user/project/:id", getProjectOwnersProject);
-
   router.put("/update-profile-project-owner", updateProjectOwner);
   router.delete("/delete-profile-project-owner", deleteProjectOwner);
   router.post("/create-project-project-owner", createProject);
