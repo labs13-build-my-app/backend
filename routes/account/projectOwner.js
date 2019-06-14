@@ -26,8 +26,62 @@ const testProjectOwnerRoute = (req, res) => {
       });
   },
   // prioritize last
-  updateProjectOwner = (req, res) => {
-    res.send("endpoint to update project owner account");
+  // update developer user profile
+  updateProjectOwner = async (req, res) => {
+    const { id } = req.params;
+    const userRole = req.userRole;
+    if (userRole === "Project Owner") {
+      const {
+        firstName,
+        lastName,
+        image_url,
+        email,
+        linkedIn,
+        gitHub,
+        twitter
+      } = req.body;
+      try {
+        const user = await users.findUserById(id);
+        if (user) {
+          const userUpdate = { id };
+          if (firstName) {
+            userUpdate.firstName = firstName;
+          }
+          if (lastName) {
+            userUpdate.lastName = lastName;
+          }
+          if (image_url) {
+            userUpdate.image_url = image_url;
+          }
+          if (email) {
+            userUpdate.email = email;
+          }
+          if (linkedIn) {
+            userUpdate.linkedIn = linkedIn;
+          }
+          if (gitHub) {
+            userUpdate.gitHub = gitHub;
+          }
+          if (twitter) {
+            userUpdate.twitter = twitter;
+          }
+          const editedUser = await users.updateUser(userUpdate, id);
+          res.status(200).json(editedUser);
+        } else {
+          res.status(404).json({
+            message: `The User with the specified ID does not exist.`
+          });
+        }
+      } catch (error) {
+        res.status(500).json({
+          message: `User failed to update: ${error.message}.`
+        });
+      }
+    } else {
+      res
+        .status(403)
+        .json({ message: "You should be a ProjectOwner to do this" });
+    }
   },
   // prioritize last
 
