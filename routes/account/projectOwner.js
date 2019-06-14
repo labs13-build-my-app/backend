@@ -42,7 +42,6 @@ const testProjectOwnerRoute = (req, res) => {
         res.status(500).json(err);
       });
   },
-
   listProjectOwnersProjects = (req, res) => {
     const projectOwner_id = req.userID;
 
