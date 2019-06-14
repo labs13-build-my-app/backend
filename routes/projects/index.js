@@ -8,6 +8,9 @@ const testingProjectsRouter = (req, res) => {
     res.send("testing projects route");
   },
   // GET for all projects list
+  // filter out completed and in progress
+  // only send back projects in proposal status
+  // remove filter on front end when implement these features
   // implement pagination
   getAllProjects = async (req, res) => {
     try {
