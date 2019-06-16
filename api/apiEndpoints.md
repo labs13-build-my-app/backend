@@ -34,11 +34,11 @@
 
   - `/api/account/developer/test-developer`
   - `/api/account/developer/dashboard-developer/:id`
-  - `/api/account/developer/update-profile-developer`
+  - `/api/account/developer//update-profile-developer/:id`
   - `/api/account/developer/delete-profile-developer`
-  - `/api/account/developer/submit-plan-developer`
-  - `/api/account/developer/update-plan-developer`
-  - `/api/account/developer/delete-plan-developer`
+  - `/api/account/developer/submit-plan-developer/:project_id`
+  - `/api/account/developer/update-plan/:id`
+  - `/api/account/developer/delete-plan/:plan_id`
   - `/api/account/developer/message-developer`
 
 - authenticated route provide token in header
@@ -49,10 +49,11 @@
   - `/api/account/project-owner/update-profile-project-owner`
   - `/api/account/project-owner/delete-profile-project-owner`
   - `/api/account/project-owner/create-project-project-owner`
-  - `/api/account/project-owner/update-project-project-owner`
+  - `/api/account/project-owner/update-project-project-owner/:id`
   - `/api/account/project-owner/delete-project-project-owner`
   - `/api/account/project-owner/submit-payment/:id`
   - `/api/account/project-owner/message-project-owner`
+  - `/api/account/project-owner/accept-plan/:project_id`
 
 - authenticated route provide token in header
 - /api/account/onboarding/
@@ -63,20 +64,23 @@
 /api/projects
 
 - `/api/projects/test-projects`
-- `/api/projects/list-all-projects`
-- `/api/projects/plan-list`
-- `/api/projects/project-owner`
-- `/api/projects/submitted-plan/:id`
+- `/api/projects/`
+- `/api/projects/plan-list-project/:project_id`
+- `/api/projects/plan-list-developer/:developer_id`
+- `/api/projects/plan-view/:plan_id`
+- `/api/projects/project-list/:project_owner_id`
+- `/api/projects/developer-feedback/:developer_id`
 - `/api/projects/project/:id`
 
 /api/users
 
 - `/api/users/test-users`
-- `/api/users/list-all-users`
-- `/api/users/developers`
+- `/api/users/profile/:user_id`
+- `/api/users/list-users`
+- `/api/users/list-developers`
 - `/api/users/project-owners`
-- `/api/users/developer/:developer-id`
-- `/api/users/project-owner/:project-owner-id`
+- `/api/users/user-developer/:id`
+- `/api/users/user-project-owner/:id`
 
 ## **list of routes**
 
