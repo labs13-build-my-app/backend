@@ -7,7 +7,8 @@ module.exports = {
   findDevUsers,
   findDevUserByID,
   findUserById,
-  updateUser
+  updateUser,
+  listDevelopers
 };
 
 function findUserById(user_id) {
@@ -62,6 +63,15 @@ function findDevUsers() {
       "linkedIn"
     );
 }
+
+function listDevelopers(page = 1) {
+  const size = 5;
+  return db("users")
+    .where({ role: "Developer" })
+    .limit(size)
+    .offset(page * size);
+}
+
 function findDevUserByID(id) {
   return db("users")
     .where({ role: "Developer", id })

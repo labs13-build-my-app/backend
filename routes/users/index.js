@@ -30,6 +30,26 @@ const testingUsers = (req, res) => {
   },
   // searching for developers
   // implement pagination
+  listPaginatedDevelopers = async (req, res) => {
+    const { page } = req.body;
+    const currentPage = page;
+    try {
+      const developers = await data.listDevelopers(page);
+      let nextPage = await data.listDevelopers(page + 1);
+      nextPage = nextPage.length > 0 ? page + 1 : 0;
+      if (developers) {
+        res.status(200).json({ developers, currentPage, nextPage });
+      } else {
+        res.status(404).json({
+          message: "The Developers could not be found in the database."
+        });
+      }
+    } catch (error) {
+      res.status(500).json({
+        message: `Developers request failed ${error.message}.`
+      });
+    }
+  },
   listDevelopers = async (req, res) => {
     try {
       data.findDevUsers().then(users => {
@@ -76,7 +96,7 @@ module.exports = router => {
   router.get("/profile/:user_id", userById); // <<< user profile page
   router.get("/test-users", testingUsers); // <<< test endpoint
   router.get("/list-users", allUsers); // <<< list all users
-  router.get("/list-developers", listDevelopers); // <<< listing developers
+  router.post("/list-developers", listPaginatedDevelopers); // <<< listing developers
   // router.post("/list-project-owners", listProjectOwners); // <<< listing project owners
   router.get("/user-developer/:id", viewDeveloper); // <<< might not need this, we have profile endpoing now
   router.get("/user-project-owner/:id", viewProjectOwner); // <<< might not need this, we have profile endpoing now
