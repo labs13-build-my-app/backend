@@ -12,6 +12,26 @@ const testingProjectsRouter = (req, res) => {
   // only send back projects in proposal status
   // remove filter on front end when implement these features
   // implement pagination
+  listOfProjectsbyProposalStatus = async (req, res) => {
+    const { page } = req.body;
+    const currentPage = page;
+    try {
+      const projects = await Projects.listProjectsbyProposal(page);
+      let nextPage = await Projects.listProjectsbyProposal(page + 1);
+      nextPage = nextPage.length > 0 ? page + 1 : 0;
+      if (projects) {
+        res.status(200).json({ projects, currentPage, nextPage });
+      } else {
+        res.status(404).json({
+          message: "The projects could not be found in the database."
+        });
+      }
+    } catch (error) {
+      res.status(500).json({
+        message: `Project request failed ${error.message}.`
+      });
+    }
+  },
   getAllProjects = async (req, res) => {
     try {
       const projects = await Projects.getAllProjects();
@@ -117,6 +137,7 @@ const testingProjectsRouter = (req, res) => {
 module.exports = router => {
   // router.get("/test-projects", testingProjectsRouter); // <<< test endpoint
   router.get("/", getAllProjects); // <<< list all projects in proposal status
+  router.post("/paginated-list-of-projects", listOfProjectsbyProposalStatus);
   router.get("/plan-list-project/:project_id", projectPlanList); // <<< plan list for project
   router.get("/plan-list-developer/:developer_id", developerPlanList); // <<< plan list for developer
   router.get("/project/:id", getProject); // <<< project page view

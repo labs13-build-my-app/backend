@@ -2,6 +2,14 @@ const db = require("../../data/dbConfig.js");
 
 const getAllProjects = () => db("projects");
 
+const listProjectsbyProposal = (page = 1) => {
+  const size = 15;
+  return db("projects")
+    .where({ projectStatus: "proposal" })
+    .limit(size)
+    .offset(page * size);
+};
+
 const findByProjectOwner = id => db("projects").where({ user_id: id });
 
 async function addProject(newProject) {
@@ -43,5 +51,6 @@ module.exports = {
   addProject,
   findById,
   findUserProjectById,
-  updateProject
+  updateProject,
+  listProjectsbyProposal
 };
