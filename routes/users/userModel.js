@@ -2,17 +2,19 @@ const db = require("../../data/dbConfig.js");
 const moment = require("moment");
 
 module.exports = {
+  activityUpdate,
+  findUserById,
   findUsers,
   findAuthorizedUser,
   createNewUser,
   findDevUsers,
-  findDevUserByID,
-  findUserById,
-  updateUser,
   listDevelopers,
-  activityUpdate
+  findDevUserByID,
+  updateUser
 };
 
+// when client fetchers for user info updated_field is updated if greater then set time
+// protected route
 async function activityUpdate(id) {
   try {
     const user = await db("users")
@@ -33,6 +35,7 @@ async function activityUpdate(id) {
   }
 }
 
+// find user by id
 function findUserById(user_id) {
   return db("users")
     .where({ id: user_id })
@@ -51,24 +54,38 @@ function findUserById(user_id) {
     .first();
 }
 
+// test function has no purpose for the app
 function findUsers() {
   return db("users").select("id", "firstName", "lastName", "email", "role");
 }
 
-function findAuthorizedUser(userID) {
-  const sub = userID;
-  console.log(sub, userID);
-  const result = db("users")
+// find logged in user by sub
+// protected route
+function findAuthorizedUser(sub) {
+  return db("users")
     .where({ sub })
+    .select(
+      "id",
+      "firstName",
+      "lastName",
+      "email",
+      "skills",
+      "role",
+      "devType",
+      "twitter",
+      "gitHub",
+      "linkedIn"
+    )
     .first();
-  return result;
 }
 
+// create a new user
+// protected route
 function createNewUser(user) {
-  console.log(user, "in user model");
   return db("users").insert(user, "id");
 }
 
+// list of developers, deprecated, use listDevelopers
 function findDevUsers() {
   return db("users")
     .where({ role: "Developer" })
@@ -86,6 +103,7 @@ function findDevUsers() {
     );
 }
 
+// list of developers, results are paginated and order by most resent updated activity
 async function listDevelopers(page = 1, per = 15, total_pages, update_pages) {
   try {
     if (per !== 0) {
@@ -98,15 +116,15 @@ async function listDevelopers(page = 1, per = 15, total_pages, update_pages) {
       if (total_pages || update_pages === false) {
         const has_more = page < total_pages ? true : false;
         return { per, page, total_pages, has_more, developers };
+      } else {
+        const developersList = await db("users").where({
+          role: "Developer"
+        });
+        const total = developersList.length;
+        total_pages = Math.ceil(total / per);
+        const has_more = page < total_pages ? true : false;
+        return { per, page, total_pages, has_more, developers };
       }
-      const developersList = await db("users").where({
-        role: "Developer"
-      });
-      const total = developersList.length;
-      total_pages = Math.ceil(total / per);
-      const has_more = page < total_pages ? true : false;
-      console.log(developers);
-      return { per, page, total_pages, has_more, developers };
     } else {
       const developers = await db("users").where({
         role: "Developer"
@@ -124,14 +142,7 @@ async function listDevelopers(page = 1, per = 15, total_pages, update_pages) {
   }
 }
 
-// function listDevelopers(page = 1) {
-//   const size = 5;
-//   return db("users")
-//     .where({ role: "Developer" })
-//     .limit(size)
-//     .offset(page * size);
-// }
-
+// find developer by id
 function findDevUserByID(id) {
   return db("users")
     .where({ role: "Developer", id })
@@ -150,6 +161,8 @@ function findDevUserByID(id) {
     .first();
 }
 
+// update user information
+// protected route
 async function updateUser(user, id) {
   const editedUser = await db("users")
     .where({ id })
@@ -159,5 +172,3 @@ async function updateUser(user, id) {
     return updatedUser;
   }
 }
-
-// add function to find not logged in user
