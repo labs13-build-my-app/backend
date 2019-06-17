@@ -1,11 +1,10 @@
-const { createNewUser, findAuthorizedUser } = require("../users/userModel");
+const {
+  createNewUser,
+  findAuthorizedUser,
+  activityUpdate
+} = require("../users/userModel");
 
-const testOnboardingRoute = (req, res) => {
-    console.log("here in onboarding, looks like it works");
-    res.send("I am a new user signing up");
-  },
-  userSignUp = async (req, res) => {
-    console.log("start sighn up");
+const userSignUp = async (req, res) => {
     const { sub } = req;
     const {
       role,
@@ -48,7 +47,6 @@ const testOnboardingRoute = (req, res) => {
           });
         })
         .catch(err => {
-          console.log(err);
           res.status(500).json({
             message: "unable to create user, please try again",
             error: err
@@ -62,25 +60,21 @@ const testOnboardingRoute = (req, res) => {
   },
   userLogin = async (req, res) => {
     const { sub, picture } = req;
-    console.log("USER ID IS", sub);
     try {
       const user = await findAuthorizedUser(sub);
       if (!user) {
-        console.log("sign up fool");
         res.status(200).json({ message: "please signup" });
       }
       if (user) {
-        console.log(picture, "is this goingto here?????");
+        activityUpdate(user.id);
         res.status(200).json({ ...user, picture });
       }
     } catch (error) {
-      console.log("incoming error");
       res.status(500).json({ message: error.message });
     }
   };
 
 module.exports = router => {
-  router.get("/test-onboarding", testOnboardingRoute);
   router.post("/signup", userSignUp);
   router.get("/login", userLogin);
 

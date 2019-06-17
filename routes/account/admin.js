@@ -1,6 +1,6 @@
 const data = require("../users/userModel");
 
-// 3
+// admin not in use atm
 
 const testAdminRoute = async (req, res) => {
     console.log("here in admin, looks like it works");
