@@ -13,9 +13,13 @@ const testingProjectsRouter = (req, res) => {
   // remove filter on front end when implement these features
   // implement pagination
   listOfProjectsbyProposalStatus = async (req, res) => {
-    const { page, per } = req.body;
+    const { page, per, total_pages } = req.body;
     try {
-      const projects = await Projects.listProjectsbyProposal(page, per);
+      const projects = await Projects.listProjectsbyProposal(
+        page,
+        per,
+        total_pages
+      );
       if (projects) {
         res.status(200).json(projects);
       } else {

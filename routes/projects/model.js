@@ -2,7 +2,7 @@ const db = require("../../data/dbConfig.js");
 
 const getAllProjects = () => db("projects");
 
-const listProjectsbyProposal = async (page = 1, per = 15) => {
+const listProjectsbyProposal = async (page = 1, per = 15, total_pages) => {
   try {
     if (per !== 0) {
       const projects = await db("projects")
@@ -10,9 +10,14 @@ const listProjectsbyProposal = async (page = 1, per = 15) => {
         .orderBy("id", "desc")
         .limit(per)
         .offset(page * per);
+
+      if (total_pages) {
+        const has_more = page < total_pages ? true : false;
+        return { per, page, total_pages, has_more, projects };
+      }
       const projectsList = await db("projects");
       const total = projectsList.length;
-      const total_pages = Math.ceil(total / per);
+      total_pages = Math.ceil(total / per);
       const has_more = page < total_pages ? true : false;
       return { per, page, total_pages, has_more, projects };
     } else {
