@@ -2,16 +2,9 @@ const Projects = require("./model");
 const plans = require("../plans/planModel");
 const db = require("../../data/dbConfig");
 
-// /api/projects
-// test endpoint not part of production
-const testingProjectsRouter = (req, res) => {
-    res.send("testing projects route");
-  },
-  // GET for all projects list
-  // filter out completed and in progress
-  // only send back projects in proposal status
-  // remove filter on front end when implement these features
-  // implement pagination
+const // /api/projects
+  // list of projects in proposal status
+  // results are paginated
   listOfProjectsbyProposalStatus = async (req, res) => {
     const { page, per, has_more, total_pages, update_pages } = req.body;
 
@@ -41,6 +34,7 @@ const testingProjectsRouter = (req, res) => {
       });
     }
   },
+  // list of all projects
   getAllProjects = async (req, res) => {
     try {
       const projects = await Projects.getAllProjects();
@@ -57,7 +51,7 @@ const testingProjectsRouter = (req, res) => {
       });
     }
   },
-  // plan page view
+  // plan page by plan id
   developersPlan = (req, res) => {
     const id = req.params.plan_id;
     plans
@@ -85,7 +79,7 @@ const testingProjectsRouter = (req, res) => {
         res.status(500).json(error);
       });
   },
-  // GET project by project ID page
+  // project page by project id
   getProject = async (req, res) => {
     const { id } = req.params;
     try {
@@ -104,6 +98,8 @@ const testingProjectsRouter = (req, res) => {
     }
   },
   // plan list for developer id
+  // list of developer plans
+  // deprecated no longer useing this method
   developerPlanList = (req, res) => {
     const { developer_id: user_id } = req.params;
     plans
@@ -116,6 +112,7 @@ const testingProjectsRouter = (req, res) => {
       });
   },
   // plan list for project id
+  // list of plans of project
   projectPlanList = (req, res) => {
     const { project_id } = req.params;
     plans
@@ -127,6 +124,7 @@ const testingProjectsRouter = (req, res) => {
         res.status(404).json(err);
       });
   },
+  // list of developer feed by of projects completed
   getDeveloperFeedback = async (req, res) => {
     const { developer_id: user_id } = req.params;
     try {
@@ -144,11 +142,10 @@ const testingProjectsRouter = (req, res) => {
   };
 
 module.exports = router => {
-  // router.get("/test-projects", testingProjectsRouter); // <<< test endpoint
   router.get("/", getAllProjects); // <<< list all projects in proposal status
-  router.post("/paginated-list-of-projects", listOfProjectsbyProposalStatus);
+  router.post("/paginated-list-of-projects", listOfProjectsbyProposalStatus); // <<< plan list for developers
   router.get("/plan-list-project/:project_id", projectPlanList); // <<< plan list for project
-  router.get("/plan-list-developer/:developer_id", developerPlanList); // <<< plan list for developer
+  router.get("/plan-list-developer/:developer_id", developerPlanList); // <<< plan list for developer, deprecated
   router.get("/project/:id", getProject); // <<< project page view
   router.get("/plan-view/:plan_id", developersPlan); //  <<< plan page view
   router.get("/project-list/:project_owner_id", listProjectOwnersProjects); // <<< project list view of project owner id
