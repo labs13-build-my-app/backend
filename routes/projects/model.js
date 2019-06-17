@@ -1,13 +1,28 @@
 const db = require("../../data/dbConfig.js");
 
-const getAllProjects = () => db("projects");
+module.exports = {
+  getAllProjects,
+  listProjectsbyProposal,
+  findByProjectOwner,
+  addProject,
+  findById,
+  findUserProjectById,
+  updateProject
+};
 
-const listProjectsbyProposal = async (
+// list all projects created
+async function getAllProjects() {
+  return db("projects");
+}
+
+// list all projects by status of proposal
+// returns paginated result
+async function listProjectsbyProposal(
   page = 1,
   per = 15,
   total_pages,
   update_pages
-) => {
+) {
   try {
     if (per !== 0) {
       const projects = await db("projects")
@@ -36,10 +51,14 @@ const listProjectsbyProposal = async (
   } catch (error) {
     throw error;
   }
-};
+}
 
-const findByProjectOwner = id => db("projects").where({ user_id: id });
+// find list of projects by project owner id
+async function findByProjectOwner(id) {
+  return db("projects").where({ user_id: id });
+}
 
+// add new project by project owner
 async function addProject(newProject) {
   const [id] = await db("projects").insert(newProject, "id");
   if (id) {
@@ -48,6 +67,7 @@ async function addProject(newProject) {
   }
 }
 
+// find project by project id
 async function findById(id) {
   const project = await db("projects")
     .where({ "projects.id": id })
@@ -55,6 +75,7 @@ async function findById(id) {
   return project;
 }
 
+// find project of project owner by project id and project owner id
 async function findUserProjectById(id, userID) {
   const project = await db("projects")
     .where({ "projects.id": id })
@@ -63,6 +84,7 @@ async function findUserProjectById(id, userID) {
   return project;
 }
 
+// update project by project id
 async function updateProject(project, id) {
   const editedProject = await db("projects")
     .where({ id })
@@ -72,13 +94,3 @@ async function updateProject(project, id) {
     return updatedProject;
   }
 }
-
-module.exports = {
-  getAllProjects,
-  findByProjectOwner,
-  addProject,
-  findById,
-  findUserProjectById,
-  updateProject,
-  listProjectsbyProposal
-};
