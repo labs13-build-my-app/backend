@@ -1,11 +1,12 @@
 const db = require("../../data/dbConfig");
 
+// add new plan on project from developer
 const addPlan = plan => {
-  console.log("checking what this plan is", plan);
   return db("plans").insert(plan, "id");
 };
 
 // list of all plans
+// might not need
 const getPlans = () => {
   return db("plans");
 };
@@ -20,13 +21,16 @@ const getDeveloperPlans = user_id => {
   return db("plans").where({ user_id });
 };
 
+// plan page by plan id
 const getPlanById = id => {
   return db("plans")
     .where({ id })
     .first();
 };
 
-async function updatePlan(id, changes) {
+// update developer plan
+// protected route
+const updatePlan = async (id, changes) => {
   const editedPlan = await db("plans")
     .where({ id })
     .update(changes);
@@ -34,14 +38,18 @@ async function updatePlan(id, changes) {
     const updatedPlan = await getPlanById(id);
     return updatedPlan;
   }
-}
+};
 
+// delete developer plan
+// protected route
 const deletePlan = id => {
   return db("plans")
     .where({ id })
     .del(id);
 };
 
+// list of developer plans in completed status with feedback
+// for feedback on developer page
 const getDeveloperCompletedPlans = user_id => {
   return db("plans")
     .select({
@@ -61,11 +69,11 @@ const getDeveloperCompletedPlans = user_id => {
 };
 
 module.exports = {
-  getPlans,
-  getDeveloperPlans,
-  getProjectPlans,
-  getPlanById,
   addPlan,
+  getPlans,
+  getProjectPlans,
+  getDeveloperPlans,
+  getPlanById,
   updatePlan,
   deletePlan,
   getDeveloperCompletedPlans
