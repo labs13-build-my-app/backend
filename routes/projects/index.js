@@ -13,14 +13,11 @@ const testingProjectsRouter = (req, res) => {
   // remove filter on front end when implement these features
   // implement pagination
   listOfProjectsbyProposalStatus = async (req, res) => {
-    const { page } = req.body;
-    const currentPage = page;
+    const { page, per } = req.body;
     try {
-      const projects = await Projects.listProjectsbyProposal(page);
-      let nextPage = await Projects.listProjectsbyProposal(page + 1);
-      nextPage = nextPage.length > 0 ? page + 1 : 0;
+      const projects = await Projects.listProjectsbyProposal(page, per);
       if (projects) {
-        res.status(200).json({ projects, currentPage, nextPage });
+        res.status(200).json(projects);
       } else {
         res.status(404).json({
           message: "The projects could not be found in the database."

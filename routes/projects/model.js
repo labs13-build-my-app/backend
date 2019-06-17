@@ -2,12 +2,28 @@ const db = require("../../data/dbConfig.js");
 
 const getAllProjects = () => db("projects");
 
-const listProjectsbyProposal = (page = 1) => {
-  const size = 15;
-  return db("projects")
-    .where({ projectStatus: "proposal" })
-    .limit(size)
-    .offset(page * size);
+const listProjectsbyProposal = async (page = 1, per = 15) => {
+  try {
+    if (per !== 0) {
+      const projects = await db("projects")
+        .where({ projectStatus: "proposal" })
+        .orderBy("id", "desc")
+        .limit(per)
+        .offset(page * per);
+      const projectsList = await db("projects");
+      const total = projectsList.length;
+      const total_pages = Math.ceil(total / per);
+      const has_more = page < total_pages ? true : false;
+      return { per, page, total_pages, has_more, projects };
+    } else {
+      const projects = await db("projects").where({
+        projectStatus: "proposal"
+      });
+      return { per: null, page: 1, total_pages: 1, has_more: false, projects };
+    }
+  } catch (error) {
+    throw error;
+  }
 };
 
 const findByProjectOwner = id => db("projects").where({ user_id: id });
