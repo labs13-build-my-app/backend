@@ -143,7 +143,7 @@ const // /api/projects
 
 module.exports = router => {
   router.get("/", getAllProjects); // <<< list all projects in proposal status
-  router.put("/paginated-list-of-projects", listOfProjectsbyProposalStatus); // <<< plan list for developers
+  router.get("/paginated-list-of-projects", listOfProjectsbyProposalStatus); // <<< plan list for developers
   router.get("/plan-list-project/:project_id", projectPlanList); // <<< plan list for project
   router.get("/plan-list-developer/:developer_id", developerPlanList); // <<< plan list for developer, deprecated
   router.get("/project-view/:project_id", getProject); // <<< project page view
