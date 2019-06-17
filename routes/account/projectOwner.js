@@ -247,10 +247,10 @@ module.exports = router => {
   router.put("/update-profile-project-owner", updateProjectOwner);
   router.delete("/delete-profile-project-owner", deleteProjectOwner);
   router.get("/project-page/:project_id", getProjectOwnersProject); // << might need this route
-  router.post("/create-project-project-owner", createProject);
-  router.put("/update-project-project-owner/:project_id", updateProject);
+  router.post("/create-project", createProject);
+  router.put("/update-project/:project_id", updateProject);
   router.put("/accept-plan/:project_id", acceptPlan);
-  router.delete("/delete-project-project-owner/:project_id", deleteProject);
+  router.delete("/delete-project/:project_id", deleteProject);
   // router.post("/submit-payment/:project_id", submitPayment);
   // router.post("/message-project-owner", messageDeveloper);
 

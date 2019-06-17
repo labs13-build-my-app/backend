@@ -84,17 +84,17 @@
 
 ## **/api/account/project-owner**
 
-| Method | endpont                                                               | Response | description |
-| :----: | :-------------------------------------------------------------------- | -------- | ----------- |
-|  PUT   | `/api/account/project-owner/update-profile-project-owner`             |          |             |
-| DELETE | `/api/account/project-owner/delete-profile-project-owner`             |          |             |
-|  GET   | `/api/account/project-owner/project-page/:project_id`                 |          |             |
-|  POST  | `/api/account/project-owner/create-project-project-owner`             |          |             |
-|  PUT   | `/api/account/project-owner/update-project-project-owner/:project_id` |          |             |
-|  PUT   | `/api/account/project-owner/accept-plan/:project_id`                  |          |             |
-| DELETE | `/api/account/project-owner/delete-project-project-owner/:project_id` |          |             |
+| Method | endpont                                                   | Response | description |
+| :----: | :-------------------------------------------------------- | -------- | ----------- |
+|  PUT   | `/api/account/project-owner/update-profile-project-owner` |          |             |
+| DELETE | `/api/account/project-owner/delete-profile-project-owner` |          |             |
+|  GET   | `/api/account/project-owner/project-page/:project_id`     |          |             |
+|  POST  | `/api/account/project-owner/create-project`               |          |             |
+|  PUT   | `/api/account/project-owner/update-project/:project_id`   |          |             |
+|  PUT   | `/api/account/project-owner/accept-plan/:project_id`      |          |             |
+| DELETE | `/api/account/project-owner/delete-project/:project_id`   |          |             |
 
-### Response `200` `/api/project-owner/update-profile-project-owner`
+### Response `200` `/api/account/project-owner/update-profile-project-owner`
 
 #### Req.body
 
@@ -111,12 +111,12 @@
 }
 ```
 
-### Response `200` `/api/project-owner/delete-profile-project-owner`
+### Response `200` `/api/account/project-owner/delete-profile-project-owner`
 
 - send token to headers
 - deletes user account
 
-### Response `200` `/api/project-owner/project-page/:project_id`
+### Response `200` `/api/account/project-owner/project-page/:project_id`
 
 - don't think this will be needed. there is an endpoint in `/api/projects` that returns a page view for a project
 
@@ -134,7 +134,7 @@
 }
 ```
 
-### Response `200` `/api/project-owner/create-project-project-owner`
+### Response `200` `/api/account/project-owner/create-project`
 
 #### Req.body
 
@@ -148,7 +148,7 @@
 }
 ```
 
-### Response `200` `/api/project-owner/update-project-project-owner/:project_id`
+### Response `200` `/api/account/project-owner/update-project/:project_id`
 
 #### Req.body
 
@@ -166,7 +166,7 @@
 }
 ```
 
-### Response `200` `/api/project-owner/accept-plan/:project_id
+### Response `200` `/api/account/project-owner/accept-plan/:project_id
 
 #### Req.body
 
@@ -176,7 +176,7 @@
 }
 ```
 
-### Response `200` `/api/project-owner/delete-profile-project-owner`
+### Response `200` `/api/account/project-owner/delete-project/:project_id`
 
 - send token to headers
 - deletes user account
@@ -212,6 +212,8 @@
 
 ### Response `200` `/api/account/onboarding/login`
 
+- every time this endpoint is access the user is updated with the latest time
+
 ```json
 {
   "id": 1,
@@ -236,7 +238,7 @@
 | Method | endpont                                           | Response | description |
 | :----: | :------------------------------------------------ | -------- | ----------- |
 |  GET   | `/`                                               |          |             |
-|  PUT   | `/api/projects/paginated-list-of-projects`        |          |             |
+|  GET   | `/api/projects/paginated-list-of-projects`        |          |             |
 |  GET   | `/api/projects/plan-list-project/:project_id`     |          |             |
 |  GET   | `/api/projects/plan-list-developer/:developer_id` |          |             |
 |  GET   | `/api/projects/project-view/:project_id`          |          |             |
@@ -268,6 +270,7 @@
 
 - list from most recently created `created_at`
 - paginated list of projects
+- query fields
 - `per` listed amount of projects per a page
 - `page` current page viewing
 - `total_pages` how many pages for a project
@@ -374,21 +377,24 @@
 
 ### Response `200` `/api/projects/project-list/:project_owner_id`
 
-- page view of a project
+- list of projects for project owner
 
 ```json
-{
-  "id": "1",
-  "name": "title of project",
-  "description": "description of project",
-  "image_url": "url", // wireframes for project
-  "budget": "200",
-  "dueDate": "unix time code",
-  "projectStatus": "proposal", // [proposal, in progress, completed]
-  "paymentStatus": "unpaid", // paid, unpaid
-  "feadback": "the developer did amazing", // feed back for the developer
-  "user_id": "1" // project owner id
-}
+[
+  {
+    "id": "1",
+    "name": "title of project",
+    "description": "description of project",
+    "image_url": "url", // wireframes for project
+    "budget": "200",
+    "dueDate": "unix time code",
+    "projectStatus": "proposal", // [proposal, in progress, completed]
+    "paymentStatus": "unpaid", // paid, unpaid
+    "feadback": "the developer did amazing", // feed back for the developer
+    "user_id": "1", // project owner id
+    "created_at": "YYYY MM DD hh:mm:ss"
+  }
+]
 ```
 
 ### Response `200` `/api/projects/developer-feedback/:developer_id`
@@ -407,7 +413,7 @@
 | :----: | :---------------------------- | ---------------------------------------------------------------------------------------- | --------------------------------------------------------- |
 |  GET   | `/api/users/profile/:user_id` | `200` - returns user data </br> `404` - user not found                                   | User data for profile page                                |
 |  GET   | `/api/users/list-users`       | `200` - list of all users </br> `404` - users not found </br> `500` - server error       | list of all users, no specific purpose other than testing |
-|  PUT   | `/api/users/list-developers`  | `200` - list of developers </br> `404` - developers not found </br> `500` - server error | paginated list of developers                              |
+|  GET   | `/api/users/list-developers`  | `200` - list of developers </br> `404` - developers not found </br> `500` - server error | paginated list of developers                              |
 
 ### Response `200` `/api/users/profile/:user_id`
 
@@ -454,6 +460,7 @@
 
 - list from most recently activity updated `updated_at`
 - paginated list of developers
+- query fields
 - `per` listed amount of projects per a page
 - `page` current page viewing
 - `total_pages` how many pages for a project
