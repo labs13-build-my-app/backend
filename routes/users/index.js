@@ -122,7 +122,7 @@ const testingUsers = (req, res) => {
     const { id } = req.body;
 
     data
-      .updateLoggedUser(id)
+      .activityUpdate(id)
       .then(updated => {
         res.status(200).json({ updated });
       })

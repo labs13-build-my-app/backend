@@ -1,4 +1,8 @@
-const { createNewUser, findAuthorizedUser } = require("../users/userModel");
+const {
+  createNewUser,
+  findAuthorizedUser,
+  activityUpdate
+} = require("../users/userModel");
 
 const testOnboardingRoute = (req, res) => {
     console.log("here in onboarding, looks like it works");
@@ -62,19 +66,16 @@ const testOnboardingRoute = (req, res) => {
   },
   userLogin = async (req, res) => {
     const { sub, picture } = req;
-    console.log("USER ID IS", sub);
     try {
       const user = await findAuthorizedUser(sub);
       if (!user) {
-        console.log("sign up fool");
         res.status(200).json({ message: "please signup" });
       }
       if (user) {
-        console.log(picture, "is this goingto here?????");
+        activityUpdate(user.id);
         res.status(200).json({ ...user, picture });
       }
     } catch (error) {
-      console.log("incoming error");
       res.status(500).json({ message: error.message });
     }
   };

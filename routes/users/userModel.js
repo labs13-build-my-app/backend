@@ -10,24 +10,24 @@ module.exports = {
   findUserById,
   updateUser,
   listDevelopers,
-  updateLoggedUser
+  activityUpdate
 };
 
-async function updateLoggedUser(id) {
-  const date = new Date(moment().format("YYYY-MM-DD hh:mm:ss")).getTime();
+async function activityUpdate(id) {
   try {
     const user = await db("users")
       .where({ id })
       .first();
+
     const time = new Date(user.updated_at).getTime();
+    const date = new Date(moment().format("YYYY-MM-DD hh:mm:ss")).getTime();
     if (date - time > 200000) {
-      const updated = await db("users")
+      await db("users")
         .where({ id })
         .update({ updated_at: moment().format("YYYY-MM-DD hh:mm:ss") });
-      return updated;
+      return true;
     }
-    const updated = 0;
-    return updated;
+    return false;
   } catch (error) {
     throw error;
   }
