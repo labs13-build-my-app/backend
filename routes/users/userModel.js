@@ -23,7 +23,7 @@ async function activityUpdate(id) {
 
     const time = new Date(user.updated_at).getTime();
     const date = new Date(moment().format("YYYY-MM-DD hh:mm:ss")).getTime();
-    if (date - time > 200000) {
+    if (date - time > 5) {
       await db("users")
         .where({ id })
         .update({ updated_at: moment().format("YYYY-MM-DD hh:mm:ss") });

@@ -6,7 +6,7 @@ const // /api/projects
   // list of projects in proposal status
   // results are paginated
   listOfProjectsbyProposalStatus = async (req, res) => {
-    const { page, per, has_more, total_pages, update_pages } = req.body;
+    const { page, per, has_more, total_pages, update_pages } = req.query;
 
     try {
       if (has_more === false) {

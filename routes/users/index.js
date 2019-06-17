@@ -26,7 +26,7 @@ const // /api/users
   // developer list with pagination
   // order by most recent updated activity
   listPaginatedDevelopers = async (req, res) => {
-    const { page, per, has_more, total_pages, update_pages } = req.body;
+    const { page, per, has_more, total_pages, update_pages } = req.query;
 
     try {
       if (has_more === false) {
