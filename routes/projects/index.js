@@ -2,13 +2,39 @@ const Projects = require("./model");
 const plans = require("../plans/planModel");
 const db = require("../../data/dbConfig");
 
-// /api/projects
-// test endpoint not part of production
-const testingProjectsRouter = (req, res) => {
-    res.send("testing projects route");
+const // /api/projects
+  // list of projects in proposal status
+  // results are paginated
+  listOfProjectsbyProposalStatus = async (req, res) => {
+    const { page, per, has_more, total_pages, update_pages } = req.query;
+
+    try {
+      if (has_more === false) {
+        res
+          .status(200)
+          .json({ per, page, total_pages, has_more, projects: [] });
+      } else {
+        const projects = await Projects.listProjectsbyProposal(
+          page,
+          per,
+          total_pages,
+          update_pages
+        );
+        if (projects) {
+          res.status(200).json(projects);
+        } else {
+          res.status(404).json({
+            message: "The projects could not be found in the database."
+          });
+        }
+      }
+    } catch (error) {
+      res.status(500).json({
+        message: `Project request failed ${error.message}.`
+      });
+    }
   },
-  // GET for all projects list
-  // implement pagination
+  // list of all projects
   getAllProjects = async (req, res) => {
     try {
       const projects = await Projects.getAllProjects();
@@ -25,7 +51,7 @@ const testingProjectsRouter = (req, res) => {
       });
     }
   },
-  // plan page view
+  // plan page by plan id
   developersPlan = (req, res) => {
     const id = req.params.plan_id;
     plans
@@ -53,9 +79,9 @@ const testingProjectsRouter = (req, res) => {
         res.status(500).json(error);
       });
   },
-  // GET project by project ID page
+  // project page by project id
   getProject = async (req, res) => {
-    const { id } = req.params;
+    const { project_id: id } = req.params;
     try {
       const project = await Projects.findById(id);
       if (project) {
@@ -72,6 +98,8 @@ const testingProjectsRouter = (req, res) => {
     }
   },
   // plan list for developer id
+  // list of developer plans
+  // deprecated no longer useing this method
   developerPlanList = (req, res) => {
     const { developer_id: user_id } = req.params;
     plans
@@ -84,6 +112,7 @@ const testingProjectsRouter = (req, res) => {
       });
   },
   // plan list for project id
+  // list of plans of project
   projectPlanList = (req, res) => {
     const { project_id } = req.params;
     plans
@@ -95,6 +124,7 @@ const testingProjectsRouter = (req, res) => {
         res.status(404).json(err);
       });
   },
+  // list of developer feed by of projects completed
   getDeveloperFeedback = async (req, res) => {
     const { developer_id: user_id } = req.params;
     try {
@@ -112,11 +142,11 @@ const testingProjectsRouter = (req, res) => {
   };
 
 module.exports = router => {
-  // router.get("/test-projects", testingProjectsRouter); // <<< test endpoint
   router.get("/", getAllProjects); // <<< list all projects in proposal status
+  router.get("/paginated-list-of-projects", listOfProjectsbyProposalStatus); // <<< plan list for developers
   router.get("/plan-list-project/:project_id", projectPlanList); // <<< plan list for project
-  router.get("/plan-list-developer/:developer_id", developerPlanList); // <<< plan list for developer
-  router.get("/project/:id", getProject); // <<< project page view
+  router.get("/plan-list-developer/:developer_id", developerPlanList); // <<< plan list for developer, deprecated
+  router.get("/project-view/:project_id", getProject); // <<< project page view
   router.get("/plan-view/:plan_id", developersPlan); //  <<< plan page view
   router.get("/project-list/:project_owner_id", listProjectOwnersProjects); // <<< project list view of project owner id
   router.get("/developer-feedback/:developer_id", getDeveloperFeedback); // get feeback for completed projects
