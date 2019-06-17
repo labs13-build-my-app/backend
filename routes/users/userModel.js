@@ -1,4 +1,5 @@
 const db = require("../../data/dbConfig.js");
+const moment = require("moment");
 
 module.exports = {
   findUsers,
@@ -8,8 +9,29 @@ module.exports = {
   findDevUserByID,
   findUserById,
   updateUser,
-  listDevelopers
+  listDevelopers,
+  updateLoggedUser
 };
+
+async function updateLoggedUser(id) {
+  const date = new Date(moment().format("YYYY-MM-DD hh:mm:ss")).getTime();
+  try {
+    const user = await db("users")
+      .where({ id })
+      .first();
+    const time = new Date(user.updated_at).getTime();
+    if (date - time > 200000) {
+      const updated = await db("users")
+        .where({ id })
+        .update({ updated_at: moment().format("YYYY-MM-DD hh:mm:ss") });
+      return updated;
+    }
+    const updated = 0;
+    return updated;
+  } catch (error) {
+    throw error;
+  }
+}
 
 function findUserById(user_id) {
   return db("users")
@@ -69,7 +91,7 @@ async function listDevelopers(page = 1, per = 15, total_pages, update_pages) {
     if (per !== 0) {
       const developers = await db("users")
         .where({ role: "Developer" })
-        .orderBy("id", "desc")
+        .orderBy("updated_at", "desc")
         .limit(per)
         .offset((page - 1) * per);
 

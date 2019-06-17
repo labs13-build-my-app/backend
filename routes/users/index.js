@@ -117,6 +117,19 @@ const testingUsers = (req, res) => {
       .catch(error => {
         res.status(404).json(error);
       });
+  },
+  updateUser = (req, res) => {
+    const { id } = req.body;
+
+    data
+      .updateLoggedUser(id)
+      .then(updated => {
+        res.status(200).json({ updated });
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json(err);
+      });
   };
 
 module.exports = router => {
@@ -127,6 +140,7 @@ module.exports = router => {
   // router.post("/list-project-owners", listProjectOwners); // <<< listing project owners
   router.get("/user-developer/:id", viewDeveloper); // <<< might not need this, we have profile endpoing now
   router.get("/user-project-owner/:id", viewProjectOwner); // <<< might not need this, we have profile endpoing now
+  router.put("/update-logged-user", updateUser); // <<< testing right now
 
   return router;
 };
