@@ -4,12 +4,7 @@ const {
   activityUpdate
 } = require("../users/userModel");
 
-const testOnboardingRoute = (req, res) => {
-    console.log("here in onboarding, looks like it works");
-    res.send("I am a new user signing up");
-  },
-  userSignUp = async (req, res) => {
-    console.log("start sighn up");
+const userSignUp = async (req, res) => {
     const { sub } = req;
     const {
       role,
@@ -52,7 +47,6 @@ const testOnboardingRoute = (req, res) => {
           });
         })
         .catch(err => {
-          console.log(err);
           res.status(500).json({
             message: "unable to create user, please try again",
             error: err
@@ -81,7 +75,6 @@ const testOnboardingRoute = (req, res) => {
   };
 
 module.exports = router => {
-  router.get("/test-onboarding", testOnboardingRoute);
   router.post("/signup", userSignUp);
   router.get("/login", userLogin);
 

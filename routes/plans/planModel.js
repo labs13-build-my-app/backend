@@ -45,6 +45,7 @@ const updatePlan = async (id, changes) => {
 const deletePlan = id => {
   return db("plans")
     .where({ id })
+    .andWhere({ planStatus: "proposal" })
     .del(id);
 };
 

@@ -2,34 +2,11 @@ const users = require("../users/userModel");
 const plans = require("../plans/planModel");
 const db = require("../../data/dbConfig");
 
-// /api/account/developer
-
-const testDeveloperRoute = (req, res) => {
-    console.log("here in developer, looks like it works");
-    res.send("I am a developer and I work, nice");
-  },
-  // this endpoint may no longer be valid
-  developerDashboard = (req, res) => {
-    const sub = req.sub;
-    res.send("I am a developer and I work, nice");
-    // users
-    //   .findAuthorizedUser(sub)
-    //   .then(user => {
-    //     res.status(200).json({
-    //       user,
-    //       error: false,
-    //       message: "The user was found in the database"
-    //     });
-    //   })
-    //   .catch(err => {
-    //     res.status(500).json({
-    //       message: `User request failed ${error.message}.`
-    //     });
-    //   });
-  },
+const // /api/account/developer
   // update developer user profile
+  // repeative code can be refactored
   updateDeveloper = async (req, res) => {
-    const { id } = req.params;
+    const { id } = req.userID;
     const userRole = req.userRole;
     if (userRole === "Developer") {
       const {
@@ -37,6 +14,7 @@ const testDeveloperRoute = (req, res) => {
         lastName,
         image_url,
         email,
+        devType,
         skills,
         linkedIn,
         gitHub,
@@ -60,6 +38,9 @@ const testDeveloperRoute = (req, res) => {
           }
           if (skills) {
             userUpdate.skills = skills;
+          }
+          if (devType) {
+            userUpdate.devType = devType;
           }
           if (linkedIn) {
             userUpdate.linkedIn = linkedIn;
@@ -87,6 +68,7 @@ const testDeveloperRoute = (req, res) => {
     }
   },
   // delete developer account with sub
+  // repeative code can be refactored
   deleteDeveloper = (req, res) => {
     const { sub } = req;
     users
@@ -99,8 +81,10 @@ const testDeveloperRoute = (req, res) => {
         res.status(500).json(err);
       });
   },
-  // this endpoint no longer needed I think
+  // list developer plans
   // endpoint for developer dashboard
+  // this endpoint no longer needed I think
+  // not in use
   listDevelopersPlans = (req, res) => {
     const userID = req.userID;
     console.log(userID, "this should console log before hitting the db");
@@ -164,11 +148,9 @@ const testDeveloperRoute = (req, res) => {
       });
   },
   // update a plan if only in status of proposal
-  // current bug updates plan regardless of status
   updatePlan = async (req, res) => {
     const userID = req.userID;
-    console.log("in update plan");
-    const { id } = req.params;
+    const { plan_id: id } = req.params;
     const { name, description, budget, dueDate, planStatus } = req.body;
     try {
       const Plan = await db("plans")
@@ -193,22 +175,19 @@ const testDeveloperRoute = (req, res) => {
           PlanUpdate.PlanStatus = PlanStatus;
         }
         const editedPlan = await plans.updatePlan(id, PlanUpdate);
-        console.log(editedPlan, PlanUpdate, Plan);
         res.status(200).json(editedPlan);
       } else {
         res.status(404).json({
-          message: `The project with the specified ID does not exist.`
+          message: `The Plan with the specified ID does not exist.`
         });
       }
     } catch (error) {
-      console.log(error);
       res.status(500).json({
-        message: `Project updated failed ${error.message}.`
+        message: `Plan updated failed ${error.message}.`
       });
     }
   },
   // delete a plan if only status of proposal
-  // current bug deletes plan regardless of status
   deletePlan = (req, res) => {
     const { plan_id: id } = req.params;
     plans
@@ -220,21 +199,19 @@ const testDeveloperRoute = (req, res) => {
         res.status(500).json(err);
       });
   },
-  // prioritize last
+  // not in use
   messageProjectOwner = (req, res) => {
     res.send("endpoint to message a project owner or maybe admin");
   };
 
+// /api/account/developer
 module.exports = router => {
-  router.get("/test-developer", testDeveloperRoute);
-  // router.get("/dashboard-developer", developerDashboard);  // <<< may no longer need
-  router.put("/update-profile-developer/:id", updateDeveloper); // <<< update developer by id on params
+  router.put("/update-profile-developer", updateDeveloper); // <<< update developer by id on params
   router.delete("/delete-profile-developer", deleteDeveloper); // <<< delete developer
-  // router.get("/plan-list", listDevelopersPlans); // <<< may no longer need
   router.post("/submit-plan-developer/:project_id", createPlan); // provide project id as id
-  router.put("/update-plan/:id", updatePlan); // provide plan id as id
+  router.put("/update-plan/:plan_id", updatePlan); // provide plan id as id
   router.delete("/delete-plan/:plan_id", deletePlan); // <<< delete by plan id
-  router.post("/message-developer", messageProjectOwner);
+  // router.post("/message-developer", messageProjectOwner);
 
   return router;
 };

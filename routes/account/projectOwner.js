@@ -3,31 +3,9 @@ const Projects = require("../projects/model");
 const Plans = require("../plans/planModel");
 const db = require("../../data/dbConfig");
 
-// 1
-const testProjectOwnerRoute = (req, res) => {
-    console.log("here in project owner, looks like it works");
-    res.send("I am a project owner, nice");
-  },
-  projectOwnerDashboard = (req, res) => {
-    const id = req.user_id;
-    // currently is sending basic user information
-    // incomplete need to be sending user specific information to dashboard
-    Users.findAuthorizedUser(id)
-      .then(user => {
-        res.status(200).json({
-          user,
-          error: false,
-          message: "The user were found in the database"
-        });
-      })
-      .catch(error => {
-        res.status(500).json({
-          message: `User request failed ${error.message}.`
-        });
-      });
-  },
-  // prioritize last
-  // update developer user profile
+const // /api/account/project-owner
+  // update project owner user profile
+  // repeative code can be refactored
   updateProjectOwner = async (req, res) => {
     const { id } = req.params;
     const userRole = req.userRole;
@@ -84,8 +62,8 @@ const testProjectOwnerRoute = (req, res) => {
         .json({ message: "You should be a ProjectOwner to do this" });
     }
   },
-  // prioritize last
-
+  // delete project account with sub
+  // repeative code can be refactored
   deleteProjectOwner = (req, res) => {
     const { sub } = req;
     Users.findAuthorizedUser(sub)
@@ -98,9 +76,10 @@ const testProjectOwnerRoute = (req, res) => {
       });
   },
   // GET project owner's project (Single) by ID page view <<< Marina
+  // might not need this route, up for review
   getProjectOwnersProject = async (req, res) => {
     const userID = req.userID;
-    const { id } = req.params;
+    const { project_id: id } = req.params;
     try {
       const project = await Projects.findUserProjectById(id, userID);
       if (project) {
@@ -153,9 +132,10 @@ const testProjectOwnerRoute = (req, res) => {
         .json({ message: "You should be a Project Owner to do this" });
     }
   },
+  // update project
   updateProject = async (req, res) => {
     const userID = req.userID;
-    const { id } = req.params;
+    const { project_id: id } = req.params;
     const userRole = req.userRole;
     if (userRole === "Project Owner") {
       const {
@@ -214,9 +194,9 @@ const testProjectOwnerRoute = (req, res) => {
         .json({ message: "You should be a Project Owner to do this" });
     }
   },
+  // accpet a plan
   acceptPlan = async (req, res) => {
     const userID = req.userID;
-    console.log("in accept plan");
     const { project_id } = req.params;
     const { planStatus, id } = req.body;
     try {
@@ -230,7 +210,6 @@ const testProjectOwnerRoute = (req, res) => {
           PlanUpdate.planStatus = planStatus;
         }
         const editedPlan = await Plans.updatePlan(id, PlanUpdate);
-        console.log(editedPlan, PlanUpdate, Plan);
         res.status(200).json(editedPlan);
       } else {
         res.status(404).json({
@@ -238,38 +217,42 @@ const testProjectOwnerRoute = (req, res) => {
         });
       }
     } catch (error) {
-      console.log(error);
       res.status(500).json({
         message: `Plan updated failed ${error.message}.`
       });
     }
   },
-  // prioritize last
+  // delete a project if only status of proposal
   deleteProject = (req, res) => {
-    res.send("endpoint to delete project owners project");
+    const { project_id: id } = req.params;
+    Projects.deleteProject(id)
+      .then(plan => {
+        res.status(200).json(plan);
+      })
+      .catch(err => {
+        res.status(500).json(err);
+      });
   },
-  // prioritize last
+  // not in use
   submitPayment = (req, res) => {
     res.send("endpoint for project owner to submit paymet to project");
   },
-  // prioritize last
+  // not in use
   messageDeveloper = (req, res) => {
     res.send("endpoint to message a project owner or maybe admin");
   };
 
 // /api/account/project-owner
 module.exports = router => {
-  router.get("/test-project-owner", testProjectOwnerRoute);
-  router.get("/dashboard-project-owner", projectOwnerDashboard);
-  router.get("/user/project/:id", getProjectOwnersProject);
   router.put("/update-profile-project-owner", updateProjectOwner);
   router.delete("/delete-profile-project-owner", deleteProjectOwner);
+  router.get("/project-page/:project_id", getProjectOwnersProject); // << might need this route
   router.post("/create-project-project-owner", createProject);
-  router.put("/update-project-project-owner/:id", updateProject); /// <<< MB
-  router.delete("/delete-project-project-owner", deleteProject);
-  router.post("/submit-payment/:id", submitPayment);
-  router.post("/message-project-owner", messageDeveloper);
+  router.put("/update-project-project-owner/:project_id", updateProject);
   router.put("/accept-plan/:project_id", acceptPlan);
+  router.delete("/delete-project-project-owner/project_id", deleteProject);
+  // router.post("/submit-payment/:project_id", submitPayment);
+  // router.post("/message-project-owner", messageDeveloper);
 
   return router;
 };

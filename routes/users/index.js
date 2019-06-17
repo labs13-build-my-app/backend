@@ -1,7 +1,6 @@
 const data = require("./userModel");
-// /api/users
 
-const // for testing
+const // /api/users
   allUsers = async (req, res) => {
     try {
       const users = await data.findUsers();

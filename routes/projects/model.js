@@ -94,3 +94,12 @@ async function updateProject(project, id) {
     return updatedProject;
   }
 }
+
+// delete developer plan
+// protected route
+async function deletePlan(id) {
+  return db("projects")
+    .where({ id })
+    .andWhere({ projectStatus: "proposal" })
+    .del(id);
+}
