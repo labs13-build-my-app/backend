@@ -81,7 +81,7 @@ const // /api/projects
   },
   // project page by project id
   getProject = async (req, res) => {
-    const { id } = req.params;
+    const { project_id: id } = req.params;
     try {
       const project = await Projects.findById(id);
       if (project) {
@@ -143,10 +143,10 @@ const // /api/projects
 
 module.exports = router => {
   router.get("/", getAllProjects); // <<< list all projects in proposal status
-  router.post("/paginated-list-of-projects", listOfProjectsbyProposalStatus); // <<< plan list for developers
+  router.put("/paginated-list-of-projects", listOfProjectsbyProposalStatus); // <<< plan list for developers
   router.get("/plan-list-project/:project_id", projectPlanList); // <<< plan list for project
   router.get("/plan-list-developer/:developer_id", developerPlanList); // <<< plan list for developer, deprecated
-  router.get("/project/:id", getProject); // <<< project page view
+  router.get("/project-view/:project_id", getProject); // <<< project page view
   router.get("/plan-view/:plan_id", developersPlan); //  <<< plan page view
   router.get("/project-list/:project_owner_id", listProjectOwnersProjects); // <<< project list view of project owner id
   router.get("/developer-feedback/:developer_id", getDeveloperFeedback); // get feeback for completed projects

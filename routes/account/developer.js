@@ -208,7 +208,7 @@ const // /api/account/developer
 module.exports = router => {
   router.put("/update-profile-developer", updateDeveloper); // <<< update developer by id on params
   router.delete("/delete-profile-developer", deleteDeveloper); // <<< delete developer
-  router.post("/submit-plan-developer/:project_id", createPlan); // provide project id as id
+  router.post("/submit-plan/:project_id", createPlan); // provide project id as id
   router.put("/update-plan/:plan_id", updatePlan); // provide plan id as id
   router.delete("/delete-plan/:plan_id", deletePlan); // <<< delete by plan id
   // router.post("/message-developer", messageProjectOwner);
