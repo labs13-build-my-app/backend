@@ -1,11 +1,6 @@
 const data = require("./userModel");
-// /api/users
 
-const testingUsers = (req, res) => {
-    console.log("here in users, looks like it works");
-    res.send("testing users route, looks like it works");
-  },
-  // for testing
+const // /api/users
   allUsers = async (req, res) => {
     try {
       const users = await data.findUsers();
@@ -28,24 +23,40 @@ const testingUsers = (req, res) => {
       });
     }
   },
-  // searching for developers
-  // implement pagination
-  listDevelopers = async (req, res) => {
+  // developer list with pagination
+  // order by most recent updated activity
+  listPaginatedDevelopers = async (req, res) => {
+    const { page, per, has_more, total_pages, update_pages } = req.query;
+
     try {
-      data.findDevUsers().then(users => {
-        res.status(200).json(users);
+      if (has_more === false) {
+        res
+          .status(200)
+          .json({ per, page, total_pages, has_more, developers: [] });
+      } else {
+        const developers = await data.listDevelopers(
+          page,
+          per,
+          total_pages,
+          update_pages
+        );
+        if (developers) {
+          res.status(200).json(developers);
+        } else {
+          res.status(404).json({
+            message: "The developers could not be found in the database."
+          });
+        }
+      }
+    } catch (error) {
+      res.status(500).json({
+        message: `Developer request failed ${error.message}.`
       });
-    } catch (err) {
-      res.status(500).json({ message: err });
     }
   },
-  // prioritize last
-  // listProjectOwners = async (req, res) => {
-  //   res.send("endpoint to to retrieve project owners");
-  // },
-  // developer page view
+  // developer page view by id
+  // not needed, all users are access through userById
   viewDeveloper = async (req, res) => {
-    console.log("please don't tell me that this is being reached");
     const id = Number(req.params.id);
     try {
       data.findDevUserByID(id).then(dev => {
@@ -56,12 +67,15 @@ const testingUsers = (req, res) => {
       res.status(500).json(err);
     }
   },
-  // project owner page view
+  // project owner page view by id
+  // not needed, all users are access through userById
   viewProjectOwner = async (req, res) => {
     res.send("endpoint to view a project owners page");
   },
+  // find user by id
   userById = async (req, res) => {
     const { user_id } = req.params;
+    console.log(user_id);
     data
       .findUserById(user_id)
       .then(user => {
@@ -70,16 +84,28 @@ const testingUsers = (req, res) => {
       .catch(error => {
         res.status(404).json(error);
       });
+  },
+  // is only a test function will be removed
+  updateUser = (req, res) => {
+    const { id } = req.body;
+
+    data
+      .activityUpdate(id)
+      .then(updated => {
+        res.status(200).json({ updated });
+      })
+      .catch(err => {
+        res.status(404).json(err);
+      });
   };
 
 module.exports = router => {
   router.get("/profile/:user_id", userById); // <<< user profile page
-  router.get("/test-users", testingUsers); // <<< test endpoint
   router.get("/list-users", allUsers); // <<< list all users
-  router.get("/list-developers", listDevelopers); // <<< listing developers
-  // router.post("/list-project-owners", listProjectOwners); // <<< listing project owners
-  router.get("/user-developer/:id", viewDeveloper); // <<< might not need this, we have profile endpoing now
-  router.get("/user-project-owner/:id", viewProjectOwner); // <<< might not need this, we have profile endpoing now
+  router.get("/list-developers", listPaginatedDevelopers); // <<< listing developers
+  // router.get("/user-developer/:id", viewDeveloper); // <<< might not need this, we have profile endpoint now
+  // router.get("/user-project-owner/:id", viewProjectOwner); // <<< might not need this, we have profile endpoing now
+  // router.put("/update-logged-user", updateUser); // <<< testing right now
 
   return router;
 };
