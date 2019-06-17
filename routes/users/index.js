@@ -31,24 +31,51 @@ const testingUsers = (req, res) => {
   // searching for developers
   // implement pagination
   listPaginatedDevelopers = async (req, res) => {
-    const { page } = req.body;
-    const currentPage = page;
+    const { page, per, has_more, total_pages, update_pages } = req.body;
+
     try {
-      const developers = await data.listDevelopers(page);
-      let nextPage = await data.listDevelopers(page + 1);
-      nextPage = nextPage.length > 0 ? page + 1 : 0;
-      if (developers) {
-        res.status(200).json({ developers, currentPage, nextPage });
+      if (has_more === false) {
+        res
+          .status(200)
+          .json({ per, page, total_pages, has_more, developers: [] });
       } else {
-        res.status(404).json({
-          message: "The Developers could not be found in the database."
-        });
+        const developers = await data.listDevelopers(
+          page,
+          per,
+          total_pages,
+          update_pages
+        );
+        if (developers) {
+          res.status(200).json(developers);
+        } else {
+          res.status(404).json({
+            message: "The developers could not be found in the database."
+          });
+        }
       }
     } catch (error) {
       res.status(500).json({
-        message: `Developers request failed ${error.message}.`
+        message: `Developer request failed ${error.message}.`
       });
     }
+    // const { page } = req.body;
+    // const currentPage = page;
+    // try {
+    //   const developers = await data.listDevelopers(page);
+    //   let nextPage = await data.listDevelopers(page + 1);
+    //   nextPage = nextPage.length > 0 ? page + 1 : 0;
+    //   if (developers) {
+    //     res.status(200).json({ developers, currentPage, nextPage });
+    //   } else {
+    //     res.status(404).json({
+    //       message: "The Developers could not be found in the database."
+    //     });
+    //   }
+    // } catch (error) {
+    //   res.status(500).json({
+    //     message: `Developers request failed ${error.message}.`
+    //   });
+    // }
   },
   listDevelopers = async (req, res) => {
     try {

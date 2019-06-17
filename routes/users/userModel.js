@@ -64,13 +64,51 @@ function findDevUsers() {
     );
 }
 
-function listDevelopers(page = 1) {
-  const size = 5;
-  return db("users")
-    .where({ role: "Developer" })
-    .limit(size)
-    .offset(page * size);
+async function listDevelopers(page = 1, per = 15, total_pages, update_pages) {
+  try {
+    if (per !== 0) {
+      const developers = await db("users")
+        .where({ role: "Developer" })
+        .orderBy("id", "desc")
+        .limit(per)
+        .offset((page - 1) * per);
+
+      if (total_pages || update_pages === false) {
+        const has_more = page < total_pages ? true : false;
+        return { per, page, total_pages, has_more, developers };
+      }
+      const developersList = await db("users").where({
+        role: "Developer"
+      });
+      const total = developersList.length;
+      total_pages = Math.ceil(total / per);
+      const has_more = page < total_pages ? true : false;
+      console.log(developers);
+      return { per, page, total_pages, has_more, developers };
+    } else {
+      const developers = await db("users").where({
+        role: "Developer"
+      });
+      return {
+        per: null,
+        page: 1,
+        total_pages: 1,
+        has_more: false,
+        developers
+      };
+    }
+  } catch (error) {
+    throw error;
+  }
 }
+
+// function listDevelopers(page = 1) {
+//   const size = 5;
+//   return db("users")
+//     .where({ role: "Developer" })
+//     .limit(size)
+//     .offset(page * size);
+// }
 
 function findDevUserByID(id) {
   return db("users")
