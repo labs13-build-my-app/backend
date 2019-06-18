@@ -4,14 +4,16 @@ const {
   userRouter,
   accountRouter,
   projectsRouter,
-  planRouter
+  planRouter,
+  messageRouter
 } = require("../routes");
 
-const root = (req, res) => {
+const root = async (req, res) => {
   res.send("sanity check");
 };
 
 module.exports = (server, router) => {
+  server.use("/api/message", messageRouter(router));
   server.use("/api/users", userRouter(router));
   server.use("/api/projects", projectsRouter(router));
   server.use(
@@ -22,5 +24,5 @@ module.exports = (server, router) => {
   );
   server.use("/api/plans", planRouter(router));
 
-  server.get("/", root);
+  server.post("/", root);
 };
