@@ -1,6 +1,17 @@
 const nodemailer = require("nodemailer");
 
 const sendEmail = async (req, res) => {
+  const { replyTo, text, to, name } = req.body;
+  const newEmailMessage = {
+    from: "Build My App <buildmyapplambda@gmail.com>",
+    sender: replyTo,
+    to: to,
+    replyTo: replyTo,
+    subject: `${name} Sent You A Message On Build My App`,
+    text: text,
+    html: `<p>${text}</p>`
+  };
+  console.log(newEmailMessage);
   async function sendMessage() {
     let transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
@@ -12,7 +23,7 @@ const sendEmail = async (req, res) => {
       }
     });
 
-    let info = await transporter.sendMail(req.body);
+    let info = await transporter.sendMail(newEmailMessage);
     messageInfo = info;
   }
   sendMessage()
