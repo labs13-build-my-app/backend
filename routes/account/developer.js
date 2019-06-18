@@ -172,7 +172,7 @@ const // /api/account/developer
           PlanUpdate.dueDate = dueDate;
         }
         if (planStatus) {
-          PlanUpdate.PlanStatus = PlanStatus;
+          PlanUpdate.planStatus = planStatus;
         }
         const editedPlan = await plans.updatePlan(id, PlanUpdate);
         res.status(200).json(editedPlan);
