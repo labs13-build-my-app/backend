@@ -4,7 +4,7 @@ const devTypes = ["web", "android", "iOS"];
 
 exports.seed = function(knex, Promise) {
   return knex("users")
-    .del()
+    .truncate()
     .then(function() {
       const userArr = [
         {

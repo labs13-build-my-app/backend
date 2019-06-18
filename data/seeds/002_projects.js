@@ -3,7 +3,7 @@ require("dotenv").config();
 
 exports.seed = function(knex, Promise) {
   return knex("projects")
-    .del()
+    .truncate()
     .then(function() {
       let projectsArr = [];
       let projectStatusArr = ["proposal", "in progress", "completed"];
