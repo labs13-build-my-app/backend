@@ -13,7 +13,23 @@ const getPlans = () => {
 
 // list of project plans
 const getProjectPlans = project_id => {
-  return db("plans").where({ project_id });
+  return db("plans")
+    .where({ project_id })
+    .innerJoin("users", "users.id", "plans.user_id")
+    .select(
+      "plans.id",
+      "plans.name",
+      "plans.description",
+      "plans.technologiesToUse",
+      "plans.budget",
+      "plans.dueDate",
+      "plans.planStatus",
+      "plans.project_id",
+      "plans.user_id",
+      "users.email",
+      "users.firstName",
+      "users.lastName"
+    );
 };
 
 // list of developer plans
