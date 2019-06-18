@@ -12,7 +12,21 @@ module.exports = {
 
 // list all projects created
 async function getAllProjects() {
-  return db("projects");
+  return db("projects")
+    .innerJoin("users", "users.id", "projects.user_id")
+    .select(
+      "projects.id",
+      "projects.name",
+      "projects.description",
+      "projects.image_url",
+      "projects.budget",
+      "projects.dueDate",
+      "projects.projectStatus",
+      "projects.paymentStatus",
+      "projects.feedback",
+      "users.email",
+      "users.firstName"
+    );
 }
 
 // list all projects by status of proposal
@@ -27,7 +41,21 @@ async function listProjectsbyProposal(
     if (per !== 0) {
       const projects = await db("projects")
         .where({ projectStatus: "proposal" })
-        .orderBy("id", "desc")
+        .innerJoin("users", "users.id", "projects.user_id")
+        .select(
+          "projects.id",
+          "projects.name",
+          "projects.description",
+          "projects.image_url",
+          "projects.budget",
+          "projects.dueDate",
+          "projects.projectStatus",
+          "projects.paymentStatus",
+          "projects.feedback",
+          "users.email",
+          "users.firstName"
+        )
+        .orderBy("projects.id", "desc")
         .limit(per)
         .offset((page - 1) * per);
 
@@ -35,17 +63,47 @@ async function listProjectsbyProposal(
         const has_more = page < total_pages ? true : false;
         return { per, page, total_pages, has_more, projects };
       }
-      const projectsList = await db("projects").where({
-        projectStatus: "proposal"
-      });
+      const projectsList = await db("projects")
+        .where({
+          projectStatus: "proposal"
+        })
+        .innerJoin("users", "users.id", "projects.user_id")
+        .select(
+          "projects.id",
+          "projects.name",
+          "projects.description",
+          "projects.image_url",
+          "projects.budget",
+          "projects.dueDate",
+          "projects.projectStatus",
+          "projects.paymentStatus",
+          "projects.feedback",
+          "users.email",
+          "users.firstName"
+        );
       const total = projectsList.length;
       total_pages = Math.ceil(total / per);
       const has_more = page < total_pages ? true : false;
       return { per, page, total_pages, has_more, projects };
     } else {
-      const projects = await db("projects").where({
-        projectStatus: "proposal"
-      });
+      const projects = await db("projects")
+        .where({
+          projectStatus: "proposal"
+        })
+        .innerJoin("users", "users.id", "projects.user_id")
+        .select(
+          "projects.id",
+          "projects.name",
+          "projects.description",
+          "projects.image_url",
+          "projects.budget",
+          "projects.dueDate",
+          "projects.projectStatus",
+          "projects.paymentStatus",
+          "projects.feedback",
+          "users.email",
+          "users.firstName"
+        );
       return { per: null, page: 1, total_pages: 1, has_more: false, projects };
     }
   } catch (error) {
@@ -71,6 +129,20 @@ async function addProject(newProject) {
 async function findById(id) {
   const project = await db("projects")
     .where({ "projects.id": id })
+    .innerJoin("users", "users.id", "projects.user_id")
+    .select(
+      "projects.id",
+      "projects.name",
+      "projects.description",
+      "projects.image_url",
+      "projects.budget",
+      "projects.dueDate",
+      "projects.projectStatus",
+      "projects.paymentStatus",
+      "projects.feedback",
+      "users.email",
+      "users.firstName"
+    )
     .first();
   return project;
 }
