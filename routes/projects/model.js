@@ -24,8 +24,10 @@ async function getAllProjects() {
       "projects.projectStatus",
       "projects.paymentStatus",
       "projects.feedback",
+      "projects.user_id",
       "users.email",
-      "users.firstName"
+      "users.firstName",
+      "users.lastName"
     );
 }
 
@@ -52,8 +54,10 @@ async function listProjectsbyProposal(
           "projects.projectStatus",
           "projects.paymentStatus",
           "projects.feedback",
+          "projects.user_id",
           "users.email",
-          "users.firstName"
+          "users.firstName",
+          "users.lastName"
         )
         .orderBy("projects.id", "desc")
         .limit(per)
@@ -78,8 +82,10 @@ async function listProjectsbyProposal(
           "projects.projectStatus",
           "projects.paymentStatus",
           "projects.feedback",
+          "projects.user_id",
           "users.email",
-          "users.firstName"
+          "users.firstName",
+          "users.lastName"
         );
       const total = projectsList.length;
       total_pages = Math.ceil(total / per);
@@ -101,8 +107,10 @@ async function listProjectsbyProposal(
           "projects.projectStatus",
           "projects.paymentStatus",
           "projects.feedback",
+          "projects.user_id",
           "users.email",
-          "users.firstName"
+          "users.firstName",
+          "users.lastName"
         );
       return { per: null, page: 1, total_pages: 1, has_more: false, projects };
     }
@@ -140,8 +148,10 @@ async function findById(id) {
       "projects.projectStatus",
       "projects.paymentStatus",
       "projects.feedback",
+      "projects.user_id",
       "users.email",
-      "users.firstName"
+      "users.firstName",
+      "users.lastName"
     )
     .first();
   return project;
