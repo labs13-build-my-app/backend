@@ -2,7 +2,7 @@ const faker = require('faker');
 
 exports.seed = function(knex, Promise) {
   return knex('plans').truncate()
-    .then(function () {
+    .del(function () {
       const plans = [];
       const statusOptions = ['submitted', 'selected', 'completed'];
       const devNum = Math.floor(Number(process.env.USERS) / 2) || 24;
