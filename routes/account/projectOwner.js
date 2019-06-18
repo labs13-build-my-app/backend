@@ -210,28 +210,44 @@ const // /api/account/project-owner
     }
   },
   // accpet a plan
+  // change plan status to selected
+  // should also change project to selected
   acceptPlan = async (req, res) => {
     const userID = req.userID;
     const { project_id } = req.params;
     const { planStatus, id } = req.body;
+
     try {
       const Plan = await db("plans")
         .where({ id })
         .andWhere({ project_id: project_id })
         .first();
-      if (Plan) {
+
+      const project = await db("projects")
+        .where({ id: project_id })
+        .first();
+
+      console.log(project_id);
+      if (Plan && project) {
         const PlanUpdate = { user_id: Plan.user_id };
+        const projectUpdate = { user_id: userID };
         if (planStatus) {
           PlanUpdate.planStatus = planStatus;
+          projectUpdate.projectStatus = planStatus;
         }
         const editedPlan = await Plans.updatePlan(id, PlanUpdate);
-        res.status(200).json(editedPlan);
+        const editedProject = await Projects.updateProject(
+          projectUpdate,
+          project_id
+        );
+        res.status(200).json({ ...editedPlan, ...editedProject });
       } else {
         res.status(404).json({
           message: `The plan with the specified ID does not exist.`
         });
       }
     } catch (error) {
+      console.log(error);
       res.status(500).json({
         message: `Plan updated failed ${error.message}.`
       });
