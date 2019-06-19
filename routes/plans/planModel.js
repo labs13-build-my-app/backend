@@ -16,6 +16,7 @@ const getProjectPlans = project_id => {
   return db("plans")
     .where({ project_id })
     .innerJoin("users", "users.id", "plans.user_id")
+    .innerJoin("projects", "plans.project_id", "projects.id")
     .select(
       "plans.id",
       "plans.name",
@@ -28,7 +29,8 @@ const getProjectPlans = project_id => {
       "plans.user_id",
       "users.email",
       "users.firstName",
-      "users.lastName"
+      "users.lastName",
+      { project_owner_id: "projects.user_id" }
     );
 };
 
