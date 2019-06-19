@@ -1,7 +1,7 @@
 const faker = require('faker');
 
 exports.seed = function(knex, Promise) {
-  return knex('plans').truncate()
+  return knex('plans')
     .del(function () {
       const plans = [];
       const statusOptions = ['submitted', 'selected', 'completed'];
@@ -22,7 +22,7 @@ exports.seed = function(knex, Promise) {
         plan.budget = Math.round(faker.finance.amount() * 100);
         plan.dueDate = faker.date.future();
         plan.planStatus = statusOptions[Math.floor(Math.random()*3)];
-        plan.user_id = Math.floor(Math.random()* devNum + 1);
+        plan.user_id = Math.floor(Math.random()* (devNum - 1) + 2);
         plan.project_id = Math.floor(Math.random()* projectNum + 1);
 
         plans.push(plan);
