@@ -7,7 +7,8 @@ module.exports = {
   addProject,
   findById,
   findUserProjectById,
-  updateProject
+  updateProject,
+  listProjectsbyProposalAndUserID
 };
 
 // list all projects created
@@ -67,26 +68,25 @@ async function listProjectsbyProposal(
         const has_more = page < total_pages ? true : false;
         return { per, page, total_pages, has_more, projects };
       }
-      const projectsList = await db("projects")
-        .where({
-          projectStatus: "proposal"
-        })
-        .innerJoin("users", "users.id", "projects.user_id")
-        .select(
-          "projects.id",
-          "projects.name",
-          "projects.description",
-          "projects.image_url",
-          "projects.budget",
-          "projects.dueDate",
-          "projects.projectStatus",
-          "projects.paymentStatus",
-          "projects.feedback",
-          "projects.user_id",
-          "users.email",
-          "users.firstName",
-          "users.lastName"
-        );
+      const projectsList = await db("projects").where({
+        projectStatus: "proposal"
+      });
+      // .innerJoin("users", "users.id", "projects.user_id")
+      // .select(
+      //   "projects.id",
+      //   "projects.name",
+      //   "projects.description",
+      //   "projects.image_url",
+      //   "projects.budget",
+      //   "projects.dueDate",
+      //   "projects.projectStatus",
+      //   "projects.paymentStatus",
+      //   "projects.feedback",
+      //   "projects.user_id",
+      //   "users.email",
+      //   "users.firstName",
+      //   "users.lastName"
+      // );
       const total = projectsList.length;
       total_pages = Math.ceil(total / per);
       const has_more = page < total_pages ? true : false;
@@ -112,6 +112,88 @@ async function listProjectsbyProposal(
           "users.firstName",
           "users.lastName"
         );
+      return { per: null, page: 1, total_pages: 1, has_more: false, projects };
+    }
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function listProjectsbyProposalAndUserID(
+  page = 1,
+  per = 0,
+  total_pages,
+  update_pages,
+  user_id
+) {
+  try {
+    if (per !== 0) {
+      const projects = await db("projects")
+        .where({ projectStatus: "proposal" })
+        .innerJoin("users", "users.id", "projects.user_id")
+        .select(
+          "projects.id",
+          "projects.name",
+          "projects.description",
+          "projects.image_url",
+          "projects.budget",
+          "projects.dueDate",
+          "projects.projectStatus",
+          "projects.paymentStatus",
+          "projects.feedback",
+          "projects.user_id",
+          "users.email",
+          "users.firstName",
+          "users.lastName"
+        )
+        .orderBy("projects.id", "desc")
+        .limit(per)
+        .offset((page - 1) * per);
+
+      if (total_pages || update_pages === false) {
+        const has_more = page < total_pages ? true : false;
+        return { per, page, total_pages, has_more, projects };
+      }
+      const projectsList = await db("projects").where({
+        projectStatus: "proposal"
+      });
+      const total = projectsList.length;
+      total_pages = Math.ceil(total / per);
+      const has_more = page < total_pages ? true : false;
+      return { per, page, total_pages, has_more, projects };
+    } else {
+      const projects = await db("projects")
+        .leftJoin("plans", "plans.project_id", "projects.id")
+        .innerJoin("users", "users.id", "projects.user_id")
+        .where({
+          projectStatus: "proposal"
+        })
+        .andWhere(function() {
+          this.whereNull("plans.user_id").orWhere(
+            "plans.user_id",
+            "!=",
+            user_id
+          );
+        })
+        .select({
+          projectID: "projects.id",
+          projectName: "projects.name",
+          projectDecription: "projects.description",
+          projectImageUrl: "projects.image_url",
+          projectBudget: "projects.budget",
+          projectDueDate: "projects.dueDate",
+          projectProjectStatus: "projects.projectStatus",
+          projectPaymentStatus: "projects.paymentStatus",
+          projectFeedback: "projects.feedback",
+          projectProjectOwnerID: "projects.user_id",
+          plansDeveloperId: "plans.user_id",
+          plansName: "plans.name",
+          plansId: "plans.id",
+          userEmail: "users.email",
+          userFirstName: "users.firstName",
+          userLastName: "users.lastName"
+        });
+
       return { per: null, page: 1, total_pages: 1, has_more: false, projects };
     }
   } catch (error) {

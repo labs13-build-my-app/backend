@@ -105,7 +105,7 @@ const // /api/account/developer
     const sub = req.sub;
     const id = req.userID;
     const { project_id } = req.params;
-    const planStatus = "proposal";
+    const planStatus = "submited";
     const { name, description, technologiesToUse, dueDate, budget } = req.body;
     const plan = {};
     console.log(project_id, id, sub);
@@ -129,8 +129,6 @@ const // /api/account/developer
           plan.dueDate = dueDate;
           plan.planStatus = planStatus;
           plan.project_id = Number(project_id);
-
-          console.log(plan);
           return plans.addPlan(plan);
         } else {
           throw new Error("plan already exist for developer");

@@ -1,25 +1,44 @@
 const Projects = require("./model");
 const plans = require("../plans/planModel");
 const db = require("../../data/dbConfig");
+const tokenVerification = require("../../customMiddleware/tokenVerification");
+const retriveUserId = require("../../customMiddleware/retriveUserID");
 
 const // /api/projects
   // list of projects in proposal status
   // results are paginated
   listOfProjectsbyProposalStatus = async (req, res) => {
-    const { page, per, has_more, total_pages, update_pages } = req.query;
-
+    const {
+      page,
+      per,
+      has_more,
+      total_pages,
+      update_pages,
+      user_id
+    } = req.query;
+    let projects;
     try {
       if (has_more === false) {
         res
           .status(200)
           .json({ per, page, total_pages, has_more, projects: [] });
       } else {
-        const projects = await Projects.listProjectsbyProposal(
-          page,
-          per,
-          total_pages,
-          update_pages
-        );
+        if (user_id) {
+          projects = await Projects.listProjectsbyProposalAndUserID(
+            page,
+            per,
+            total_pages,
+            update_pages,
+            user_id
+          ); // <<
+        } else {
+          projects = await Projects.listProjectsbyProposal(
+            page,
+            per,
+            total_pages,
+            update_pages
+          );
+        }
         if (projects) {
           res.status(200).json(projects);
         } else {
