@@ -202,8 +202,20 @@ async function listProjectsbyProposalAndUserID(
 }
 
 // find list of projects by project owner id
-async function findByProjectOwner(id) {
-  return db("projects").where({ user_id: id });
+async function findByProjectOwner(user_id) {
+  const projects = await db("projects").where({ user_id });
+
+  const promises = projects.map(
+    async project =>
+      await db("plans")
+        .where({ project_id: project.id })
+        .then(plans => {
+          project.plans = plans;
+          return project;
+        })
+  );
+
+  return Promise.all(promises).then(results => results);
 }
 
 // add new project by project owner
