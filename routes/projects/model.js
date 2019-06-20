@@ -28,7 +28,8 @@ async function getAllProjects() {
       "projects.user_id",
       "users.email",
       "users.firstName",
-      "users.lastName"
+      "users.lastName",
+      "users.profile_picture_url"
     );
 }
 
@@ -58,7 +59,8 @@ async function listProjectsbyProposal(
           "projects.user_id",
           "users.email",
           "users.firstName",
-          "users.lastName"
+          "users.lastName",
+          "users.profile_picture_url"
         )
         .orderBy("projects.id", "desc")
         .limit(per)
@@ -110,7 +112,8 @@ async function listProjectsbyProposal(
           "projects.user_id",
           "users.email",
           "users.firstName",
-          "users.lastName"
+          "users.lastName",
+          "users.profile_picture_url"
         );
       return { per: null, page: 1, total_pages: 1, has_more: false, projects };
     }
@@ -155,7 +158,8 @@ async function listProjectsbyProposalAndUserID(
           plansId: "plans.id",
           userEmail: "users.email",
           userFirstName: "users.firstName",
-          userLastName: "users.lastName"
+          userLastName: "users.lastName",
+          projectOwnerAvatar: "users.profile_picture_url"
         })
         .orderBy("projects.id", "desc")
         .limit(per)
@@ -202,7 +206,8 @@ async function listProjectsbyProposalAndUserID(
           plansId: "plans.id",
           userEmail: "users.email",
           userFirstName: "users.firstName",
-          userLastName: "users.lastName"
+          userLastName: "users.lastName",
+          projectOwnerAvatar: "users.profile_picture_url"
         });
 
       return { per: null, page: 1, total_pages: 1, has_more: false, projects };
@@ -256,7 +261,8 @@ async function findById(id) {
       "projects.user_id",
       "users.email",
       "users.firstName",
-      "users.lastName"
+      "users.lastName",
+      { projectOwnerAvatar: "users.profile_picture_url" }
     )
     .first();
   return project;
