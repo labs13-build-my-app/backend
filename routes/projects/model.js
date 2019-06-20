@@ -121,31 +121,42 @@ async function listProjectsbyProposal(
 
 async function listProjectsbyProposalAndUserID(
   page = 1,
-  per = 0,
+  per = 15,
   total_pages,
   update_pages,
-  user_id
+  userid
 ) {
   try {
     if (per !== 0) {
       const projects = await db("projects")
-        .where({ projectStatus: "proposal" })
+        .leftJoin("plans", "plans.project_id", "projects.id")
         .innerJoin("users", "users.id", "projects.user_id")
-        .select(
-          "projects.id",
-          "projects.name",
-          "projects.description",
-          "projects.image_url",
-          "projects.budget",
-          "projects.dueDate",
-          "projects.projectStatus",
-          "projects.paymentStatus",
-          "projects.feedback",
-          "projects.user_id",
-          "users.email",
-          "users.firstName",
-          "users.lastName"
-        )
+        .where({ projectStatus: "proposal" })
+        .andWhere(function() {
+          this.whereNull("plans.user_id").orWhere(
+            "plans.user_id",
+            "!=",
+            userid
+          );
+        })
+        .select({
+          projectID: "projects.id",
+          projectName: "projects.name",
+          projectDecription: "projects.description",
+          projectImageUrl: "projects.image_url",
+          projectBudget: "projects.budget",
+          projectDueDate: "projects.dueDate",
+          projectProjectStatus: "projects.projectStatus",
+          projectPaymentStatus: "projects.paymentStatus",
+          projectFeedback: "projects.feedback",
+          projectProjectOwnerID: "projects.user_id",
+          plansDeveloperId: "plans.user_id",
+          plansName: "plans.name",
+          plansId: "plans.id",
+          userEmail: "users.email",
+          userFirstName: "users.firstName",
+          userLastName: "users.lastName"
+        })
         .orderBy("projects.id", "desc")
         .limit(per)
         .offset((page - 1) * per);
@@ -172,7 +183,7 @@ async function listProjectsbyProposalAndUserID(
           this.whereNull("plans.user_id").orWhere(
             "plans.user_id",
             "!=",
-            user_id
+            userid
           );
         })
         .select({
