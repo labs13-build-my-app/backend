@@ -31,6 +31,7 @@ exports.seed = function(knex, Promise) {
         user.linkedIn = `https://www.linkedin.com/in/${userName}`;
         user.gitHub = `https://www.github.com/${userName}`;
         user.twitter = `https://www.twitter.com/${userName}`;
+        user.profile_picture_url = faker.image.avatar();
         userArr.push(user);
       }
 
@@ -41,6 +42,7 @@ exports.seed = function(knex, Promise) {
         user.firstName = faker.name.firstName();
         user.lastName = faker.name.lastName();
         user.email = faker.internet.email();
+        user.profile_picture_url = faker.image.avatar();
         user.role = "Project Owner";
         user.linkedIn = `https://www.linkedin.com/in/${userName}`;
         user.gitHub = `https://www.github.com/${userName}`;
