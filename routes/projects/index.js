@@ -96,7 +96,7 @@ const // /api/projects
           : res.status(200).json(projects);
       })
       .catch(error => {
-        res.status(500).json(error);
+        res.status(500).json(error.message);
       });
   },
   // project page by project id
