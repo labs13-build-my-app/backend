@@ -91,6 +91,7 @@ const getSelectedPlan = project_id => {
   return db("plans")
     .where({ project_id })
     .andWhere({ planStatus: "selected" })
+    .orWhere({ planStatus: "Completed" })
     .first();
 };
 
