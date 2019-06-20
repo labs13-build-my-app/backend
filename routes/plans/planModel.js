@@ -85,6 +85,13 @@ const getDeveloperCompletedPlans = user_id => {
     .andWhere({ "plans.planStatus": "completed" });
 };
 
+const getSelectedPlan = project_id => {
+  return db("plans")
+    .where({ project_id })
+    .andWhere({ planStatus: "selected" })
+    .first();
+};
+
 module.exports = {
   addPlan,
   getPlans,
@@ -93,5 +100,6 @@ module.exports = {
   getPlanById,
   updatePlan,
   deletePlan,
-  getDeveloperCompletedPlans
+  getDeveloperCompletedPlans,
+  getSelectedPlan
 };
