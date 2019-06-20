@@ -17,6 +17,7 @@ exports.up = function(knex, Promise) {
     tbl.string("linkedIn");
     tbl.string("gitHub");
     tbl.string("twitter");
+    tbl.string("profile_picture_url");
     tbl.timestamps(true, true);
   });
 };
