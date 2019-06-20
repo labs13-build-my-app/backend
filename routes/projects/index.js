@@ -40,6 +40,7 @@ const // /api/projects
           );
         }
         if (projects) {
+          console.log(projects);
           res.status(200).json(projects);
         } else {
           res.status(404).json({
