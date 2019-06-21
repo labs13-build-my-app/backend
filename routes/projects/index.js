@@ -86,6 +86,21 @@ const // /api/projects
         res.status(500).json(err);
       });
   },
+  // plan page by plan id
+  selectedPlan = (req, res) => {
+    const { project_id } = req.params;
+    plans
+      .getSelectedPlan(project_id)
+      .then(plan => {
+        if (plan === undefined) {
+          throw new Error("no plan found by this id");
+        }
+        res.status(200).json(plan);
+      })
+      .catch(err => {
+        res.status(500).json(err);
+      });
+  },
   // Get project owner's All projects <<< Joe
   listProjectOwnersProjects = (req, res) => {
     const projectOwner_id = req.params.project_owner_id;
@@ -168,6 +183,7 @@ module.exports = router => {
   router.get("/plan-list-developer/:developer_id", developerPlanList); // <<< plan list for developer, deprecated
   router.get("/project-view/:project_id", getProject); // <<< project page view
   router.get("/plan-view/:plan_id", developersPlan); //  <<< plan page view
+  router.get("/selected-plan/:project_id", selectedPlan); //  <<< plan page view
   router.get("/project-list/:project_owner_id", listProjectOwnersProjects); // <<< project list view of project owner id
   router.get("/developer-feedback/:developer_id", getDeveloperFeedback); // get feeback for completed projects
   return router;
