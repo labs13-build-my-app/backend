@@ -49,7 +49,8 @@ function findUserById(user_id) {
       "devType",
       "twitter",
       "gitHub",
-      "linkedIn"
+      "linkedIn",
+      "profile_picture_url"
     )
     .first();
 }
