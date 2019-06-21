@@ -1,6 +1,6 @@
 const faker = require("faker");
 require("dotenv").config();
-const devTypes = ["web", "android", "iOS"];
+const devTypes = ["Web", "Android", "iOS"];
 
 exports.seed = function(knex, Promise) {
   return knex("users")
