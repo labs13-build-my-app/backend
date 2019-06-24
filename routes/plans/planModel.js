@@ -77,6 +77,7 @@ const getDeveloperCompletedPlans = user_id => {
       feedback: "projects.feedback",
       projectID: "projects.id",
       projectName: "projects.name",
+      projectImage: "projects.image_url",
       projectOwnerID: "projects.user_id",
       projectOwnerFirstName: "users.firstName",
       projectOwnerLastName: "users.lastName"
