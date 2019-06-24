@@ -233,7 +233,8 @@ const // /api/account/project-owner
         const projectUpdate = { user_id: userID };
         if (planStatus) {
           PlanUpdate.planStatus = planStatus;
-          projectUpdate.projectStatus = planStatus;
+          projectUpdate.projectStatus =
+            planStatus === "selected" ? "in progress" : "proposal";
         }
         const editedPlan = await Plans.updatePlan(id, PlanUpdate);
         const editedProject = await Projects.updateProject(

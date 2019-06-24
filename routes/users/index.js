@@ -105,7 +105,7 @@ module.exports = router => {
   router.get("/list-developers", listPaginatedDevelopers); // <<< listing developers
   // router.get("/user-developer/:id", viewDeveloper); // <<< might not need this, we have profile endpoint now
   // router.get("/user-project-owner/:id", viewProjectOwner); // <<< might not need this, we have profile endpoing now
-  // router.put("/update-logged-user", updateUser); // <<< testing right now
+  router.put("/update-logged-user", updateUser); // <<< testing right now
 
   return router;
 };
