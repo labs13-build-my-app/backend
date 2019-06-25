@@ -273,6 +273,47 @@ const // /api/account/project-owner
   messageDeveloper = (req, res) => {
     res.send("endpoint to message a project owner or maybe admin");
   };
+completedPlansByProjectID = (req, res) => {
+  const { project_id } = req.params;
+  db("plans")
+    .where({ project_id })
+    .andWhere({ planStatus: "completed" })
+    .first()
+    .then(plan => {
+      console.log(plan);
+      res.status(200).json(plan);
+    })
+    .catch(err => {
+      res.status(500).json(err.message);
+    });
+};
+updateCompletedProject = (req, res) => {
+  console.log(req.body);
+
+  const userID = req.userID;
+  const { project_id } = req.params;
+  const projectOwnerID = req.body.user_id;
+
+  console.log(projectOwnerID);
+  const userRole = req.userRole;
+  db("projects")
+    .where({ id: project_id })
+    .update({ projectStatus: "completed" }, "id")
+    .then(() => {
+      Projects.findByProjectOwner(projectOwnerID)
+        .then(projects => {
+          projects.length === 0
+            ? res.status(200).json({ message: "No Projects" })
+            : res.status(200).json(projects);
+        })
+        .catch(error => {
+          res.status(500).json(error.message);
+        });
+    })
+    .catch(err => {
+      res.status(500).json(err.message);
+    });
+};
 
 // /api/account/project-owner
 module.exports = router => {
@@ -283,6 +324,8 @@ module.exports = router => {
   router.put("/update-project/:project_id", updateProject);
   router.put("/accept-plan/:project_id", acceptPlan);
   router.delete("/delete-project/:project_id", deleteProject);
+  router.post("/completed-plans/:project_id", completedPlansByProjectID);
+  router.put("/update-completed-project/:project_id", updateCompletedProject);
   // router.post("/submit-payment/:project_id", submitPayment);
   // router.post("/message-project-owner", messageDeveloper);
 
