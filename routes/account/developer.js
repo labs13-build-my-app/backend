@@ -20,15 +20,12 @@ const // /api/account/developer
         gitHub,
         twitter
       } = req.body;
-      console.log(id);
       try {
         const user = await users.findUserById(id);
         if (user) {
-          console.log("Testing");
           const userUpdate = { id };
           if (firstName) {
             userUpdate.firstName = firstName;
-            console.log("userUpdate", userUpdate);
           }
           if (lastName) {
             userUpdate.lastName = lastName;
