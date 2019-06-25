@@ -6,7 +6,7 @@ const // /api/account/developer
   // update developer user profile
   // repeative code can be refactored
   updateDeveloper = async (req, res) => {
-    const { id } = req.userID;
+    const id = req.userID;
     const userRole = req.userRole;
     if (userRole === "Developer") {
       const {
@@ -20,12 +20,15 @@ const // /api/account/developer
         gitHub,
         twitter
       } = req.body;
+      console.log(id);
       try {
         const user = await users.findUserById(id);
         if (user) {
+          console.log("Testing");
           const userUpdate = { id };
           if (firstName) {
             userUpdate.firstName = firstName;
+            console.log("userUpdate", userUpdate);
           }
           if (lastName) {
             userUpdate.lastName = lastName;
