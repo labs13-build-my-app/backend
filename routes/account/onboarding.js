@@ -15,7 +15,8 @@ const userSignUp = async (req, res) => {
       devType,
       linkedIn,
       gitHub,
-      twitter
+      twitter,
+      profilePictureUrl
     } = req.body;
 
     if (role === "Developer" || role === "Project Owner") {
@@ -29,7 +30,8 @@ const userSignUp = async (req, res) => {
         devType,
         linkedIn,
         gitHub,
-        twitter
+        twitter,
+        profile_picture_url: profilePictureUrl
       })
         .then(userid => {
           const id = userid[0];
@@ -43,7 +45,8 @@ const userSignUp = async (req, res) => {
             devType,
             linkedIn,
             gitHub,
-            twitter
+            twitter,
+            profile_picture_url: profilePictureUrl
           });
         })
         .catch(err => {
