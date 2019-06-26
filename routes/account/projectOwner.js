@@ -1,4 +1,4 @@
-const Users = require("../users/userModel");
+const users = require("../users/userModel");
 const Projects = require("../projects/model");
 const Plans = require("../plans/planModel");
 const db = require("../../data/dbConfig");
@@ -7,7 +7,7 @@ const // /api/account/project-owner
   // update project owner user profile
   // repeative code can be refactored
   updateProjectOwner = async (req, res) => {
-    const { id } = req.params;
+    const id = req.userID;
     const userRole = req.userRole;
     if (userRole === "Project Owner") {
       const {
@@ -66,7 +66,8 @@ const // /api/account/project-owner
   // repeative code can be refactored
   deleteProjectOwner = (req, res) => {
     const { sub } = req;
-    Users.findAuthorizedUser(sub)
+    users
+      .findAuthorizedUser(sub)
       .del()
       .then(del => {
         res.status(200).json(del);
