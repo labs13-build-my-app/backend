@@ -6,7 +6,7 @@ const // /api/account/developer
   // update developer user profile
   // repeative code can be refactored
   updateDeveloper = async (req, res) => {
-    const { id } = req.userID;
+    const id = req.userID;
     const userRole = req.userRole;
     if (userRole === "Developer") {
       const {

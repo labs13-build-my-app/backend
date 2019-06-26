@@ -5,7 +5,7 @@ exports.up = function(knex, Promise) {
     tbl.text("description").notNullable();
     tbl.string("image_url");
     tbl.integer("budget").notNullable();
-    tbl.text("dueDate").notNullable();
+    tbl.date("dueDate").notNullable();
     tbl.string("projectStatus", 30).notNullable();
     tbl.string("paymentStatus", 30).notNullable();
     tbl.text("feedback");

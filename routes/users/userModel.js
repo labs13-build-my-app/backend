@@ -10,7 +10,8 @@ module.exports = {
   findDevUsers,
   listDevelopers,
   findDevUserByID,
-  updateUser
+  updateUser,
+  findUsersEmail
 };
 
 // when client fetchers for user info updated_field is updated if greater then set time
@@ -185,4 +186,15 @@ async function updateUser(user, id) {
     const updatedUser = await findUserById(id);
     return updatedUser;
   }
+}
+
+async function findUsersEmail(loggedInUserID, userID) {
+  console.log("USER");
+  // const loggedInUserInfo = await db("users")
+  //   .where({ id: loggedInUserID })
+  //   .select("users.id", "users.firstName", "users.lastName", "users.email");
+  // const userInfo = await db("users")
+  //   .where({ id: userID })
+  //   .select("users.id", "users.firstName", "users.lastName", "users.email");
+  // return { loggedInUserInfo: loggedInUserInfo, userInfo: userInfo };
 }
