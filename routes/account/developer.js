@@ -12,7 +12,7 @@ const // /api/account/developer
       const {
         firstName,
         lastName,
-        image_url,
+        profile_picture_url,
         email,
         devType,
         skills,
@@ -30,8 +30,8 @@ const // /api/account/developer
           if (lastName) {
             userUpdate.lastName = lastName;
           }
-          if (image_url) {
-            userUpdate.image_url = image_url;
+          if (profile_picture_url) {
+            userUpdate.profile_picture_url = profile_picture_url;
           }
           if (email) {
             userUpdate.email = email;
