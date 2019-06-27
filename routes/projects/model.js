@@ -8,7 +8,8 @@ module.exports = {
   findById,
   findUserProjectById,
   updateProject,
-  listProjectsbyProposalAndUserID
+  listProjectsbyProposalAndUserID,
+  deleteProject
 };
 
 // list all projects created
@@ -295,4 +296,11 @@ async function deletePlan(id) {
     .where({ id })
     .andWhere({ projectStatus: "proposal" })
     .del(id);
+}
+
+function deleteProject(id) {
+  return db("projects")
+    .where({ id })
+    .first()
+    .del(id)
 }

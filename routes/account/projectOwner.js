@@ -257,8 +257,8 @@ const // /api/account/project-owner
   },
   // delete a project if only status of proposal
   deleteProject = (req, res) => {
-    const { project_id: id } = req.params;
-    Projects.deleteProject(id)
+    const { project_id } = req.params;
+    Projects.deleteProject(project_id)
       .then(plan => {
         res.status(200).json(plan);
       })
