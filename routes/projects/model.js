@@ -302,5 +302,5 @@ function deleteProject(id) {
   return db("projects")
     .where({ id })
     .first()
-    .del()
+    .del(id)
 }
