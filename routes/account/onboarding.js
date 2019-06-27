@@ -5,6 +5,7 @@ const {
 } = require("../users/userModel");
 
 const userSignUp = async (req, res) => {
+    console.log(req.body);
     const { sub } = req;
     const {
       role,
@@ -16,7 +17,7 @@ const userSignUp = async (req, res) => {
       linkedIn,
       gitHub,
       twitter,
-      profilePictureUrl
+      profile_picture_url
     } = req.body;
 
     if (role === "Developer" || role === "Project Owner") {
@@ -31,7 +32,7 @@ const userSignUp = async (req, res) => {
         linkedIn,
         gitHub,
         twitter,
-        profile_picture_url: profilePictureUrl
+        profile_picture_url
       })
         .then(userid => {
           const id = userid[0];
@@ -46,7 +47,7 @@ const userSignUp = async (req, res) => {
             linkedIn,
             gitHub,
             twitter,
-            profile_picture_url: profilePictureUrl
+            profile_picture_url
           });
         })
         .catch(err => {
