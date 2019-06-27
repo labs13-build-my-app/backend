@@ -118,7 +118,9 @@ async function listDevelopers(
       const developers = await db("users")
         .where({ role: "Developer" })
         .andWhere(dev => {
-          if (type) {
+          console.log(type);
+          if (type !== "All") {
+            console.log("here");
             return dev.where({ devType: type });
           }
 
@@ -126,24 +128,53 @@ async function listDevelopers(
         })
         .orderBy("updated_at", "desc")
         .limit(per)
-        .offset((page - 1) * per);
+        .offset((page - 1) * per)
+        .select(
+          "id",
+          "firstName",
+          "lastName",
+          "devType",
+          "profile_picture_url",
+          "skills",
+          "updated_at"
+        );
 
       if (total_pages || update_pages === false) {
         const has_more = page < total_pages ? true : false;
         return { per, page, total_pages, has_more, developers };
       } else {
-        const developersList = await db("users").where({
-          role: "Developer"
-        });
+        const developersList = await db("users")
+          .where({
+            role: "Developer"
+          })
+          .andWhere(dev => {
+            console.log(type);
+            if (type !== "All") {
+              console.log("here");
+              return dev.where({ devType: type });
+            }
+
+            return dev;
+          });
         const total = developersList.length;
         total_pages = Math.ceil(total / per);
         const has_more = page < total_pages ? true : false;
         return { per, page, total_pages, has_more, developers };
       }
     } else {
-      const developers = await db("users").where({
-        role: "Developer"
-      });
+      const developers = await db("users")
+        .where({
+          role: "Developer"
+        })
+        .andWhere(dev => {
+          console.log(type);
+          if (type !== "All") {
+            console.log("here");
+            return dev.where({ devType: type });
+          }
+
+          return dev;
+        });
       return {
         per: null,
         page: 1,
