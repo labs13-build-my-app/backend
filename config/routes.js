@@ -24,5 +24,5 @@ module.exports = (server, router) => {
   );
   server.use("/api/plans", planRouter(router));
 
-  server.post("/", root);
+  server.get("/", root);
 };

@@ -26,7 +26,7 @@ const // /api/users
   // developer list with pagination
   // order by most recent updated activity
   listPaginatedDevelopers = async (req, res) => {
-    const { page, per, has_more, total_pages, update_pages } = req.query;
+    const { page, per, has_more, total_pages, update_pages, type } = req.query;
 
     try {
       if (has_more === false) {
@@ -38,7 +38,8 @@ const // /api/users
           page,
           per,
           total_pages,
-          update_pages
+          update_pages,
+          type
         );
         if (developers) {
           res.status(200).json(developers);
@@ -101,7 +102,7 @@ const // /api/users
 
 module.exports = router => {
   router.get("/profile/:user_id", userById); // <<< user profile page
-  router.get("/list-users", allUsers); // <<< list all users
+  // router.get("/list-users", allUsers); // <<< list all users
   router.get("/list-developers", listPaginatedDevelopers); // <<< listing developers
   // router.get("/user-developer/:id", viewDeveloper); // <<< might not need this, we have profile endpoint now
   // router.get("/user-project-owner/:id", viewProjectOwner); // <<< might not need this, we have profile endpoing now

@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node index.js",
     "server": "nodemon index.js",
-    "test": "jest --watchALL"
+    "test": "cross-env DB_ENV=testing jest --watch --verbose"
   },
   "repository": "https://github.com/labs13-build-my-app/backend.git",
   "license": "MIT",

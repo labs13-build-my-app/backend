@@ -106,11 +106,24 @@ function findDevUsers() {
 }
 
 // list of developers, results are paginated and order by most resent updated activity
-async function listDevelopers(page = 1, per = 15, total_pages, update_pages) {
+async function listDevelopers(
+  page = 1,
+  per = 16,
+  total_pages,
+  update_pages,
+  type
+) {
   try {
     if (per !== 0) {
       const developers = await db("users")
         .where({ role: "Developer" })
+        .andWhere(dev => {
+          if (type) {
+            return dev.where({ devType: type });
+          }
+
+          return dev;
+        })
         .orderBy("updated_at", "desc")
         .limit(per)
         .offset((page - 1) * per);
