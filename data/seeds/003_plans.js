@@ -19,7 +19,6 @@ exports.seed = function(knex, Promise) {
         for(let j = 0; j < Math.floor(Math.random()*5); j++){
           plan.technologiesToUse += ` ${faker.hacker.noun()}`;
         }
-        console.log(plan.technologiesToUse);
         plan.budget = Math.round(faker.finance.amount() * 100);
         plan.dueDate = faker.date.future();
         plan.planStatus = statusOptions[Math.floor(Math.random()*3)];
