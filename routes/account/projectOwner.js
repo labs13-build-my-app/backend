@@ -13,7 +13,7 @@ const // /api/account/project-owner
       const {
         firstName,
         lastName,
-        image_url,
+        profile_picture_url,
         email,
         linkedIn,
         gitHub,
@@ -29,8 +29,8 @@ const // /api/account/project-owner
           if (lastName) {
             userUpdate.lastName = lastName;
           }
-          if (image_url) {
-            userUpdate.image_url = image_url;
+          if (profile_picture_url) {
+            userUpdate.profile_picture_url = profile_picture_url;
           }
           if (email) {
             userUpdate.email = email;
