@@ -1,28 +1,7 @@
 const data = require("./userModel");
+const db = require("../../data/dbConfig.js");
 
 const // /api/users
-  allUsers = async (req, res) => {
-    try {
-      const users = await data.findUsers();
-      if (users.length) {
-        res.status(200).json({
-          error: false,
-          message: "The users were found in the database",
-          users
-        });
-      } else {
-        res.status(404).json({
-          error: true,
-          users: [],
-          message: "The users could not be found in the database."
-        });
-      }
-    } catch (error) {
-      res.status(500).json({
-        message: `User request failed ${error.message}.`
-      });
-    }
-  },
   // developer list with pagination
   // order by most recent updated activity
   listPaginatedDevelopers = async (req, res) => {
@@ -76,15 +55,26 @@ const // /api/users
   // find user by id
   userById = async (req, res) => {
     const { user_id } = req.params;
-    console.log(user_id);
-    data
-      .findUserById(user_id)
-      .then(user => {
-        res.status(200).json(user);
-      })
-      .catch(error => {
-        res.status(404).json(error);
+
+    try {
+      const user = await data.findUserById(user_id);
+      res.status(200).json(user);
+    } catch (err) {
+      res.status(404).json({ message: err });
+    }
+  },
+  listUsersByRole = async (req, res) => {
+    const { role, type, per, page } = req.query;
+    const user =
+      role === "developer" || role === "project-owner" ? role : undefined;
+    try {
+      const users = await data.listUsersByRole({ role: user, type, per, page });
+      res.status(200).json(users);
+    } catch (error) {
+      res.status(500).json({
+        message: `Developer request failed ${error.message}.`
       });
+    }
   },
   // is only a test function will be removed
   updateUser = (req, res) => {
@@ -102,7 +92,7 @@ const // /api/users
 
 module.exports = router => {
   router.get("/profile/:user_id", userById); // <<< user profile page
-  // router.get("/list-users", allUsers); // <<< list all users
+  router.get("/list-users", listUsersByRole);
   router.get("/list-developers", listPaginatedDevelopers); // <<< listing developers
   // router.get("/user-developer/:id", viewDeveloper); // <<< might not need this, we have profile endpoint now
   // router.get("/user-project-owner/:id", viewProjectOwner); // <<< might not need this, we have profile endpoing now

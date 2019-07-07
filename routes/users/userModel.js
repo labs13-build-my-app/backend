@@ -4,14 +4,14 @@ const moment = require("moment");
 module.exports = {
   activityUpdate,
   findUserById,
-  findUsers,
   findAuthorizedUser,
   createNewUser,
   findDevUsers,
   listDevelopers,
   findDevUserByID,
   updateUser,
-  findUsersEmail
+  findUsersEmail,
+  listUsersByRole
 };
 
 // when client fetchers for user info updated_field is updated if greater then set time
@@ -37,28 +37,32 @@ async function activityUpdate(id) {
 }
 
 // find user by id
-function findUserById(user_id) {
-  return db("users")
-    .where({ id: user_id })
-    .select(
-      "id",
-      "firstName",
-      "lastName",
-      "email",
-      "skills",
-      "role",
-      "devType",
-      "twitter",
-      "gitHub",
-      "linkedIn",
-      "profile_picture_url"
-    )
-    .first();
-}
-
-// test function has no purpose for the app
-function findUsers() {
-  return db("users").select("id", "firstName", "lastName", "email", "role");
+async function findUserById(user_id) {
+  try {
+    const user = await db("users")
+      .where({ id: user_id })
+      .select(
+        "id",
+        "profile_picture_url",
+        "firstName",
+        "lastName",
+        "email",
+        "role",
+        "skills",
+        "devType",
+        "gitHub",
+        "linkedIn",
+        "twitter",
+        "updated_at"
+      )
+      .first();
+    if (user === undefined) {
+      throw new Error("user not found");
+    }
+    return user;
+  } catch (error) {
+    throw error;
+  }
 }
 
 // find logged in user by sub
@@ -228,4 +232,71 @@ async function findUsersEmail(loggedInUserID, userID) {
   //   .where({ id: userID })
   //   .select("users.id", "users.firstName", "users.lastName", "users.email");
   // return { loggedInUserInfo: loggedInUserInfo, userInfo: userInfo };
+}
+
+async function listUsersByRole({
+  role = "all",
+  page = 1,
+  per = 18,
+  total_pages,
+  update_pages,
+  type = "all"
+}) {
+  console.log(type);
+  const retriveUsers = () => {
+    return db("users")
+      .where(function() {
+        if (role === "developer") {
+          return this.where({ role: "Developer" });
+        } else if (role === "project-owner") {
+          return this.where({ role: "Project Owner" });
+        } else if (role === "all") {
+          return this.whereNot({ role: "Admin" });
+        }
+      })
+      .andWhere(dev => {
+        if (role === "developer" && type !== "all") {
+          return dev.where({ devType: type });
+        }
+      });
+  };
+  try {
+    const users = await retriveUsers()
+      .orderBy("updated_at", "desc")
+      .limit(per)
+      .offset((page - 1) * per)
+      .select(
+        "id",
+        "profile_picture_url",
+        "firstName",
+        "lastName",
+        "email",
+        "role",
+        "skills",
+        "devType",
+        "gitHub",
+        "linkedIn",
+        "twitter",
+        "updated_at"
+      );
+    const list = await retriveUsers();
+    const total = list.length;
+    total_pages = Math.ceil(total / per);
+    const has_more = page < total_pages ? true : false;
+    const name =
+      role === "developer"
+        ? "developers"
+        : role === "project-owner"
+        ? "projectOwners"
+        : "users";
+    return {
+      page: parseInt(page),
+      per: parseInt(per),
+      total_pages,
+      has_more,
+      [name]: users
+    };
+  } catch (error) {
+    throw error;
+  }
 }
